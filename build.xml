@@ -1,6 +1,6 @@
 <!--
 File:  build.xml
-This file is used to build and minify the sidelab slick library for production use.  The build file
+This file is used to build and minify the grunt library for production use.  The build file
 is adapted from the jQuery build file which can be found at the following location:
 
 http://github.com/jquery/jquery/blob/master/build.xml
