@@ -20,6 +20,8 @@ GRUNT.Log = (function() {
     var module = {
         id: "grunt.log",
         
+        /* logging functions */
+        
         debug: function(message, logSection) {
             writeEntry(message, "debug", logSection);
         },
@@ -45,6 +47,25 @@ GRUNT.Log = (function() {
                 module.info("ERROR DETAIL: " + keyname + ": " + error[keyname]);
             } // for
         },
+        
+        /* error monitoring, exception raising functions */
+        
+        watch: function(sectionDesc, callback) {
+            try {
+                callback();
+            }
+            catch (e) {
+                module.exception(e, sectionDesc);
+            } // try..catch
+        },
+        
+        throwError: function(errorMsg) {
+            // log the error
+            module.error(errorMsg);
+            throw new Error(errorMsg);
+        },
+        
+        /* event handler functions */
         
         requestUpdates: function(callback) {
             listeners.push(callback);
