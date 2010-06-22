@@ -21,19 +21,19 @@ GRUNT.Log = (function() {
         id: "grunt.log",
         
         debug: function(message, logSection) {
-            writeEntry(message, "debug", logSection ? logSection : detectCallerSection(caller) );
+            writeEntry(message, "debug", logSection);
         },
         
         info: function(message, logSection) {
-            writeEntry(message, "info", logSection ? logSection : detectCallerSection(caller) );
+            writeEntry(message, "info", logSection);
         },
 
         warn: function(message, logSection) {
-            writeEntry(message, "warn", logSection ? logSection : detectCallerSection(caller) );
+            writeEntry(message, "warn", logSection);
         },
 
         error: function(message, logSection) {
-            writeEntry(message, "error", logSection ? logSection : detectCallerSection(caller) );
+            writeEntry(message, "error", logSection);
         },
         
         exception: function(error, logSection) {
