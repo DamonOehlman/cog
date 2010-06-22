@@ -20,6 +20,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		
 		<concat destfile="${GRUNT}">
 			<fileset file="src/template/header.js" />
+			<fileset file="src/jsmods.js" />
 			<fileset file="src/core.js" />
 			<fileset file="src/log.js" />
 			<fileset file="src/xhr.js" />

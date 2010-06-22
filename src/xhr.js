@@ -58,12 +58,17 @@ GRUNT.XHR = (function() {
             try {
                 params = GRUNT.extend({
                     method: "GET",
-                    data: {},
+                    data: null,
                     url: null,
                     async: true,
                     success: null,
                     contentType: "application/x-www-form-urlencoded"
                 }, module.ajaxSettings, params);
+                
+                // if we have data, then update the method to POST
+                if (params.data) {
+                    params.method = "POST";
+                } // if
 
                 // if the url is empty, then log an error
                 if (! params.url) {
