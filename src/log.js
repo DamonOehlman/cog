@@ -38,6 +38,12 @@ GRUNT.Log = (function() {
         
         exception: function(error, logSection) {
             module.error(error.message, logSection);
+            
+            // iterate through the keys of the error and add them as info sections
+            // TODO: make this targeted at the stack, etc
+            for (var keyname in error) {
+                module.info("ERROR DETAIL: " + keyname + ": " + error[keyname]);
+            } // for
         },
         
         requestUpdates: function(callback) {

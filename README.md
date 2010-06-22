@@ -21,3 +21,5 @@ Please note that *GRUNT* is very much a _work in progress_ and while it has been
 <target name="grunt-build" depends="grunt-clone,grunt-pull">
 	<ant dir="lib/grunt" />
 </target>
+
+You can then use the <concat> ant task to combine grunt into your library.
