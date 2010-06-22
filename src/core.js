@@ -1,8 +1,10 @@
 GRUNT = (function() {
     // define the GRUNT module
     var module = {
+        id: "grunt.core",
+        
         /* 
-        Very grunty jQuery stuff.
+        Very gr*nty jQuery stuff.
         Taken from http://github.com/jquery/jquery/blob/master/src/core.js
         */
         

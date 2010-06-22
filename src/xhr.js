@@ -46,11 +46,13 @@ GRUNT.XHR = (function() {
     
     // define self
     var module = {
+        id: "grunt.xhr",
+        
         ajax: function(params) {
             // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
             // do that in the context of a try catch statement to catch the things that are going to go wrong...
             try {
-                params = SLICK.extend({
+                params = GRUNT.extend({
                     method: "GET",
                     data: {},
                     url: null,
@@ -61,7 +63,7 @@ GRUNT.XHR = (function() {
 
                 // if the url is empty, then log an error
                 if (! params.url) {
-                    SLICK.Logger.warn("ajax request issued with no url - that ain't going to work...");
+                    GRUNT.Log.warn("ajax request issued with no url - that ain't going to work...");
                     return;
                 } // if
                 
@@ -76,7 +78,7 @@ GRUNT.XHR = (function() {
                     xhr = new XMLHttpRequest();
                 } // if
 
-                SLICK.Logger.info("opening request: " + JSON.stringify(params));
+                GRUNT.Log.info("opening request: " + JSON.stringify(params));
 
                 // open the request
                 // TODO: support basic authentication
@@ -91,11 +93,11 @@ GRUNT.XHR = (function() {
                             var responseData = processResponseData(this);
                         }
                         catch (e) {
-                            SLICK.Logger.exception(e, "PROCESSING AJAX RESPONSE");
+                            GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
                         } // try..catch
 
                         // if the success callback is defined, then call it
-                        SLICK.Logger.info("received response, calling success handler: " + params.success);
+                        GRUNT.Log.info("received response, calling success handler: " + params.success);
                         if (params.success) {
                             params.success.call(this, responseData);
                         } // if
@@ -103,12 +105,12 @@ GRUNT.XHR = (function() {
                 }; // onreadystatechange
 
                 // send the request
-                SLICK.Logger.info("sending request with data: " + jQuery.param(params.data));
+                GRUNT.Log.info("sending request with data: " + jQuery.param(params.data));
                 xhr.send(params.method == "POST" ? jQuery.param(params.data) : null);
             } 
             catch (e) {
                 alert(e.message);
-                SLICK.Logger.exception(e);
+                GRUNT.Log.exception(e);
             } // try..catch                    
         } // ajax
     }; // self
