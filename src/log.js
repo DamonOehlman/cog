@@ -24,20 +24,20 @@ GRUNT.Log = (function() {
             writeEntry(message, "debug", logSection ? logSection : detectCallerSection(caller) );
         },
         
-        info: function(message) {
+        info: function(message, logSection) {
             writeEntry(message, "info", logSection ? logSection : detectCallerSection(caller) );
         },
 
-        warn: function(message) {
+        warn: function(message, logSection) {
             writeEntry(message, "warn", logSection ? logSection : detectCallerSection(caller) );
         },
 
-        error: function(message) {
+        error: function(message, logSection) {
             writeEntry(message, "error", logSection ? logSection : detectCallerSection(caller) );
         },
         
-        exception: function(error) {
-            module.error(error.message);
+        exception: function(error, logSection) {
+            module.error(error.message, logSection);
         },
         
         requestUpdates: function(callback) {
