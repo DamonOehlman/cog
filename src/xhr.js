@@ -48,6 +48,10 @@ GRUNT.XHR = (function() {
     var module = {
         id: "grunt.xhr",
         
+        ajaxSettings: {
+            xhr: null
+        },
+        
         ajax: function(params) {
             // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
             // do that in the context of a try catch statement to catch the things that are going to go wrong...
