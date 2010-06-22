@@ -114,14 +114,39 @@ GRUNT.XHR = (function() {
                 }; // onreadystatechange
 
                 // send the request
-                GRUNT.Log.info("sending request with data: " + jQuery.param(params.data));
-                xhr.send(params.method == "POST" ? jQuery.param(params.data) : null);
+                GRUNT.Log.info("sending request with data: " + module.param(params.data));
+                xhr.send(params.method == "POST" ? module.param(params.data) : null);
             } 
             catch (e) {
                 alert(e.message);
                 GRUNT.Log.exception(e);
             } // try..catch                    
-        } // ajax
+        }, // ajax
+        
+        param: function(data) {
+            // iterate through the members of the data and convert to a paramstring
+            var params = [];
+            var addKeyVal = function (key, value) {
+                // If value is a function, invoke it and return its value
+                value = GRUNT.isFunction(value) ? value() : value;
+                params[ params.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
+            };
+
+            // If an array was passed in, assume that it is an array of form elements.
+            if (GRUNT.isArray(data)) {
+                for (var ii = 0; ii < data.length; ii++) {
+                    addKeyVal(data[ii].name, data[ii].value);
+                } // for
+            }
+            else {
+                for (var keyname in data) {
+                    addKeyVal(keyname, data[keyname]);
+                } // for
+            } // if..else
+
+            // Return the resulting serialization
+            return params.join("&").replace(/%20/g, "+");
+        }
     }; // self
     
     return module;
