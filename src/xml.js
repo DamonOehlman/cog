@@ -7,7 +7,13 @@ GRUNT.XPath = (function() {
     } // if
     
     function xpath(expression, context, resultType) {
-        return document.evaluate(expression, context, null, resultType, null);
+        try {
+            return document.evaluate(expression, context, null, resultType, null);
+        } 
+        catch (e) {
+            GRUNT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
+            return null;
+        } // try..catch
     } // xpath
     
     // define the module
@@ -17,19 +23,19 @@ GRUNT.XPath = (function() {
             var self = {
                 
                 toString: function() {
-                    if (matches.singleNodeValue) {
+                    if (matches && matches.singleNodeValue) {
                         return matches.singleNodeValue.textContent;
                     } // if
                     
-                    return "[XPath result]";
+                    return matches ? "[XPath result]" : "[XPath invalid]";
                 }
             };
             
             return self;
         },
         
-        one: function(xpath, node) {
-            return new module.SearchResult(xpath(node, xpath, XPathResult.ANY_UNORDERED_NODE_TYPE));
+        one: function(expression, node) {
+            return new module.SearchResult(xpath(expression, node, XPathResult.ANY_UNORDERED_NODE_TYPE));
         }
     };
     

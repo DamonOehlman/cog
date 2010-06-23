@@ -97,9 +97,11 @@ GRUNT.XHR = (function() {
                 xhr.setRequestHeader("Content-Type", params.contentType);
                 xhr.onreadystatechange = function() {
                     if (this.readyState === 4) {
+                        var responseData = null;
+                        
                         try {
                             // process the response
-                            var responseData = processResponseData(this);
+                            responseData = processResponseData(this);
                         }
                         catch (e) {
                             GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
