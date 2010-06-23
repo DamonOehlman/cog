@@ -1,4 +1,6 @@
 GRUNT.Template = (function() {
+    var REGEX_TEMPLATE_VAR = /\$\{(.*?)\}/ig;
+    
     // initialise module
     var module = {
         parse: function(template_html, data) {
@@ -9,7 +11,7 @@ GRUNT.Template = (function() {
             var matches = REGEX_TEMPLATE_VAR.exec(fnresult);
             while (matches) {
                 // remove the variable from the text
-                fnresult = fnresult.replace(matches[0], GRUNT.XML.find(data, matches[1]));
+                fnresult = fnresult.replace(matches[0], GRUNT.XPath.one(matches[1], data));
                 
                 // find the next match
                 matches = REGEX_TEMPLATE_VAR.exec(fnresult);
