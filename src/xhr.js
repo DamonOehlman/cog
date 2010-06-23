@@ -27,6 +27,8 @@ GRUNT.XHR = (function() {
         var processorId;
         var matchedType = false;
         
+        GRUNT.Log.info("processing response data, content type = " + contentType);
+        
         // determine the matching content type
         for (processorId in CONTENT_TYPES) {
             if (CONTENT_TYPES[processorId] == contentType) {
@@ -36,12 +38,18 @@ GRUNT.XHR = (function() {
         } // for
         
         // if we didn't match the type then set to the default handler
-        if ((! matchedType) || (! RESPONSE_TYPE_PROCESSORS[processorId])) {
+        if (! matchedType) {
             processorId = "DEFAULT";
         } // if
-
-        // return the data from the xhr using the appropriate processor
-        return RESPONSE_TYPE_PROCESSORS[processorId](xhr);
+        
+        try {
+            GRUNT.Log.info("using processor: " + processorId + " to process response");
+            return RESPONSE_TYPE_PROCESSORS[processorId](xhr);
+        }
+        catch (e) {
+            GRUNT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
+            return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr);
+        } // try..catch
     } // processResponseData
     
     // define self
