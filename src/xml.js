@@ -56,8 +56,13 @@ GRUNT.XPath = (function() {
         } // if
         
         try {
+            // if the context has a document element, switch to that
+            if (context && context.documentElement) {
+                context = context.documentElement;
+            } // if
+            
             // if the context node is not xml, then return null and raise a warning
-            if (typeof context !== 'xml') {
+            if (typeof context !== 'object') {
                 GRUNT.Log.warn("attempted xpath expression: " + expression + " on a non-xml object");
                 return null;
             } // if
