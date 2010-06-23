@@ -1,5 +1,6 @@
 GRUNT.XPath = (function() {
     var xpathEnabled = typeof XPathResult !== 'undefined';
+    var nsResolvers = [];
     
     // defne a set of match handlers that are invoked for the various different type of xpath match results
     var MATCH_HANDLERS = [
@@ -44,6 +45,20 @@ GRUNT.XPath = (function() {
         }
     ];
     
+    function namespaceResolver(ns) {
+        var namespace = null;
+        
+        // iterate through the registered resolvers and give them the opportunity to provide a namespace
+        for (var ii = 0; ii < nsResolvers.length; ii++) {
+            namespace = nsResolvers[ii](ns);
+            
+            // if the namespace has been defined, by this resolver then break from the loop
+            if (namespace) { break; }
+        } // for
+        
+        return namespace;
+    } // namespaceResolver
+    
     // if xpath is not enabled, then throw a warning
     if (! xpathEnabled) {
         GRUNT.Log.warn("No XPATH support, this is going to cause problems");
@@ -62,13 +77,8 @@ GRUNT.XPath = (function() {
                 return null;
             } // if
             
-            // create the namespace resolver for the doc
-            var nsResolver = context.createNSResolver(context.ownerDocument == null ? 
-                                    context.documentElement : 
-                                    context.ownerDocument.documentElement); 
-            
             // return the value of the expression
-            return context.evaluate(expression, context, nsResolver, resultType, null);
+            return context.evaluate(expression, context, namespaceResolver, resultType, null);
         } 
         catch (e) {
             GRUNT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
@@ -107,6 +117,10 @@ GRUNT.XPath = (function() {
         
         first: function(expression, node) {
             return new module.SearchResult(xpath(expression, node, XPathResult.FIRST_ORDERED_NODE_TYPE));
+        },
+        
+        registerResolver: function(callback) {
+            nsResolvers.push(callback);
         }
     };
     
