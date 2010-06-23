@@ -7,8 +7,19 @@ GRUNT.XPath = (function() {
     } // if
     
     function xpath(expression, context, resultType) {
+        // if the result type is not specified, then use any type
+        if (! resultType) {
+            resultType = XPathResult.ANY_TYPE;
+        } // if
+        
         try {
-            return document.evaluate(expression, context, null, resultType, null);
+            // if the context node is not xml, then return null and raise a warning
+            if (typeof context !== 'xml') {
+                GRUNT.Log.warn("attempted xpath expression: " + expression + " on a non-xml object");
+                return null;
+            } // if
+            
+            return context.evaluate(expression, context, null, resultType, null);
         } 
         catch (e) {
             GRUNT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
