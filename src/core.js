@@ -101,6 +101,10 @@ GRUNT = (function() {
                 return false;
             }
             return true;
+        },
+        
+        isXmlDocument: function(obj) {
+            return toString.call(obj) === "[object Document]";
         }
     }; // module definition
     

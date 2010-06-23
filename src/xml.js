@@ -57,12 +57,18 @@ GRUNT.XPath = (function() {
         
         try {
             // if the context node is not xml, then return null and raise a warning
-            if (typeof context !== 'object') {
-                GRUNT.Log.warn("attempted xpath expression: " + expression + " on a non-xml object");
+            if (! GRUNT.isXmlDocument(context)) {
+                GRUNT.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
                 return null;
             } // if
             
-            return context.evaluate(expression, context, null, resultType, null);
+            // create the namespace resolver for the doc
+            var nsResolver = context.createNSResolver(context.ownerDocument == null ? 
+                                    context.documentElement : 
+                                    context.ownerDocument.documentElement); 
+            
+            // return the value of the expression
+            return context.evaluate(expression, context, nsResolver, resultType, null);
         } 
         catch (e) {
             GRUNT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
