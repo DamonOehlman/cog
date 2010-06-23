@@ -19,11 +19,13 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		<!-- TODO: move the provider files across too -->
 		
 		<concat destfile="${GRUNT}">
-			<fileset file="src/template/header.js" />
+			<fileset file="src/_templates/header.js" />
 			<fileset file="src/jsmods.js" />
 			<fileset file="src/core.js" />
 			<fileset file="src/log.js" />
+			<fileset file="src/template.js" />
 			<fileset file="src/xhr.js" />
+			<fileset file="src/xml.js" />
 		</concat>
 		
 		<!-- customize the library namespace to suit -->
