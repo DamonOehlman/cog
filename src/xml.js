@@ -45,12 +45,12 @@ GRUNT.XPath = (function() {
         }
     ];
     
-    function namespaceResolver(ns) {
+    function namespaceResolver(prefix) {
         var namespace = null;
         
         // iterate through the registered resolvers and give them the opportunity to provide a namespace
         for (var ii = 0; ii < nsResolvers.length; ii++) {
-            namespace = nsResolvers[ii](ns);
+            namespace = nsResolvers[ii](prefix);
             
             // if the namespace has been defined, by this resolver then break from the loop
             if (namespace) { break; }
@@ -108,7 +108,7 @@ GRUNT.XPath = (function() {
                         }
                     } // if
                     
-                    return result ? result : (matches ? "[XPath result]" : "[XPath invalid]");
+                    return result ? result : "";
                 }
             };
             
