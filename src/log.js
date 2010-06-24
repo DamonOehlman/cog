@@ -2,14 +2,14 @@ GRUNT.Log = (function() {
     var listeners = [];
     var jsonAvailable = (typeof JSON !== 'undefined');
     
-    function writeEntry(level) {
+    function writeEntry(level, entryDetails) {
         // initialise variables
         var ii;
-        var message = arguments.length > 1 ? arguments[1] : "";
+        var message = entryDetails && (entryDetails.length > 0) ? entryDetails[0] : "";
         
         // iterate through the remaining arguments and append them as required
-        for (ii = 2; ii < arguments.length; ii++) {
-            message += " " + (jsonAvailable && GRUNT.isPlainObject(arguments[ii]) ? JSON.stringify(arguments[ii]) : arguments[ii]);
+        for (ii = 1; entryDetails && (ii < entryDetails.length); ii++) {
+            message += " " + (jsonAvailable && GRUNT.isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
         } // for
         
         if (typeof console !== 'undefined') {
