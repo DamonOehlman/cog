@@ -1,14 +1,24 @@
 GRUNT.Log = (function() {
     var listeners = [];
+    var jsonAvailable = (typeof JSON !== 'undefined');
     
-    function writeEntry(message, level, section) {
+    function writeEntry(level) {
+        // initialise variables
+        var ii;
+        var message = arguments.length > 1 ? arguments[1] : "";
+        
+        // iterate through the remaining arguments and append them as required
+        for (ii = 2; ii < arguments.length; ii++) {
+            message += " " + (jsonAvailable && GRUNT.isPlainObject(arguments[ii]) ? JSON.stringify(arguments[ii]) : arguments[ii]);
+        } // for
+        
         if (typeof console !== 'undefined') {
-            console[level]((section ? section + ": " : "") + message);
+            console[level](message);
         } // if
         
         // if we have listeners, then tell them about the event
-        for (var ii = 0; ii < listeners.length; ii++) {
-            listeners[ii].call(module, message, level, section);
+        for (ii = 0; ii < listeners.length; ii++) {
+            listeners[ii].call(module, message, level);
         } // for
     } // writeEntry
     
@@ -22,24 +32,24 @@ GRUNT.Log = (function() {
         
         /* logging functions */
         
-        debug: function(message, logSection) {
-            writeEntry(message, "debug", logSection);
+        debug: function(message) {
+            writeEntry("debug", arguments);
         },
         
-        info: function(message, logSection) {
-            writeEntry(message, "info", logSection);
+        info: function(message) {
+            writeEntry("info", arguments);
         },
 
-        warn: function(message, logSection) {
-            writeEntry(message, "warn", logSection);
+        warn: function(message) {
+            writeEntry("warn", arguments);
         },
 
-        error: function(message, logSection) {
-            writeEntry(message, "error", logSection);
+        error: function(message) {
+            writeEntry("error", arguments);
         },
         
-        exception: function(error, logSection) {
-            module.error(error.message, logSection);
+        exception: function(error) {
+            module.error(arguments);
             
             // iterate through the keys of the error and add them as info sections
             // TODO: make this targeted at the stack, etc
