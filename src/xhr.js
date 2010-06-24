@@ -101,8 +101,11 @@ GRUNT.XHR = (function() {
                 // TODO: support basic authentication
                 xhr.open(params.method, params.url, params.async);
 
-                // set the content type
-                xhr.setRequestHeader("Content-Type", params.contentType);
+                // if we are sending data, then set the correct content type
+                if (params.data) {
+                    xhr.setRequestHeader("Content-Type", params.contentType);
+                } // if
+                
                 xhr.onreadystatechange = function() {
                     if (this.readyState === 4) {
                         var responseData = null;
@@ -128,7 +131,6 @@ GRUNT.XHR = (function() {
                 xhr.send(params.method == "POST" ? module.param(params.data) : null);
             } 
             catch (e) {
-                alert(e.message);
                 GRUNT.Log.exception(e);
             } // try..catch                    
         }, // ajax
