@@ -1,4 +1,6 @@
 GRUNT = (function() {
+    var hasOwn = Object.prototype.hasOwnProperty;
+    
     // define the GRUNT module
     var module = {
         id: "grunt.core",
