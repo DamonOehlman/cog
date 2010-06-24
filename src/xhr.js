@@ -4,6 +4,9 @@ GRUNT.XHR = (function() {
         HTML: "text/html",
         XML: "text/xml"
     };
+    
+    // initialise some regexes
+    var REGEX_URL = /^(\w+:)?\/\/([^\/?#]+)/;
 
     // define the variable content type processors
     var RESPONSE_TYPE_PROCESSORS = {
@@ -73,6 +76,10 @@ GRUNT.XHR = (function() {
                     contentType: "application/x-www-form-urlencoded"
                 }, module.ajaxSettings, params);
                 
+                // determine if this is a remote request (as per the jQuery ajax calls)
+                var parts = REGEX_URL.exec(params.url),
+                    remote = parts && (parts[1] && parts[1] !== location.protocol || parts[2] !== location.host);                
+                
                 // if we have data, then update the method to POST
                 if (params.data) {
                     params.method = "POST";
@@ -104,6 +111,11 @@ GRUNT.XHR = (function() {
                 // if we are sending data, then set the correct content type
                 if (params.data) {
                     xhr.setRequestHeader("Content-Type", params.contentType);
+                } // if
+                
+                // if this is not a remote request, the set the requested with header
+                if (! remote) {
+                    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 } // if
                 
                 xhr.onreadystatechange = function() {
