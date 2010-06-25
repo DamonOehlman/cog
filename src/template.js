@@ -14,6 +14,7 @@ GRUNT.Template = (function() {
                 fnresult = fnresult.replace(matches[0], GRUNT.XPath.first(matches[1], data));
                 
                 // find the next match
+                REGEX_TEMPLATE_VAR.lastIndex = 0;
                 matches = REGEX_TEMPLATE_VAR.exec(fnresult);
             } // while
             
