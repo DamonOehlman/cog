@@ -22,7 +22,13 @@ GRUNT.XHR = (function() {
         
         JSON: function(xhr, requestParams) {
             // use the JSON object to convert the responseText to a JS object
-            return JSON.parse(xhr.responseText);
+            try {
+                return JSON.parse(xhr.responseText);
+            }
+            catch (e) {
+                GRUNT.Log.error("Error parsing JSON data: ", xhr.responseText);
+                GRUNT.Log.exception(e);
+            }
         },
         
         DEFAULT: function(xhr, requestParam) {
