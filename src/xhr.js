@@ -2,7 +2,13 @@ GRUNT.XHR = (function() {
     // define some content types
     var CONTENT_TYPES = {
         HTML: "text/html",
-        XML: "text/xml"
+        XML: "text/xml",
+        STREAM: "application/octet-stream"
+    };
+
+    // define some regular expressions to help determine the type of the request
+    var REQUEST_URL_EXTENSIONS = {
+        JSON: ['json']
     };
     
     // initialise some regexes
@@ -10,11 +16,16 @@ GRUNT.XHR = (function() {
 
     // define the variable content type processors
     var RESPONSE_TYPE_PROCESSORS = {
-        XML: function(xhr) {
+        XML: function(xhr, requestParams) {
             return xhr.responseXML;
         },
         
-        DEFAULT: function(xhr) {
+        JSON: function(xhr, requestParams) {
+            // use the JSON object to convert the responseText to a JS object
+            return JSON.parse(xhr.responseText);
+        },
+        
+        DEFAULT: function(xhr, requestParam) {
             return xhr.responseText;
         }
     }; // CONTENT_TYPE_PROCESSORS
@@ -23,8 +34,34 @@ GRUNT.XHR = (function() {
     var HEADERS = {
         CONTENT_TYPE: "Content-Type"
     };
+    
+    /**
+    This function is used to determine the appropriate request type based on the extension 
+    of the url that was originally requested.  This function is only called in the case where
+    an indeterminate type of content-type has been received from the server that has supplied the 
+    response (such as application/octet-stream).  
+    
+    @xhr - the XMLHttpRequest object
+    @requestParams - the parameters that were passed to the xhr request
+    @fallbackType - the type of request that we will fallback to 
+    */
+    function getProcessorForRequestUrl(xhr, requestParams, fallbackType) {
+        for (var requestType in REQUEST_URL_EXTENSIONS) {
+            // iterate through the file extensions
+            for (var ii = 0; ii < REQUEST_URL_EXTENSIONS[requestType].length; ii++) {
+                var fileExt = REQUEST_URL_EXTENSIONS[requestType][ii];
 
-    function processResponseData(xhr) {
+                // if the request url ends with the specified file extension we have a match
+                if (new RegExp(fileExt + "$", "i").test(requestParams.url)) {
+                    return requestType;
+                } // if
+            } // for
+        } // for
+        
+        return fallbackType ? fallbackType : "DEFAULT";
+    } // getProcessorForRequestUrl
+
+    function processResponseData(xhr, requestParams) {
         // get the content type of the response
         var contentType = xhr.getResponseHeader(HEADERS.CONTENT_TYPE);
         var processorId;
@@ -43,15 +80,20 @@ GRUNT.XHR = (function() {
         // if we didn't match the type then set to the default handler
         if (! matchedType) {
             processorId = "DEFAULT";
-        } // if
+        }
+        // or, if the match type is a stream, we probably need to look at the original request to 
+        // determine the match type
+        else if (processorId == "STREAM") {
+            processorId = getProcessorForRequestUrl(xhr, requestParams, processorId);
+        } // if..else
         
         try {
             GRUNT.Log.info("using processor: " + processorId + " to process response");
-            return RESPONSE_TYPE_PROCESSORS[processorId](xhr);
+            return RESPONSE_TYPE_PROCESSORS[processorId](xhr, requestParams);
         }
         catch (e) {
             GRUNT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
-            return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr);
+            return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr, requestParams);
         } // try..catch
     } // processResponseData
     
@@ -124,7 +166,7 @@ GRUNT.XHR = (function() {
                         
                         try {
                             // process the response
-                            responseData = processResponseData(this);
+                            responseData = processResponseData(this, params);
                         }
                         catch (e) {
                             GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
