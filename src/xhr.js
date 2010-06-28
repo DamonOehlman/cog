@@ -8,7 +8,8 @@ GRUNT.XHR = (function() {
 
     // define some regular expressions to help determine the type of the request
     var REQUEST_URL_EXTENSIONS = {
-        JSON: ['json']
+        JSON: ['json'],
+        PDON: ['pdon.txt']
     };
     
     // initialise some regexes
@@ -29,6 +30,13 @@ GRUNT.XHR = (function() {
                 GRUNT.Log.error("Error parsing JSON data: ", xhr.responseText);
                 GRUNT.Log.exception(e);
             }
+        },
+        
+        PDON: function(xhr, requestParams) {
+            return GRUNT.Data.parse({
+                data: xhr.responseText,
+                format: "PDON"
+            });
         },
         
         DEFAULT: function(xhr, requestParam) {
