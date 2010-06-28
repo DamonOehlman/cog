@@ -10,6 +10,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
     <property description="Distribution target for grunt" name="dist" value="./dist" />
 
     <property name="GRUNT" value="${dist}/grunt.js" />
+	<property name="GRUNT-TEST" value="${dist}/grunt.test.js" />
 	<property name="namespace" value="GRUNT" />
 	
 	<target name="build-grunt" description="Slick library core build, concatenates core files and updates @VERSION">
@@ -28,6 +29,10 @@ http://github.com/jquery/jquery/blob/master/build.xml
 			<fileset file="src/template.js" />
 			<fileset file="src/xhr.js" />
 			<fileset file="src/xml.js" />
+		</concat>
+		
+		<concat destfile="${GRUNT-TEST}">
+			<fileset file="src/test/core.js">
 		</concat>
 		
 		<!-- customize the library namespace to suit -->
