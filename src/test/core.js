@@ -13,6 +13,16 @@ GRUNT.Testing = (function() {
             readyToContinue: 3
         },
         
+        /* reporting functions */
+        
+        reportProgress: function(message) {
+            SLICK.Log.info("TEST FRAMEWORK: " + message);
+        },
+        
+        reportException: function(error) {
+            SLICK.Log.exception(error);
+        },
+        
         /* Test Definition */
         
         Test: function(params) {
@@ -30,7 +40,11 @@ GRUNT.Testing = (function() {
                     if (params.runner) {
                         self.status = module.STATUS.running;
                         try {
+                            module.reportProgress("Running test " + self.title);
                             params.runner(self, testData);
+                        }
+                        catch (e) {
+                            module.reportException(e);
                         }
                         finally {
                             self.status = module.STATUS.waiting;
@@ -111,7 +125,7 @@ GRUNT.Testing = (function() {
 
                             // skip null tests (just in case)
                             if (! activeTest) {
-                                ii++
+                                ii++;
                             }
                             // execute the test
                             else {
