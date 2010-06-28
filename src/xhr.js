@@ -94,22 +94,16 @@ GRUNT.XHR = (function() {
             }
         } // for
         
-        // if we didn't match the type then set to the default handler
-        if (! matchedType) {
-            processorId = "DEFAULT";
-        }
-        // or, if the match type is a stream, we probably need to look at the original request to 
-        // determine the match type
-        else {
-            var indeterminate = false;
-            for (var ii = 0; ii < INDERMINATE_CONTENT_TYPES.length; ii++) {
-                indeterminate = indeterminate || (INDERMINATE_CONTENT_TYPES[ii] == processorId);
-            } // for
-            
-            if (indeterminate) {
-                processorId = getProcessorForRequestUrl(xhr, requestParams, processorId);
-            } // if
-        } // if..else
+        // if the match type was indeterminate, then look at the url of the request to
+        // determine which is the best type to match on
+        var indeterminate = (! matchedType);
+        for (var ii = 0; ii < INDERMINATE_CONTENT_TYPES.length; ii++) {
+            indeterminate = indeterminate || (INDERMINATE_CONTENT_TYPES[ii] == processorId);
+        } // for
+        
+        if (indeterminate) {
+            processorId = getProcessorForRequestUrl(xhr, requestParams, processorId);
+        } // if
         
         try {
             GRUNT.Log.info("using processor: " + processorId + " to process response");
