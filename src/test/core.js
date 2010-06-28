@@ -62,7 +62,7 @@ GRUNT.Testing = (function() {
         
         runSuite: function(id) {
             if (id && testSuites[id]) {
-                testSuites[ii].run();
+                testSuites[id].run();
             } // if
         },
         
