@@ -89,13 +89,6 @@ GRUNT.Testing = (function() {
                     testQueue.push(test);
                 },
 
-                add: function(desc, runner) {
-                    self.add(new module.Test({
-                        description: desc,
-                        runner: runner
-                    }));
-                },
-                
                 run: function() {
                     // if we have an active test, then returm
                     if (activeTest) {
