@@ -115,12 +115,12 @@ GRUNT.Testing = (function() {
                             }
                             // execute the test
                             else {
-                                if (activeTest.state == module.STATUS.notrun) {
+                                if (activeTest.status == module.STATUS.notrun) {
                                     activeTest.run(params.testData);
                                 } // if
                                 
                                 // if the current test is ready to continue, the increment the index
-                                if (activeTest.state == module.STATUS.readyToContinue) {
+                                if (activeTest.status == module.STATUS.readyToContinue) {
                                     ii++;
                                 } // if
                             } // if..else
