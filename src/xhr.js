@@ -116,7 +116,7 @@ GRUNT.XHR = (function() {
     } // processResponseData
     
     // define self
-    var module = {
+    var module = GRUNT.newModule({
         id: "grunt.xhr",
         
         ajaxSettings: {
@@ -231,7 +231,7 @@ GRUNT.XHR = (function() {
             // Return the resulting serialization
             return params.join("&").replace(/%20/g, "+");
         }
-    }; // self
+    }); // self
     
     return module;
 })();

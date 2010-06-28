@@ -107,6 +107,22 @@ GRUNT = (function() {
         
         isXmlDocument: function(obj) {
             return toString.call(obj) === "[object Document]";
+        },
+        
+        newModule: function(params) {
+            params = module.extend({
+                id: null,
+                requires: [],
+                parent: null
+            }, params);
+            
+            // TODO: if parent is not assigned, then assign the default root module
+            
+            if (params.parent) {
+                params = module.extend({}, params.parent, params);
+            } // if
+            
+            return params;
         }
     }; // module definition
     
