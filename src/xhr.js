@@ -3,6 +3,7 @@ GRUNT.XHR = (function() {
     var CONTENT_TYPES = {
         HTML: "text/html",
         XML: "text/xml",
+        TEXT: "text/plain",
         STREAM: "application/octet-stream"
     };
 
@@ -11,6 +12,8 @@ GRUNT.XHR = (function() {
         JSON: ['json'],
         PDON: ['pdon.txt']
     };
+    
+    var INDERMINATE_CONTENT_TYPES = ["TEXT", "STREAM"];
     
     // initialise some regexes
     var REGEX_URL = /^(\w+:)?\/\/([^\/?#]+)/;
@@ -97,8 +100,15 @@ GRUNT.XHR = (function() {
         }
         // or, if the match type is a stream, we probably need to look at the original request to 
         // determine the match type
-        else if (processorId == "STREAM") {
-            processorId = getProcessorForRequestUrl(xhr, requestParams, processorId);
+        else {
+            var indeterminate = false;
+            for (var ii = 0; ii < INDERMINATE_CONTENT_TYPES.length; ii++) {
+                indeterminate = indeterminate || (INDERMINATE_CONTENT_TYPES[ii] == processorId);
+            } // for
+            
+            if (indeterminate) {
+                processorId = getProcessorForRequestUrl(xhr, requestParams, processorId);
+            } // if
         } // if..else
         
         try {
