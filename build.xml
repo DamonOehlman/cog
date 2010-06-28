@@ -32,7 +32,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		</concat>
 		
 		<concat destfile="${GRUNT-TEST}">
-			<fileset file="src/test/core.js">
+			<fileset file="src/test/core.js" />
 		</concat>
 		
 		<!-- customize the library namespace to suit -->
