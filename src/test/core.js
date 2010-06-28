@@ -16,11 +16,11 @@ GRUNT.Testing = (function() {
         /* reporting functions */
         
         reportProgress: function(message) {
-            SLICK.Log.info("TEST FRAMEWORK: " + message);
+            GRUNT.Log.info("TEST FRAMEWORK: " + message);
         },
         
         reportException: function(error) {
-            SLICK.Log.exception(error);
+            GRUNT.Log.exception(error);
         },
         
         /* Test Definition */
