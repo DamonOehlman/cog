@@ -71,6 +71,7 @@ GRUNT.Testing = (function() {
                 id: "untitled.suite",
                 description: "",
                 tests: [],
+                testData: {},
                 setup: null,
                 teardown: null
             }, params);
@@ -122,8 +123,7 @@ GRUNT.Testing = (function() {
                             // execute the test
                             else {
                                 if (activeTest.state == module.STATUS.notrun) {
-                                    // TODO: pass in the suite's test data
-                                    activeTest.run();
+                                    activeTest.run(params.testData);
                                 } // if
                                 
                                 // if the current test is ready to continue, the increment the index
