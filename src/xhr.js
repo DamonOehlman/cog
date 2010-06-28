@@ -88,7 +88,7 @@ GRUNT.XHR = (function() {
         
         // determine the matching content type
         for (processorId in CONTENT_TYPES) {
-            if (contentType && contentType.indexOf(CONTENT_TYPES[processorId]) >= 0) {
+            if (contentType && (contentType.indexOf(CONTENT_TYPES[processorId]) >= 0)) {
                 matchedType = true;
                 break;
             }
