@@ -12,6 +12,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
     <property name="GRUNT" value="${dist}/grunt.js" />
 	<property name="GRUNT-TEST" value="${dist}/grunt.test.js" />
 	<property name="namespace" value="GRUNT" />
+	<property name="JSDOC_HOME" value="/development/tools/jsdoc-toolkit" />
 	
 	<target name="build-grunt" description="Slick library core build, concatenates core files and updates @VERSION">
 		<echo message="BUILDING GRUNT CORE WITH NAMESPACE = ${namespace}" />
@@ -43,6 +44,12 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		<replaceregexp match="Date: " replace="Date: ${date}" file="${GRUNT}" />
 
         <echo message="${GRUNT} built." />
+	</target>
+	
+	<target name="jsdoc">
+		<exec executable="java">
+			<arg line="-jar ${JSDOC_HOME}/jsrun.jar ${JSDOC_HOME}/app/run.js -v -t=${JSDOC_HOME}/templates/jsdoc/ --recurse=10 -d=apidoc src"/>
+		</exec>
 	</target>
 
     <target name="clean">

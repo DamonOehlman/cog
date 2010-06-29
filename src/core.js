@@ -1,8 +1,11 @@
+/** @namespace */
 GRUNT = (function() {
     var hasOwn = Object.prototype.hasOwnProperty;
     
     // define the GRUNT module
     var module = {
+        /** @lends GRUNT */
+        
         id: "grunt.core",
         
         /* 
@@ -10,6 +13,7 @@ GRUNT = (function() {
         Taken from http://github.com/jquery/jquery/blob/master/src/core.js
         */
         
+        /** @static */
         extend: function() {
             // copy reference to target object
             var target = arguments[0] || {}, i = 1, length = arguments.length, deep = false, options, name, src, copy;
@@ -66,14 +70,17 @@ GRUNT = (function() {
             return target;
         },
         
+        /** @static */
         isFunction: function( obj ) {
             return toString.call(obj) === "[object Function]";
         },
 
+        /** @static */
         isArray: function( obj ) {
             return toString.call(obj) === "[object Array]";
         },
 
+        /** @static */
         isPlainObject: function( obj ) {
             // Must be an Object.
             // Because of IE, we also have to check the presence of the constructor property.
@@ -98,6 +105,7 @@ GRUNT = (function() {
             return key === undefined || hasOwn.call( obj, key );
         },
 
+        /** @static */
         isEmptyObject: function( obj ) {
             for ( var name in obj ) {
                 return false;
@@ -105,6 +113,7 @@ GRUNT = (function() {
             return true;
         },
         
+        /** @static */
         isXmlDocument: function(obj) {
             return toString.call(obj) === "[object Document]";
         },
@@ -114,6 +123,8 @@ GRUNT = (function() {
         as specified by arguments beyond and including index 1.  For instance, if you wanted 
         to check whether object 'foo' contained the member 'name' then you would simply call
         GRUNT.contains(foo, 'name'). 
+        
+        @static
         */
         contains: function(obj, members) {
             var fnresult = obj;
@@ -134,6 +145,7 @@ GRUNT = (function() {
             return fnresult;
         },
         
+        /** @static */
         newModule: function(params) {
             params = module.extend({
                 id: null,

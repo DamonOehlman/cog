@@ -1,3 +1,4 @@
+/** @module */
 GRUNT.XHR = (function() {
     // define some content types
     var CONTENT_TYPES = {
@@ -58,9 +59,10 @@ GRUNT.XHR = (function() {
     an indeterminate type of content-type has been received from the server that has supplied the 
     response (such as application/octet-stream).  
     
-    @xhr - the XMLHttpRequest object
-    @requestParams - the parameters that were passed to the xhr request
-    @fallbackType - the type of request that we will fallback to 
+    @private
+    @param {XMLHttpRequest } xhr the XMLHttpRequest object
+    @param requestParams the parameters that were passed to the xhr request
+    @param fallbackType the type of request that we will fallback to 
     */
     function getProcessorForRequestUrl(xhr, requestParams, fallbackType) {
         for (var requestType in REQUEST_URL_EXTENSIONS) {
