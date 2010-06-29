@@ -1,4 +1,15 @@
-/** @module */
+/** @namespace 
+
+The XHR namespace provides functionality for issuing AJAX requests in a similar style 
+to the way jQuery does.  Why build a replacement for jQuery's ajax functionality you ask 
+(and a fair question, I might add)?  Basically, because I was writing a library that I 
+didn't want to have to rely on the presence of jQuery especially when the internals of the
+way AJAX is handled changed between version 1.3.2 and 1.4.2. While not a big deal for 
+end users of jQuery it became a problem when you wanted to implement a replacement XHR 
+object.  So what does GRUNT XHR provide then?
+
+TODO: add information here...
+*/
 GRUNT.XHR = (function() {
     // define some content types
     var CONTENT_TYPES = {
