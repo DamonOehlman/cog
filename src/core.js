@@ -1,6 +1,7 @@
 /** @namespace */
 GRUNT = (function() {
-    var hasOwn = Object.prototype.hasOwnProperty;
+    var hasOwn = Object.prototype.hasOwnProperty,
+        objectCounter = 0;
     
     // define the GRUNT module
     var module = {
@@ -160,6 +161,11 @@ GRUNT = (function() {
             } // if
             
             return params;
+        },
+        
+        /** @static */
+        generateObjectID: function() {
+            return "obj" + objectCounter++;
         }
     }; // module definition
     
