@@ -163,6 +163,10 @@ GRUNT = (function() {
             return params;
         },
         
+        toID: function(text) {
+            return text.replace(/\s/g, "-");
+        },
+        
         /** @static */
         generateObjectID: function() {
             return "obj" + objectCounter++;
