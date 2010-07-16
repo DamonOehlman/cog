@@ -40,14 +40,16 @@ GRUNT.Testing = (function() {
                     if (params.runner) {
                         self.status = module.STATUS.running;
                         try {
-                            module.reportProgress("Running test " + self.title);
+                            module.reportProgress("Running test " + params.title);
                             params.runner(self, testData);
                         }
                         catch (e) {
                             module.reportException(e);
                         }
                         finally {
-                            self.status = module.STATUS.waiting;
+                            if (self.status == module.STATUS.running) {
+                                self.status = module.STATUS.waiting;
+                            } // if
                         } // try..finally
                     } // if
                     
