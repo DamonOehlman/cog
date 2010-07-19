@@ -97,7 +97,7 @@ GRUNT.XHR = (function() {
         var processorId;
         var matchedType = false;
         
-        GRUNT.Log.info("processing response data, content type = " + contentType);
+        // GRUNT.Log.info("processing response data, content type = " + contentType);
         
         // determine the matching content type
         for (processorId in CONTENT_TYPES) {
@@ -119,7 +119,7 @@ GRUNT.XHR = (function() {
         } // if
         
         try {
-            GRUNT.Log.info("using processor: " + processorId + " to process response");
+            // GRUNT.Log.info("using processor: " + processorId + " to process response");
             return RESPONSE_TYPE_PROCESSORS[processorId](xhr, requestParams);
         }
         catch (e) {
@@ -175,7 +175,7 @@ GRUNT.XHR = (function() {
                     xhr = new XMLHttpRequest();
                 } // if
 
-                GRUNT.Log.info("opening request: " + JSON.stringify(params));
+                // GRUNT.Log.info("opening request: " + JSON.stringify(params));
 
                 // open the request
                 // TODO: support basic authentication
@@ -212,7 +212,7 @@ GRUNT.XHR = (function() {
                 }; // onreadystatechange
 
                 // send the request
-                GRUNT.Log.info("sending request with data: " + module.param(params.data));
+                // GRUNT.Log.info("sending request with data: " + module.param(params.data));
                 xhr.send(params.method == "POST" ? module.param(params.data) : null);
             } 
             catch (e) {
