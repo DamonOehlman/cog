@@ -204,7 +204,7 @@ GRUNT.XHR = (function() {
                         } // try..catch
 
                         // if the success callback is defined, then call it
-                        GRUNT.Log.info("received response, calling success handler: " + params.success);
+                        // GRUNT.Log.info("received response, calling success handler: " + params.success);
                         if (params.success) {
                             params.success.call(this, responseData);
                         } // if
