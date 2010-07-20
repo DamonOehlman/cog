@@ -33,7 +33,7 @@ GRUNT.JSONP = (function(){
         head.appendChild( script );
     } // load
     
-    function prepAndLoad(url, params, callback) {
+    function prepAndLoad(url, callback) {
         // apply either a ? or & to the url depending on whether we already have query params
         url += url.indexOf("?") >= 0 ? "&" : "?";
 
