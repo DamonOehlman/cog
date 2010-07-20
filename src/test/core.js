@@ -82,6 +82,12 @@ GRUNT.Testing = (function() {
             } // if
         },
         
+        eachSuite: function(callback) {
+            for (var suiteId in testSuites) {
+                callback(testSuites[suiteId]);
+            } // for
+        },
+        
         Suite: function(params) {
             params = GRUNT.extend({
                 id: "untitled.suite",
