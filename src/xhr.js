@@ -1,5 +1,67 @@
 /** @namespace 
 
+Lightweight JSONP fetcher - www.nonobstrusive.com
+The JSONP namespace provides a lightweight JSONP implementation.  This code
+is implemented as-is from the code released on www.nonobtrusive.com, as per the
+blog post listed below.  Only one change was made and that we to rename the jsonp
+function to avoid any jslint warnings...
+
+http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
+*/
+GRUNT.JSONP = (function(){
+    var counter = 0, head, query, key, jsonp, window = this;
+    
+    function load(url) {
+        var script = document.createElement('script'),
+            done = false;
+        script.src = url;
+        script.async = true;
+ 
+        script.onload = script.onreadystatechange = function() {
+            if ( !done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") ) {
+                done = true;
+                script.onload = script.onreadystatechange = null;
+                if ( script && script.parentNode ) {
+                    script.parentNode.removeChild( script );
+                }
+            }
+        };
+        if ( !head ) {
+            head = document.getElementsByTagName('head')[0];
+        }
+        head.appendChild( script );
+    } // load
+    
+    function prepAndLoad(url, params, callback) {
+        query = "?";
+        params = params || {};
+        for ( key in params ) {
+            if ( params.hasOwnProperty(key) ) {
+                query += key + "=" + params[key] + "&";
+            }
+        }
+        jsonp = "json" + (++counter);
+        window[ jsonp ] = function(data){
+            callback(data);
+            window[ jsonp ] = null;
+            try {
+                delete window[ jsonp ];
+            } catch (e) {}
+        };
+ 
+        load(url + query + "callback=" + jsonp);
+        return jsonp;
+    } // jsonp
+    
+    return {
+        get:prepAndLoad
+    };
+    
+}());
+
+
+/** @namespace 
+
 The XHR namespace provides functionality for issuing AJAX requests in a similar style 
 to the way jQuery does.  Why build a replacement for jQuery's ajax functionality you ask 
 (and a fair question, I might add)?  Basically, because I was writing a library that I 
@@ -45,6 +107,8 @@ GRUNT.XHR = (function() {
                 GRUNT.Log.error("Error parsing JSON data: ", xhr.responseText);
                 GRUNT.Log.exception(e);
             }
+            
+            return "";
         },
         
         PDON: function(xhr, requestParams) {
@@ -90,12 +154,20 @@ GRUNT.XHR = (function() {
         
         return fallbackType ? fallbackType : "DEFAULT";
     } // getProcessorForRequestUrl
+    
+    function requestOK(xhr, requestParams) {
+        return ((! xhr.status) && (location.protocol === "file:")) ||
+            (xhr.status >= 200 && xhr.status < 300) || 
+            (xhr.status === 304) || 
+            (xhr.status === 1223) || 
+            (xhr.status === 0);
+    } // getStatus
 
     function processResponseData(xhr, requestParams) {
         // get the content type of the response
-        var contentType = xhr.getResponseHeader(HEADERS.CONTENT_TYPE);
-        var processorId;
-        var matchedType = false;
+        var contentType = xhr.getResponseHeader(HEADERS.CONTENT_TYPE),
+            processorId,
+            matchedType = false;
         
         // GRUNT.Log.info("processing response data, content type = " + contentType);
         
@@ -146,6 +218,8 @@ GRUNT.XHR = (function() {
                     url: null,
                     async: true,
                     success: null,
+                    handleResponse: null,
+                    error: null,
                     contentType: "application/x-www-form-urlencoded"
                 }, module.ajaxSettings, params);
                 
@@ -193,11 +267,23 @@ GRUNT.XHR = (function() {
                 
                 xhr.onreadystatechange = function() {
                     if (this.readyState === 4) {
-                        var responseData = null;
+                        var responseData = null,
+                            success = requestOK(this, params);
                         
                         try {
-                            // process the response
-                            responseData = processResponseData(this, params);
+                            // get and check the status
+                            if (success) {
+                                // process the response
+                                if (params.handleResponse) {
+                                    params.handleResponse(this);
+                                }
+                                else {
+                                    responseData = processResponseData(this, params);
+                                }
+                            }
+                            else if (params.error) {
+                                params.error(this);
+                            } // if..else
                         }
                         catch (e) {
                             GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
@@ -205,7 +291,7 @@ GRUNT.XHR = (function() {
 
                         // if the success callback is defined, then call it
                         // GRUNT.Log.info("received response, calling success handler: " + params.success);
-                        if (params.success) {
+                        if (success && responseData && params.success) {
                             params.success.call(this, responseData);
                         } // if
                     } // if
