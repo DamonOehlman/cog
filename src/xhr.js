@@ -3,8 +3,9 @@
 Lightweight JSONP fetcher - www.nonobstrusive.com
 The JSONP namespace provides a lightweight JSONP implementation.  This code
 is implemented as-is from the code released on www.nonobtrusive.com, as per the
-blog post listed below.  Only one change was made and that we to rename the jsonp
-function to avoid any jslint warnings...
+blog post listed below.  Only two changes were made. First, rename the json function
+to get around jslint warnings. Second, remove the params functionality from that
+function (not needed for my implementation).
 
 http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
 */
@@ -33,13 +34,9 @@ GRUNT.JSONP = (function(){
     } // load
     
     function prepAndLoad(url, params, callback) {
-        query = "?";
-        params = params || {};
-        for ( key in params ) {
-            if ( params.hasOwnProperty(key) ) {
-                query += key + "=" + params[key] + "&";
-            }
-        }
+        // apply either a ? or & to the url depending on whether we already have query params
+        url += url.indexOf("?") >= 0 ? "&" : "?";
+
         jsonp = "json" + (++counter);
         window[ jsonp ] = function(data){
             callback(data);
