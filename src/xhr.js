@@ -46,7 +46,7 @@ GRUNT.JSONP = (function(){
             } catch (e) {}
         };
  
-        load(url + query + "callback=" + jsonp);
+        load(url + "callback=" + jsonp);
         return jsonp;
     } // jsonp
     
