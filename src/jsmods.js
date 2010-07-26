@@ -30,7 +30,7 @@ String.prototype.containsWord = function(word) {
         testString += (! (/\w/).test(word[ii])) ? "\\" + word[ii] : word[ii];
     } // for
     
-    var regex = new RegExp("(^|\s)" + testString + "(\w|$)", "i");
+    var regex = new RegExp("(^|\\s|\\,)" + testString + "(\\,|\\s|$)", "i");
     
     return regex.test(this);
 };
