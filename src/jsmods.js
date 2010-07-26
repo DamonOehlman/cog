@@ -22,6 +22,21 @@ if (! String.format) {
     };    
 } // if
 
+if (! String.containsWord) {
+    String.containsWord = function(word) {
+        var testString = "";
+
+        // iterate through the string and test escape special characters
+        for (var ii = 0; ii < word.length; ii++) {
+            testString += (! (/\w/).test(word[ii])) ? "\\" + word[ii] : word[ii];
+        } // for
+        
+        var regex = new RegExp("(^|\s)" + testString + "(\w|$)", "i");
+        
+        return regex.test(this);
+    };
+} // if
+
 if (! Number.toRad) {
     Number.prototype.toRad = function() {  // convert degrees to radians 
       return this * Math.PI / 180; 
