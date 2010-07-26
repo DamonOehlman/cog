@@ -22,8 +22,8 @@ if (! String.format) {
     };    
 } // if
 
-if (! String.containsWord) {
-    String.containsWord = function(word) {
+if (! String.prototype.containsWord) {
+    String.prototype.containsWord = function(word) {
         var testString = "";
 
         // iterate through the string and test escape special characters
