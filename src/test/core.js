@@ -10,7 +10,8 @@ GRUNT.Testing = (function() {
             notrun: 0,
             running: 1,
             waiting: 2,
-            readyToContinue: 3
+            readyToContinue: 4,
+            abort: 8
         },
         
         /* reporting functions */
