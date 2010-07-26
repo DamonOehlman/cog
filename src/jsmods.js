@@ -25,6 +25,11 @@ if (! String.format) {
 String.prototype.containsWord = function(word) {
     var testString = "";
 
+    // if the word argument is an object, and can be converted to a string, then do so
+    if (word.toString) {
+        word = word.toString();
+    } // if
+
     // iterate through the string and test escape special characters
     for (var ii = 0; ii < word.length; ii++) {
         testString += (! (/\w/).test(word[ii])) ? "\\" + word[ii] : word[ii];
