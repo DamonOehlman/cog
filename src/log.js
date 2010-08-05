@@ -1,6 +1,7 @@
 GRUNT.Log = (function() {
     var listeners = [];
-    var jsonAvailable = (typeof JSON !== 'undefined');
+    var jsonAvailable = (typeof JSON !== 'undefined'),
+        traceAvailable = window.console && window.console.markTimeline;
     
     function writeEntry(level, entryDetails) {
         // initialise variables
@@ -32,11 +33,14 @@ GRUNT.Log = (function() {
         
         /* logging functions */
         
-        trace: function(message) {
-            var logger = window.console;
-              if (logger && logger.markTimeline) {
-                logger.markTimeline(message);
-              }
+        getTraceTicks: function() {
+            return traceAvailable ? new Date().getTime() : null;
+        },
+        
+        trace: function(message, startTicks) {
+            if (traceAvailable) {
+                console.markTimeline(message + (startTicks ? ": " + (module.getTraceTicks() - startTicks) + "ms" : ""));
+            } // if
         },
         
         debug: function(message) {
