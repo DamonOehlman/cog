@@ -32,6 +32,13 @@ GRUNT.Log = (function() {
         
         /* logging functions */
         
+        trace: function(message) {
+            var logger = window.console;
+              if (logger && logger.markTimeline) {
+                logger.markTimeline(message);
+              }
+        },
+        
         debug: function(message) {
             writeEntry("debug", arguments);
         },
