@@ -29,7 +29,7 @@ GRUNT.Testing = (function() {
         Test: function(params) {
             params = GRUNT.extend({
                 title: "Untitled Test",
-                autoReady: false,
+                autoReady: true,
                 runner: null
             }, params);
             
