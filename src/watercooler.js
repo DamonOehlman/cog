@@ -1,9 +1,15 @@
 GRUNT.WaterCooler = (function() {
     // initialise variables
-    var messageListeners = {};
+    var messageListeners = {},
+        pipes = [];
     
     // define the module
     var module = {
+        addPipe: function(callback) {
+            // test the pipe because if it is broke it will break everything
+            callback("pipe.test", {});
+        },
+        
         listen: function(message, callback) {
             // if we don't have a message listener array configured, then create one now
             if (! messageListeners[message]) {
@@ -17,11 +23,18 @@ GRUNT.WaterCooler = (function() {
         },
         
         say: function(message, args) {
+            var ii;
+            
+            // if there are pipes, then send the message through each
+            for (ii = pipes.length; ii--; ) {
+                pipes[ii](message, args);
+            } // for
+            
             // if we don't have any message listeners for that message, then return
             if (! messageListeners[message]) { return; }
             
             // iterate through the message callbacks
-            for (var ii = 0; ii < messageListeners[message].length; ii++) {
+            for (ii = messageListeners[message].length; ii--; ) {
                 messageListeners[message][ii](args);
             } // for
         },
