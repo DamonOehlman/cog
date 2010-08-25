@@ -30,7 +30,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
 			<fileset file="src/template.js" />
 			<fileset file="src/xhr.js" />
 			<fileset file="src/xml.js" />
-			<fileset file="src/watercooler.js" />
+			<fileset file="src/event.js" />
 			<fileset file="src/_templates/footer.js" />
 		</concat>
 		
