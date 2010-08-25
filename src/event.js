@@ -21,20 +21,15 @@ GRUNT.Observable = function() {
         },
         
         trigger: function(eventName) {
-            var eventCallbacks = listeners[eventName],
-                eventArgs;
+            var eventCallbacks = listeners[eventName];
                 
             // check that we have callbacks
             if (! eventCallbacks) {
                 return;
             } // if
             
-            // initialise the event args
-            eventArgs = [].concat(arguments);
-            eventArgs.shift();
-            
             for (var ii = eventCallbacks.length; ii--; ) {
-                eventCallbacks[ii].callback.apply(self, eventArgs);
+                eventCallbacks[ii].callback.apply(self, Array.prototype.slice.call(arguments, 1));
             } // for
         },
         
