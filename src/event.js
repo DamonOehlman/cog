@@ -5,7 +5,7 @@ GRUNT.Observable = function() {
     var self = {
         bind: function(eventName, callback) {
             if (! listeners[eventName]) {
-                listeners[evtName] = [];
+                listeners[eventName] = [];
             } // if
             
             // increment the event counter
