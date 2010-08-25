@@ -33,7 +33,7 @@ GRUNT.Observable = (function() {
                 } // if
 
                 for (var ii = eventCallbacks.length; ii--; ) {
-                    eventCallbacks[ii].callback.apply(self, Array.prototype.slice.call(arguments, 1));
+                    eventCallbacks[ii].callback.apply(self, Array.prototype.slice.call(arguments, 2));
                 } // for
             } // if
         },
