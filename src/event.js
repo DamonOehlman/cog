@@ -34,7 +34,7 @@ GRUNT.Observable = function() {
             eventArgs.shift();
             
             for (var ii = eventCallbacks.length; ii--; ) {
-                eventCallbacks.callback.apply(self, eventArgs);
+                eventCallbacks[ii].callback.apply(self, eventArgs);
             } // for
         },
         
