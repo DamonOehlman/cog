@@ -1,4 +1,4 @@
-GRUNT.Configurable = function(target, configParams, bindHelpers) {
+GRUNT.configurable = function(target, configParams, bindHelpers) {
     if (! target) {
         GRUNT.Log.warn("Um, make what configurable exactly?");
         return;
@@ -20,31 +20,43 @@ GRUNT.Configurable = function(target, configParams, bindHelpers) {
         } // if
     } // attachHelper
     
+    function getSettings() {
+        return target.configurableSettings;
+    }
+    
     /* initialization code */
     
-    var enabledHelpers = {};
+    // if the target doesn't yet have a configurable settings member, then add it
+    if (! getSettings()) {
+        target.configurableSettings = [];
+    } // if
+    
     for (var ii = configParams.length; ii--; ) {
-        enabledHelpers[configParams[ii]] = true;
+        target.configurableSettings[configParams[ii]] = true;
         
         if (bindHelpers) {
             attachHelper(configParams[ii]);
         } // if
     } // for
     
-    target.configure = function(name, value) {
-        if (enabledHelpers[name]) {
-            // if the name is an member of the target, then change the value
-            if (target[name]) {
-                target[name] = value;
-            } // if
+    if (! target.configure) {
+        target.configure = function(name, value) {
+            var configurableSettings = getSettings();
             
-            // if the target is observable then fire an event in the form of '%name%Changed' on target
-            if (target.trigger) {
-                // TODO: is this better than a generic event trigger
-                target.trigger(name + "Changed", value);
+            if (configurableSettings[name]) {
+                // if the name is an member of the target, then change the value
+                if (target[name]) {
+                    target[name] = value;
+                } // if
+
+                // if the target is observable then fire an event in the form of '%name%Changed' on target
+                if (target.trigger) {
+                    // TODO: is this better than a generic event trigger
+                    target.trigger(name + "Changed", value);
+                } // if
             } // if
-        } // if
-        
-        return target;
-    };
+
+            return target;
+        };
+    } // if
 }; 
