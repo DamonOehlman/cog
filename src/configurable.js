@@ -1,23 +1,21 @@
 GRUNT.paramTweaker = function(params, getCallbacks, setCallbacks) {
     return function(name, value) {
-        var returnVal = undefined;
-        
         if (typeof value !== "undefined") {
             if (name in params) {
                 params[name] = value;
             } // if
             
-            if (setCallbacks && name in setCallbacks) {
+            if (setCallbacks && (name in setCallbacks)) {
                 setCallbacks[name](name, value);
             } // if
         }
         else {
-            returnval = (getCallbacks && name in getCallbacks) ? 
+            return (getCallbacks && (name in getCallbacks)) ? 
                 getCallbacks[name](name) : 
                 params[name];
         } // if..else
         
-        return returnval;
+        return undefined;
     };
 }; // paramTweaker
 
