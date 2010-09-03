@@ -40,14 +40,14 @@ GRUNT.configurable = function(target, configParams, configData, bindHelpers) {
             if (configurableSettings[name]) {
                 // if this is a read operation (no value), then read
                 if (typeof value === "undefined") {
-                    if (targetData[name]) {
+                    if (name in targetData) {
                         return targetData[name];
                     } // if
                 }
                 // otherwise, write
                 else {
                     // if the name is an member of the target, then change the value
-                    if (targetData[name]) {
+                    if (name in targetData) {
                         targetData[name] = value;
                     } // if
 
