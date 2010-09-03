@@ -4,18 +4,13 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
         return;
     } // if
     
-    if (target.configure) {
-        GRUNT.Log.warn("Cannot make the object configurable, it already is - I think...");
-        return;
-    } // if
-    
     /* internal functions */
     
     function attachHelper(helperName) {
         // if the helper is not defined, then attach
         if (! target[helperName]) {
             target[helperName] = function(value) {
-                target.configure(helperName, value);
+                return target.configure(helperName, value);
             };
         } // if
     } // attachHelper
@@ -28,7 +23,7 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
     
     // if the target doesn't yet have a configurable settings member, then add it
     if (! getSettings()) {
-        target.configurableSettings = [];
+        target.configurableSettings = {};
     } // if
     
     for (var ii = configParams.length; ii--; ) {
