@@ -17,7 +17,7 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     } // getSettings
     
     function getConfigCallbacks() {
-        return target.configCallbacks = [];
+        return target.configCallbacks;
     } // getConfigGetters
     
     /* initialization code */
@@ -32,6 +32,9 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     if (! getConfigCallbacks()) {
         target.configCallbacks = [];
     } // if
+    
+    // add the callback to the list
+    getConfigCallbacks().push(callback);
     
     for (ii = configParams.length; ii--; ) {
         target.configurableSettings[configParams[ii]] = true;
