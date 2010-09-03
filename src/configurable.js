@@ -1,4 +1,4 @@
-GRUNT.configurable = function(target, configParams, configData, bindHelpers) {
+GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     if (! target) { return; }
     
     /* internal functions */
@@ -16,16 +16,24 @@ GRUNT.configurable = function(target, configParams, configData, bindHelpers) {
         return target.configurableSettings;
     } // getSettings
     
+    function getConfigCallbacks() {
+        return target.configCallbacks = [];
+    } // getConfigGetters
+    
     /* initialization code */
     
-    var targetData = configData ? configData : target;
+    var ii;
     
     // if the target doesn't yet have a configurable settings member, then add it
     if (! getSettings()) {
         target.configurableSettings = {};
     } // if
     
-    for (var ii = configParams.length; ii--; ) {
+    if (! getConfigCallbacks()) {
+        target.configCallbacks = [];
+    } // if
+    
+    for (ii = configParams.length; ii--; ) {
         target.configurableSettings[configParams[ii]] = true;
         
         if (bindHelpers) {
@@ -35,30 +43,26 @@ GRUNT.configurable = function(target, configParams, configData, bindHelpers) {
     
     if (! target.configure) {
         target.configure = function(name, value) {
-            var configurableSettings = getSettings();
+            var configurableSettings = getSettings(),
+                callbacks = getConfigCallbacks();
             
             if (configurableSettings[name]) {
-                // if this is a read operation (no value), then read
-                if (typeof value === "undefined") {
-                    if (name in targetData) {
-                        return targetData[name];
+                for (var ii = callbacks.length; ii--; ) {
+                    var result = callbacks[ii](name, value);
+                    if (typeof result !== "undefined") {
+                        return result;
                     } // if
-                }
-                // otherwise, write
-                else {
-                    // if the name is an member of the target, then change the value
-                    if (name in targetData) {
-                        targetData[name] = value;
-                    } // if
+                } // for
+                
+                // if the target is observable then fire an event in the form of '%name%Changed' on target
+                if (target.trigger) {
+                    target.trigger("configChanged", name, value);
+                } // if
 
-                    // if the target is observable then fire an event in the form of '%name%Changed' on target
-                    if (target.trigger) {
-                        target.trigger("configChanged", name, value);
-                    } // if
-                }
+                return target;
             } // if
-
-            return target;
+            
+            return null;
         };
     } // if
 }; 
