@@ -22,7 +22,7 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
     
     function getSettings() {
         return target.configurableSettings;
-    }
+    } // getSettings
     
     /* initialization code */
     
@@ -51,8 +51,7 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
 
                 // if the target is observable then fire an event in the form of '%name%Changed' on target
                 if (target.trigger) {
-                    // TODO: is this better than a generic event trigger
-                    target.trigger(name + "Changed", value);
+                    target.trigger("configChanged", name, value);
                 } // if
             } // if
 
