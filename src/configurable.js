@@ -47,12 +47,20 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     
     // if the target doesn't yet have a configurable settings member, then add it
     if (! getSettings()) {
+        target.configurableId = GRUNT.generateObjectID("configurable");
         target.configurableSettings = {};
+        target.configCallbacks = [];
+        
+        if (! GRUNT.configurables) {
+            GRUNT.configurables = {};
+        }
     } // if
     
-    if (! getConfigCallbacks()) {
-        target.configCallbacks = [];
-    } // if
+    // update the configurables
+    // this is a which gets the last object in an extension chain in
+    // the configurables list, so make sure you extend before you make
+    // an object configurable, otherwise things will get a bit wierd.
+    GRUNT.configurables[target.configurableId] = target;
     
     // add the callback to the list
     getConfigCallbacks().push(callback);
@@ -78,12 +86,7 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
                     } // if
                 } // for
                 
-                // if the target is observable then fire an event in the form of '%name%Changed' on target
-                if (target.trigger) {
-                    target.trigger("configChanged", name, value);
-                } // if
-
-                return target;
+                return GRUNT.configurables[target.configurableId];
             } // if
             
             return null;
