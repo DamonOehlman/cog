@@ -7,12 +7,12 @@ GRUNT.paramTweaker = function(params, getCallbacks, setCallbacks) {
                 params[name] = value;
             } // if
             
-            if (name in setCallbacks) {
+            if (setCallbacks && name in setCallbacks) {
                 setCallbacks[name](name, value);
             } // if
         }
         else {
-            returnval = (name in getCallbacks) ? 
+            returnval = (getCallbacks && name in getCallbacks) ? 
                 getCallbacks[name](name) : 
                 params[name];
         } // if..else
