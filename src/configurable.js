@@ -1,4 +1,4 @@
-GRUNT.configurable = function(target, configParams, bindHelpers) {
+GRUNT.configurable = function(target, configParams, configData, bindHelpers) {
     if (! target) { return; }
     
     /* internal functions */
@@ -18,6 +18,8 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
     
     /* initialization code */
     
+    var targetData = configData ? configData : target;
+    
     // if the target doesn't yet have a configurable settings member, then add it
     if (! getSettings()) {
         target.configurableSettings = {};
@@ -36,15 +38,24 @@ GRUNT.configurable = function(target, configParams, bindHelpers) {
             var configurableSettings = getSettings();
             
             if (configurableSettings[name]) {
-                // if the name is an member of the target, then change the value
-                if (target[name]) {
-                    target[name] = value;
-                } // if
+                // if this is a read operation (no value), then read
+                if (typeof value === "undefined") {
+                    if (targetData[name]) {
+                        return targetData[name];
+                    } // if
+                }
+                // otherwise, write
+                else {
+                    // if the name is an member of the target, then change the value
+                    if (targetData[name]) {
+                        targetData[name] = value;
+                    } // if
 
-                // if the target is observable then fire an event in the form of '%name%Changed' on target
-                if (target.trigger) {
-                    target.trigger("configChanged", name, value);
-                } // if
+                    // if the target is observable then fire an event in the form of '%name%Changed' on target
+                    if (target.trigger) {
+                        target.trigger("configChanged", name, value);
+                    } // if
+                }
             } // if
 
             return target;
