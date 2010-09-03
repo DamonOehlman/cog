@@ -1,8 +1,5 @@
 GRUNT.configurable = function(target, configParams, bindHelpers) {
-    if (! target) {
-        GRUNT.Log.warn("Um, make what configurable exactly?");
-        return;
-    } // if
+    if (! target) { return; }
     
     /* internal functions */
     
