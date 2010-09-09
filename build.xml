@@ -33,7 +33,6 @@ http://github.com/jquery/jquery/blob/master/build.xml
 			<fileset file="src/xml.js" />
 			<fileset file="src/observable.js" />
 			<fileset file="src/watercooler.js" />
-			<fileset file="src/imagepool.js" />
 			<fileset file="src/storage.js" />
 			<fileset file="src/afterparser.js" />
 			<fileset file="src/_templates/footer.js" />
