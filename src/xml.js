@@ -103,7 +103,7 @@ GRUNT.XPath = (function() {
                         
                         // if we have a match handler, then call it
                         if (matchHandler) {
-                            GRUNT.Log.info("invoking match handler for result type: " + matches.resultType);
+                            // GRUNT.Log.info("invoking match handler for result type: " + matches.resultType);
                             result = matchHandler(matches);
                         }
                     } // if

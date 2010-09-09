@@ -193,7 +193,7 @@ GRUNT.XHR = (function() {
             return RESPONSE_TYPE_PROCESSORS[processorId](xhr, requestParams);
         }
         catch (e) {
-            GRUNT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
+            // GRUNT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
             return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr, requestParams);
         } // try..catch
     } // processResponseData
