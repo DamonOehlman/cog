@@ -1,65 +1,5 @@
 /** @namespace 
 
-Lightweight JSONP fetcher - www.nonobstrusive.com
-The JSONP namespace provides a lightweight JSONP implementation.  This code
-is implemented as-is from the code released on www.nonobtrusive.com, as per the
-blog post listed below.  Only two changes were made. First, rename the json function
-to get around jslint warnings. Second, remove the params functionality from that
-function (not needed for my implementation).  Oh, and fixed some scoping with the jsonp
-variable (didn't work with multiple calls).
-
-http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
-*/
-GRUNT.JSONP = (function(){
-    var counter = 0, head, query, key, window = this;
-    
-    function load(url) {
-        var script = document.createElement('script'),
-            done = false;
-        script.src = url;
-        script.async = true;
- 
-        script.onload = script.onreadystatechange = function() {
-            if ( !done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") ) {
-                done = true;
-                script.onload = script.onreadystatechange = null;
-                if ( script && script.parentNode ) {
-                    script.parentNode.removeChild( script );
-                }
-            }
-        };
-        if ( !head ) {
-            head = document.getElementsByTagName('head')[0];
-        }
-        head.appendChild( script );
-    } // load
-    
-    function prepAndLoad(url, callback, callbackParam) {
-        // apply either a ? or & to the url depending on whether we already have query params
-        url += url.indexOf("?") >= 0 ? "&" : "?";
-
-        var jsonp = "json" + (++counter);
-        window[ jsonp ] = function(data){
-            callback(data);
-            window[ jsonp ] = null;
-            try {
-                delete window[ jsonp ];
-            } catch (e) {}
-        };
- 
-        load(url + (callbackParam ? callbackParam : "callback") + "=" + jsonp);
-        return jsonp;
-    } // jsonp
-    
-    return {
-        get:prepAndLoad
-    };
-    
-}());
-
-
-/** @namespace 
-
 The XHR namespace provides functionality for issuing AJAX requests in a similar style 
 to the way jQuery does.  Why build a replacement for jQuery's ajax functionality you ask 
 (and a fair question, I might add)?  Basically, because I was writing a library that I 
@@ -70,7 +10,7 @@ object.  So what does GRUNT XHR provide then?
 
 TODO: add information here...
 */
-GRUNT.XHR = (function() {
+(function() {
     // define some content types
     var CONTENT_TYPES = {
         HTML: "text/html",
@@ -153,6 +93,38 @@ GRUNT.XHR = (function() {
         return fallbackType ? fallbackType : "DEFAULT";
     } // getProcessorForRequestUrl
     
+    function handleReadyStateChange() {
+        if (this.readyState === 4) {
+            var responseData = null,
+                success = requestOK(this, params);
+            
+            try {
+                // get and check the status
+                if (success) {
+                    // process the response
+                    if (params.handleResponse) {
+                        params.handleResponse(this);
+                    }
+                    else {
+                        responseData = processResponseData(this, params);
+                    }
+                }
+                else if (params.error) {
+                    params.error(this);
+                } // if..else
+            }
+            catch (e) {
+                GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
+            } // try..catch
+
+            // if the success callback is defined, then call it
+            // GRUNT.Log.info("received response, calling success handler: " + params.success);
+            if (success && responseData && params.success) {
+                params.success.call(this, responseData);
+            } // if
+        } // if
+    } // handleReadyStateChange
+    
     function requestOK(xhr, requestParams) {
         return ((! xhr.status) && (location.protocol === "file:")) ||
             (xhr.status >= 200 && xhr.status < 300) || 
@@ -160,7 +132,32 @@ GRUNT.XHR = (function() {
             (xhr.status === 1223) || 
             (xhr.status === 0);
     } // getStatus
+    
+    function param(data) {
+        // iterate through the members of the data and convert to a paramstring
+        var params = [];
+        var addKeyVal = function (key, value) {
+            // If value is a function, invoke it and return its value
+            value = GRUNT.isFunction(value) ? value() : value;
+            params[ params.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
+        };
 
+        // If an array was passed in, assume that it is an array of form elements.
+        if (GRUNT.isArray(data)) {
+            for (var ii = 0; ii < data.length; ii++) {
+                addKeyVal(data[ii].name, data[ii].value);
+            } // for
+        }
+        else {
+            for (var keyname in data) {
+                addKeyVal(keyname, data[keyname]);
+            } // for
+        } // if..else
+
+        // Return the resulting serialization
+        return params.join("&").replace(/%20/g, "+");
+    } // param
+    
     function processResponseData(xhr, requestParams) {
         // get the content type of the response
         var contentType = xhr.getResponseHeader(HEADERS.CONTENT_TYPE),
@@ -198,138 +195,72 @@ GRUNT.XHR = (function() {
         } // try..catch
     } // processResponseData
     
-    // define self
-    var module = GRUNT.newModule({
-        id: "grunt.xhr",
-        
-        ajaxSettings: {
-            xhr: null
-        },
-        
-        ajax: function(params) {
-            // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
-            // do that in the context of a try catch statement to catch the things that are going to go wrong...
-            try {
-                params = GRUNT.extend({
-                    method: "GET",
-                    data: null,
-                    url: null,
-                    async: true,
-                    success: null,
-                    handleResponse: null,
-                    error: null,
-                    contentType: "application/x-www-form-urlencoded"
-                }, module.ajaxSettings, params);
-                
-                // determine if this is a remote request (as per the jQuery ajax calls)
-                var parts = REGEX_URL.exec(params.url),
-                    remote = parts && (parts[1] && parts[1] !== location.protocol || parts[2] !== location.host);                
-                
-                // if we have data, then update the method to POST
-                if (params.data) {
-                    params.method = "POST";
-                } // if
+    GRUNT.xhr = function(params) {
+        // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
+        // do that in the context of a try catch statement to catch the things that are going to go wrong...
+        try {
+            params = GRUNT.extend({
+                method: "GET",
+                data: null,
+                url: null,
+                async: true,
+                success: null,
+                handleResponse: null,
+                error: null,
+                contentType: "application/x-www-form-urlencoded"
+            }, module.ajaxSettings, params);
+            
+            // determine if this is a remote request (as per the jQuery ajax calls)
+            var parts = REGEX_URL.exec(params.url),
+                remote = parts && (parts[1] && parts[1] !== location.protocol || parts[2] !== location.host);                
+            
+            // if we have data, then update the method to POST
+            if (params.data) {
+                params.method = "POST";
+            } // if
 
-                // if the url is empty, then log an error
-                if (! params.url) {
-                    GRUNT.Log.warn("ajax request issued with no url - that ain't going to work...");
-                    return;
-                } // if
-                
-                // if the we have an xhr creator registered, then let it decide whether it wants to create the client
-                var xhr = null;
-                if (params.xhr) {
-                    xhr = params.xhr(params);
-                } // if
-                
-                // if the optional creator, didn't create the client, then create the default client
-                if (! xhr) {
-                    xhr = new XMLHttpRequest();
-                } // if
+            // if the url is empty, then log an error
+            if (! params.url) {
+                GRUNT.Log.warn("ajax request issued with no url - that ain't going to work...");
+                return;
+            } // if
+            
+            // if the we have an xhr creator registered, then let it decide whether it wants to create the client
+            var xhr = null;
+            if (params.xhr) {
+                xhr = params.xhr(params);
+            } // if
+            
+            // if the optional creator, didn't create the client, then create the default client
+            if (! xhr) {
+                xhr = new XMLHttpRequest();
+            } // if
 
-                // GRUNT.Log.info("opening request: " + JSON.stringify(params));
+            // GRUNT.Log.info("opening request: " + JSON.stringify(params));
 
-                // open the request
-                // TODO: support basic authentication
-                xhr.open(params.method, params.url, params.async);
+            // open the request
+            // TODO: support basic authentication
+            xhr.open(params.method, params.url, params.async);
 
-                // if we are sending data, then set the correct content type
-                if (params.data) {
-                    xhr.setRequestHeader("Content-Type", params.contentType);
-                } // if
-                
-                // if this is not a remote request, the set the requested with header
-                if (! remote) {
-                    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                } // if
-                
-                xhr.onreadystatechange = function() {
-                    if (this.readyState === 4) {
-                        var responseData = null,
-                            success = requestOK(this, params);
-                        
-                        try {
-                            // get and check the status
-                            if (success) {
-                                // process the response
-                                if (params.handleResponse) {
-                                    params.handleResponse(this);
-                                }
-                                else {
-                                    responseData = processResponseData(this, params);
-                                }
-                            }
-                            else if (params.error) {
-                                params.error(this);
-                            } // if..else
-                        }
-                        catch (e) {
-                            GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
-                        } // try..catch
+            // if we are sending data, then set the correct content type
+            if (params.data) {
+                xhr.setRequestHeader("Content-Type", params.contentType);
+            } // if
+            
+            // if this is not a remote request, the set the requested with header
+            if (! remote) {
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            } // if
+            
+            xhr.onreadystatechange = handleReadyStateChange;
 
-                        // if the success callback is defined, then call it
-                        // GRUNT.Log.info("received response, calling success handler: " + params.success);
-                        if (success && responseData && params.success) {
-                            params.success.call(this, responseData);
-                        } // if
-                    } // if
-                }; // onreadystatechange
-
-                // send the request
-                // GRUNT.Log.info("sending request with data: " + module.param(params.data));
-                xhr.send(params.method == "POST" ? module.param(params.data) : null);
-            } 
-            catch (e) {
-                GRUNT.Log.exception(e);
-            } // try..catch                    
-        }, // ajax
-        
-        param: function(data) {
-            // iterate through the members of the data and convert to a paramstring
-            var params = [];
-            var addKeyVal = function (key, value) {
-                // If value is a function, invoke it and return its value
-                value = GRUNT.isFunction(value) ? value() : value;
-                params[ params.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
-            };
-
-            // If an array was passed in, assume that it is an array of form elements.
-            if (GRUNT.isArray(data)) {
-                for (var ii = 0; ii < data.length; ii++) {
-                    addKeyVal(data[ii].name, data[ii].value);
-                } // for
-            }
-            else {
-                for (var keyname in data) {
-                    addKeyVal(keyname, data[keyname]);
-                } // for
-            } // if..else
-
-            // Return the resulting serialization
-            return params.join("&").replace(/%20/g, "+");
-        }
-    }); // self
-    
-    return module;
+            // send the request
+            // GRUNT.Log.info("sending request with data: " + module.param(params.data));
+            xhr.send(params.method == "POST" ? module.param(params.data) : null);
+        } 
+        catch (e) {
+            GRUNT.Log.exception(e);
+        } // try..catch                    
+    }; // GRUNT.xhr
 })();
 
