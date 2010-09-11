@@ -1,5 +1,5 @@
 /** @namespace */
-GRUNT = (function() {
+GT = (function() {
     var hasOwn = Object.prototype.hasOwnProperty,
         objectCounter = 0;
     
