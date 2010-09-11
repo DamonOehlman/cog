@@ -1,4 +1,4 @@
-GRUNT.paramTweaker = function(params, getCallbacks, setCallbacks) {
+GT.paramTweaker = function(params, getCallbacks, setCallbacks) {
     return function(name, value) {
         if (typeof value !== "undefined") {
             if (name in params) {
@@ -19,7 +19,7 @@ GRUNT.paramTweaker = function(params, getCallbacks, setCallbacks) {
     };
 }; // paramTweaker
 
-GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
+GT.configurable = function(target, configParams, callback, bindHelpers) {
     if (! target) { return; }
     
     /* internal functions */
@@ -47,12 +47,12 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     
     // if the target doesn't yet have a configurable settings member, then add it
     if (! getSettings()) {
-        target.configurableId = GRUNT.generateObjectID("configurable");
+        target.configurableId = GT.objId("configurable");
         target.configurableSettings = {};
         target.configCallbacks = [];
         
-        if (! GRUNT.configurables) {
-            GRUNT.configurables = {};
+        if (! GT.configurables) {
+            GT.configurables = {};
         }
     } // if
     
@@ -60,7 +60,7 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
     // this is a which gets the last object in an extension chain in
     // the configurables list, so make sure you extend before you make
     // an object configurable, otherwise things will get a bit wierd.
-    GRUNT.configurables[target.configurableId] = target;
+    GT.configurables[target.configurableId] = target;
     
     // add the callback to the list
     getConfigCallbacks().push(callback);
@@ -86,7 +86,7 @@ GRUNT.configurable = function(target, configParams, callback, bindHelpers) {
                     } // if
                 } // for
                 
-                return GRUNT.configurables[target.configurableId];
+                return GT.configurables[target.configurableId];
             } // if
             
             return null;

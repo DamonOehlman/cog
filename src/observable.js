@@ -1,4 +1,4 @@
-GRUNT.observable = function(target) {
+GT.observable = function(target) {
     if (! target) { return; }
     
     /* internal functions */
@@ -28,7 +28,7 @@ GRUNT.observable = function(target) {
     var attached = target.bind || target.trigger || target.unbind;
     if (! attached) {
         target.bind = function(eventName, callback) {
-            var callbackId = GRUNT.generateObjectID("callback");
+            var callbackId = GT.objId("callback");
             
             initHandlerArray(eventName);
             

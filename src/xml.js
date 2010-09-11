@@ -1,4 +1,4 @@
-GRUNT.XPath = (function() {
+GT.XPath = (function() {
     var xpathEnabled = typeof XPathResult !== 'undefined';
     var nsResolvers = [];
     
@@ -61,7 +61,7 @@ GRUNT.XPath = (function() {
     
     // if xpath is not enabled, then throw a warning
     if (! xpathEnabled) {
-        GRUNT.Log.warn("No XPATH support, this is going to cause problems");
+        GT.Log.warn("No XPATH support, this is going to cause problems");
     } // if
     
     function xpath(expression, context, resultType) {
@@ -72,8 +72,8 @@ GRUNT.XPath = (function() {
         
         try {
             // if the context node is not xml, then return null and raise a warning
-            if (! GRUNT.isXmlDocument(context)) {
-                GRUNT.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
+            if (! GT.isXmlDocument(context)) {
+                GT.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
                 return null;
             } // if
             
@@ -81,7 +81,7 @@ GRUNT.XPath = (function() {
             return context.evaluate(expression, context, namespaceResolver, resultType, null);
         } 
         catch (e) {
-            GRUNT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
+            GT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
             return null;
         } // try..catch
     } // xpath
@@ -103,7 +103,7 @@ GRUNT.XPath = (function() {
                         
                         // if we have a match handler, then call it
                         if (matchHandler) {
-                            // GRUNT.Log.info("invoking match handler for result type: " + matches.resultType);
+                            // GT.Log.info("invoking match handler for result type: " + matches.resultType);
                             result = matchHandler(matches);
                         }
                     } // if

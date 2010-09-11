@@ -1,8 +1,8 @@
-GRUNT.Testing = (function() {
+GT.Testing = (function() {
     // initialise variables
     var testSuites = {};
     
-    var module = GRUNT.newModule({
+    var module = GT.newModule({
         id: "grunt.test",
         requires: ["grunt.core"],
         
@@ -17,17 +17,17 @@ GRUNT.Testing = (function() {
         /* reporting functions */
         
         reportProgress: function(message) {
-            GRUNT.Log.info("TEST FRAMEWORK: " + message);
+            GT.Log.info("TEST FRAMEWORK: " + message);
         },
         
         reportException: function(error) {
-            GRUNT.Log.exception(error);
+            GT.Log.exception(error);
         },
         
         /* Test Definition */
         
         Test: function(params) {
-            params = GRUNT.extend({
+            params = GT.extend({
                 title: "Untitled Test",
                 autoReady: true,
                 runner: null
@@ -90,7 +90,7 @@ GRUNT.Testing = (function() {
         },
         
         Suite: function(params) {
-            params = GRUNT.extend({
+            params = GT.extend({
                 id: "untitled.suite",
                 description: "",
                 tests: [],

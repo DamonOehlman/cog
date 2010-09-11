@@ -1,4 +1,4 @@
-GRUNT.Log = (function() {
+GT.Log = (function() {
     var listeners = [];
     var jsonAvailable = (typeof JSON !== 'undefined'),
         traceAvailable = window.console && window.console.markTimeline;
@@ -10,7 +10,7 @@ GRUNT.Log = (function() {
         
         // iterate through the remaining arguments and append them as required
         for (ii = 1; entryDetails && (ii < entryDetails.length); ii++) {
-            message += " " + (jsonAvailable && GRUNT.isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
+            message += " " + (jsonAvailable && GT.isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
         } // for
         
         if (typeof console !== 'undefined') {

@@ -51,5 +51,5 @@ http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-l
         return jsonp;
     } // jsonp
     
-    GRUNT.jsonp = prepAndLoad;
+    GT.jsonp = prepAndLoad;
 }());

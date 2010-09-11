@@ -1,4 +1,4 @@
-GRUNT.Template = (function() {
+GT.Template = (function() {
     var REGEX_TEMPLATE_VAR = /\$\{(.*?)\}/ig;
     
     // initialise module
@@ -11,7 +11,7 @@ GRUNT.Template = (function() {
             var matches = REGEX_TEMPLATE_VAR.exec(fnresult);
             while (matches) {
                 // remove the variable from the text
-                fnresult = fnresult.replace(matches[0], GRUNT.XPath.first(matches[1], data));
+                fnresult = fnresult.replace(matches[0], GT.XPath.first(matches[1], data));
                 
                 // find the next match
                 REGEX_TEMPLATE_VAR.lastIndex = 0;

@@ -1,4 +1,4 @@
-GRUNT.Storage = (function() {
+GT.Storage = (function() {
     function getStorageScope(scope) {
         if (scope && (scope == "session")) {
             return sessionStorage;

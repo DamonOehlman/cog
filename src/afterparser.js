@@ -1,4 +1,4 @@
-GRUNT.ParseRules = function(params) {
+GT.ParseRules = function(params) {
     var rules = [];
     
     var self = {

@@ -123,7 +123,7 @@ GRUNT = (function() {
         This function is used to determine whether an object contains the specified names
         as specified by arguments beyond and including index 1.  For instance, if you wanted 
         to check whether object 'foo' contained the member 'name' then you would simply call
-        GRUNT.contains(foo, 'name'). 
+        GT.contains(foo, 'name'). 
         
         @static
         */

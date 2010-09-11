@@ -42,15 +42,15 @@ TODO: add information here...
                 return JSON.parse(xhr.responseText);
             }
             catch (e) {
-                GRUNT.Log.error("Error parsing JSON data: ", xhr.responseText);
-                GRUNT.Log.exception(e);
+                GT.Log.error("Error parsing JSON data: ", xhr.responseText);
+                GT.Log.exception(e);
             }
             
             return "";
         },
         
         PDON: function(xhr, requestParams) {
-            return GRUNT.Data.parse({
+            return GT.Data.parse({
                 data: xhr.responseText,
                 format: "PDON"
             });
@@ -114,11 +114,11 @@ TODO: add information here...
                 } // if..else
             }
             catch (e) {
-                GRUNT.Log.exception(e, "PROCESSING AJAX RESPONSE");
+                GT.Log.exception(e, "PROCESSING AJAX RESPONSE");
             } // try..catch
 
             // if the success callback is defined, then call it
-            // GRUNT.Log.info("received response, calling success handler: " + params.success);
+            // GT.Log.info("received response, calling success handler: " + params.success);
             if (success && responseData && params.success) {
                 params.success.call(this, responseData);
             } // if
@@ -138,12 +138,12 @@ TODO: add information here...
         var params = [];
         var addKeyVal = function (key, value) {
             // If value is a function, invoke it and return its value
-            value = GRUNT.isFunction(value) ? value() : value;
+            value = GT.isFunction(value) ? value() : value;
             params[ params.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
         };
 
         // If an array was passed in, assume that it is an array of form elements.
-        if (GRUNT.isArray(data)) {
+        if (GT.isArray(data)) {
             for (var ii = 0; ii < data.length; ii++) {
                 addKeyVal(data[ii].name, data[ii].value);
             } // for
@@ -164,7 +164,7 @@ TODO: add information here...
             processorId,
             matchedType = false;
         
-        // GRUNT.Log.info("processing response data, content type = " + contentType);
+        // GT.Log.info("processing response data, content type = " + contentType);
         
         // determine the matching content type
         for (processorId in CONTENT_TYPES) {
@@ -186,20 +186,20 @@ TODO: add information here...
         } // if
         
         try {
-            // GRUNT.Log.info("using processor: " + processorId + " to process response");
+            // GT.Log.info("using processor: " + processorId + " to process response");
             return RESPONSE_TYPE_PROCESSORS[processorId](xhr, requestParams);
         }
         catch (e) {
-            // GRUNT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
+            // GT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
             return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr, requestParams);
         } // try..catch
     } // processResponseData
     
-    GRUNT.xhr = function(params) {
+    GT.xhr = function(params) {
         // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
         // do that in the context of a try catch statement to catch the things that are going to go wrong...
         try {
-            params = GRUNT.extend({
+            params = GT.extend({
                 method: "GET",
                 data: null,
                 url: null,
@@ -221,7 +221,7 @@ TODO: add information here...
 
             // if the url is empty, then log an error
             if (! params.url) {
-                GRUNT.Log.warn("ajax request issued with no url - that ain't going to work...");
+                GT.Log.warn("ajax request issued with no url - that ain't going to work...");
                 return;
             } // if
             
@@ -236,7 +236,7 @@ TODO: add information here...
                 xhr = new XMLHttpRequest();
             } // if
 
-            // GRUNT.Log.info("opening request: " + JSON.stringify(params));
+            // GT.Log.info("opening request: " + JSON.stringify(params));
 
             // open the request
             // TODO: support basic authentication
@@ -255,12 +255,12 @@ TODO: add information here...
             xhr.onreadystatechange = handleReadyStateChange;
 
             // send the request
-            // GRUNT.Log.info("sending request with data: " + module.param(params.data));
+            // GT.Log.info("sending request with data: " + module.param(params.data));
             xhr.send(params.method == "POST" ? module.param(params.data) : null);
         } 
         catch (e) {
-            GRUNT.Log.exception(e);
+            GT.Log.exception(e);
         } // try..catch                    
-    }; // GRUNT.xhr
+    }; // GT.xhr
 })();
 

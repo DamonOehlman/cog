@@ -1,4 +1,4 @@
-GRUNT.Data = (function() {
+GT.Data = (function() {
     
     var pdon = {
         determineObjectMapping: function(line) {
@@ -75,7 +75,7 @@ GRUNT.Data = (function() {
         },
         
         parse: function(params) {
-            params = GRUNT.extend({
+            params = GT.extend({
                 data: "",
                 format: "JSON"
             }, params);
@@ -89,8 +89,8 @@ GRUNT.Data = (function() {
                 return module.supportedFormats[params.format].parse(params.data);
             } 
             catch (e) {
-                GRUNT.Log.error("ERROR PARSING DATA FROM FORMAT: " + params.format, params.data);
-                GRUNT.Log.exception(e);
+                GT.Log.error("ERROR PARSING DATA FROM FORMAT: " + params.format, params.data);
+                GT.Log.exception(e);
             } // try..catch
             
             return {};

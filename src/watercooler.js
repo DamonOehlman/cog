@@ -1,5 +1,5 @@
 // TODO: add functionality that allows you to stop listening to messages
-GRUNT.WaterCooler = (function() {
+GT.WaterCooler = (function() {
     // initialise variables
     var messageListeners = {},
         pipes = [];
