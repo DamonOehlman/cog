@@ -168,7 +168,7 @@ GRUNT = (function() {
         },
         
         /** @static */
-        generateObjectID: function(prefix) {
+        objId: function(prefix) {
             return (prefix ? prefix : "obj") + objectCounter++;
         }
     }; // module definition
