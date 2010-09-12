@@ -1,29 +1,9 @@
-GT.paramTweaker = function(params, getCallbacks, setCallbacks) {
-    return function(name, value) {
-        if (typeof value !== "undefined") {
-            if (name in params) {
-                params[name] = value;
-            } // if
-            
-            if (setCallbacks && (name in setCallbacks)) {
-                setCallbacks[name](name, value);
-            } // if
-        }
-        else {
-            return (getCallbacks && (name in getCallbacks)) ? 
-                getCallbacks[name](name) : 
-                params[name];
-        } // if..else
-        
-        return undefined;
-    };
-}; // paramTweaker
-
-GT.configurable = function(target, configParams, callback, bindHelpers) {
-    if (! target) { return; }
+(function() {
+    // initilialise local variables
+    var configurables = {};
     
     /* internal functions */
-    
+
     function attachHelper(helperName) {
         // if the helper is not defined, then attach
         if (! target[helperName]) {
@@ -32,64 +12,93 @@ GT.configurable = function(target, configParams, callback, bindHelpers) {
             };
         } // if
     } // attachHelper
-    
-    function getSettings() {
-        return target.configurableSettings;
+
+    function getSettings(target) {
+        return target.gtConfig;
     } // getSettings
-    
-    function getConfigCallbacks() {
-        return target.configCallbacks;
+
+    function getConfigCallbacks(target) {
+        return target.gtConfigFns;
     } // getConfigGetters
     
-    /* initialization code */
-    
-    var ii;
-    
-    // if the target doesn't yet have a configurable settings member, then add it
-    if (! getSettings()) {
-        target.configurableId = GT.objId("configurable");
-        target.configurableSettings = {};
-        target.configCallbacks = [];
+    function initSettings(target) {
+        target.gtConfId = GT.objId("configurable");
+        target.gtConfig = {};
+        target.gtConfigFns = [];
         
-        if (! GT.configurables) {
-            GT.configurables = {};
-        }
-    } // if
+        return target.gtConfig;
+    } // initSettings
+
+    /* define the param tweaker */
     
-    // update the configurables
-    // this is a which gets the last object in an extension chain in
-    // the configurables list, so make sure you extend before you make
-    // an object configurable, otherwise things will get a bit wierd.
-    GT.configurables[target.configurableId] = target;
-    
-    // add the callback to the list
-    getConfigCallbacks().push(callback);
-    
-    for (ii = configParams.length; ii--; ) {
-        target.configurableSettings[configParams[ii]] = true;
-        
-        if (bindHelpers) {
-            attachHelper(configParams[ii]);
-        } // if
-    } // for
-    
-    if (! target.configure) {
-        target.configure = function(name, value) {
-            var configurableSettings = getSettings(),
-                callbacks = getConfigCallbacks();
-            
-            if (configurableSettings[name]) {
-                for (var ii = callbacks.length; ii--; ) {
-                    var result = callbacks[ii](name, value);
-                    if (typeof result !== "undefined") {
-                        return result;
-                    } // if
-                } // for
-                
-                return GT.configurables[target.configurableId];
-            } // if
-            
-            return null;
+    GT.paramTweaker = function(params, getCallbacks, setCallbacks) {
+        return function(name, value) {
+            if (typeof value !== "undefined") {
+                if (name in params) {
+                    params[name] = value;
+                } // if
+
+                if (setCallbacks && (name in setCallbacks)) {
+                    setCallbacks[name](name, value);
+                } // if
+            }
+            else {
+                return (getCallbacks && (name in getCallbacks)) ? 
+                    getCallbacks[name](name) : 
+                    params[name];
+            } // if..else
+
+            return undefined;
         };
-    } // if
-};
+    }; // paramTweaker
+    
+    /* define configurable */
+
+    GT.configurable = function(target, configParams, callback, bindHelpers) {
+        if (! target) { return; }
+
+        // if the target doesn't yet have a configurable settings member, then add it
+        if (! target.gtConfId) {
+            initSettings(target);
+        } // if
+
+        var ii,
+            targetId = target.gtConfId,
+            targetSettings = getSettings(target),
+            targetCallbacks = getConfigCallbacks(target);
+
+        // update the configurables
+        // this is a which gets the last object in an extension chain in
+        // the configurables list, so make sure you extend before you make
+        // an object configurable, otherwise things will get a bit wierd.
+        configurables[targetId] = target;
+
+        // add the callback to the list
+        targetCallbacks.push(callback);
+
+        for (ii = configParams.length; ii--; ) {
+            targetSettings[configParams[ii]] = true;
+
+            if (bindHelpers) {
+                attachHelper(configParams[ii]);
+            } // if
+        } // for
+
+        if (! target.configure) {
+            target.configure = function(name, value) {
+                if (targetSettings[name]) {
+                    for (var ii = targetCallbacks.length; ii--; ) {
+                        var result = targetCallbacks[ii](name, value);
+                        if (typeof result !== "undefined") {
+                            return result;
+                        } // if
+                    } // for
+
+                    return configurables[targetId];
+                } // if
+
+                return null;
+            };
+        } // if
+    };
+})();

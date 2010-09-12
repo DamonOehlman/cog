@@ -23,10 +23,6 @@ GT.Log = (function() {
         } // for
     } // writeEntry
     
-    function detectCallerSection(target) {
-        return null;
-    } // detectCallerSection
-    
     // define the module
     var module = {
         id: "grunt.log",

@@ -61,7 +61,7 @@ GT.XPath = (function() {
     
     // if xpath is not enabled, then throw a warning
     if (! xpathEnabled) {
-        GT.Log.warn("No XPATH support, this is going to cause problems");
+        GT.Log.warn("No XPATH support");
     } // if
     
     function xpath(expression, context, resultType) {
@@ -81,7 +81,7 @@ GT.XPath = (function() {
             return context.evaluate(expression, context, namespaceResolver, resultType, null);
         } 
         catch (e) {
-            GT.Log.warn("attempted to run invalid xpath expression: " + expression + " on node: " + context);
+            GT.Log.warn("invalid xpath expression: " + expression + " on node: " + context);
             return null;
         } // try..catch
     } // xpath
