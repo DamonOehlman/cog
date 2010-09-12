@@ -23,8 +23,8 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		<concat destfile="${GRUNT}">
 			<fileset file="src/_templates/header.js" />
 			<fileset file="lib/json2.js" />
-			<fileset file="src/jsmods.js" />
 			<fileset file="src/core.js" />
+			<fileset file="src/math.js" />
 			<fileset file="src/log.js" />
 			<fileset file="src/data.js" />
 			<fileset file="src/configurable.js" />
