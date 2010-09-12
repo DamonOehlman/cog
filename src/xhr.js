@@ -196,7 +196,7 @@ TODO: add information here...
                 handleResponse: null,
                 error: null,
                 contentType: "application/x-www-form-urlencoded"
-            }, module.ajaxSettings, params);
+            }, params);
             
             // determine if this is a remote request (as per the jQuery ajax calls)
             var parts = REGEX_URL.exec(params.url),
@@ -243,8 +243,8 @@ TODO: add information here...
             xhr.onreadystatechange = handleReadyStateChange;
 
             // send the request
-            // GT.Log.info("sending request with data: " + module.param(params.data));
-            xhr.send(params.method == "POST" ? module.param(params.data) : null);
+            // GT.Log.info("sending request with data: " + param(params.data));
+            xhr.send(params.method == "POST" ? param(params.data) : null);
         } 
         catch (e) {
             GT.Log.exception(e);
