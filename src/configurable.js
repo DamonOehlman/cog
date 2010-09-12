@@ -4,7 +4,7 @@
     
     /* internal functions */
 
-    function attachHelper(helperName) {
+    function attachHelper(target, helperName) {
         // if the helper is not defined, then attach
         if (! target[helperName]) {
             target[helperName] = function(value) {
@@ -80,7 +80,7 @@
             targetSettings[configParams[ii]] = true;
 
             if (bindHelpers) {
-                attachHelper(configParams[ii]);
+                attachHelper(target, configParams[ii]);
             } // if
         } // for
 
