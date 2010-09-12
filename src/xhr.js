@@ -37,23 +37,11 @@ TODO: add information here...
         },
         
         JSON: function(xhr, requestParams) {
-            // use the JSON object to convert the responseText to a JS object
-            try {
-                return JSON.parse(xhr.responseText);
-            }
-            catch (e) {
-                GT.Log.error("Error parsing JSON data: ", xhr.responseText);
-                GT.Log.exception(e);
-            }
-            
-            return "";
+            return GT.parseData(xhr.responseText);
         },
         
         PDON: function(xhr, requestParams) {
-            return GT.Data.parse({
-                data: xhr.responseText,
-                format: "PDON"
-            });
+            return GT.parseData(xhr.responseText, "PDON");
         },
         
         DEFAULT: function(xhr, requestParam) {
