@@ -1,70 +1,68 @@
-GT.observable = function(target) {
-    if (! target) { return; }
-    
-    /* internal functions */
-    
-    function getHandlers() {
-        return target.observableHandlers;
+(function() {
+    function getHandlers(target) {
+        return target.gtObsHandlers;
     } // getHandlers
     
-    function getHandlersForName(eventName) {
-        return getHandlers()[eventName];
-    } // getHandlersForName
-    
-    function initHandlerArray(eventName) {
-        var handlers = getHandlers();
+    function getHandlersForName(target, eventName) {
+        var handlers = getHandlers(target);
         if (! handlers[eventName]) {
             handlers[eventName] = [];
         } // if
-    } // initHandlerArray
-    
-    /* initialization code */
-    
-    // check that the target has handlers 
-    if (! getHandlers()) {
-        target.observableHandlers = {};
-    } // if
 
-    var attached = target.bind || target.trigger || target.unbind;
-    if (! attached) {
-        target.bind = function(eventName, callback) {
-            var callbackId = GT.objId("callback");
-            
-            initHandlerArray(eventName);
-            
-            getHandlersForName(eventName).push({
-                callback: callback,
-                callbackId: callbackId
-            });
-            
-            return callbackId;
-        }; // bind
-        
-        target.trigger = function(eventName) {
-            var eventCallbacks = getHandlersForName(eventName);
-                
-            // check that we have callbacks
-            if (! eventCallbacks) {
-                return target;
-            } // if
-            
-            for (var ii = eventCallbacks.length; ii--; ) {
-                eventCallbacks[ii].callback.apply(self, Array.prototype.slice.call(arguments, 1));
-            } // for
-            
-            return target;
-        }; // trigger
-        
-        target.unbind = function(eventName, callbackId) {
-            var eventCallbacks = getHandlersForName(eventName);
-            for (var ii = 0; eventCallbacks && (ii < eventCallbacks.length); ii++) {
-                if (eventCallbacks[ii].callbackId === callbackId) {
-                    eventCallbacks.splice(ii, 1);
-                    break;
+        return handlers[eventName];
+    } // getHandlersForName
+    
+    GT.observable = function(target) {
+        if (! target) { return; }
+
+        /* initialization code */
+
+        // check that the target has handlers 
+        if (! getHandlers(target)) {
+            target.gtObsHandlers = {};
+        } // if
+
+        var attached = target.bind || target.trigger || target.unbind;
+        if (! attached) {
+            target.bind = function(eventName, callback) {
+                var callbackId = GT.objId("callback");
+
+                initHandlerArray(target, eventName);
+                getHandlersForName(target, eventName).push({
+                    fn: callback,
+                    id: callbackId
+                });
+
+                return callbackId;
+            }; // bind
+
+            target.trigger = function(eventName) {
+                var eventCallbacks = getHandlersForName(target, eventName);
+
+                // check that we have callbacks
+                if (! eventCallbacks) {
+                    return target;
                 } // if
-            } // for
-            
-            return target;
-        }; // unbind
-    } // if
-};
+
+                for (var ii = eventCallbacks.length; ii--; ) {
+                    eventCallbacks[ii].fn.apply(self, Array.prototype.slice.call(arguments, 1));
+                } // for
+
+                return target;
+            }; // trigger
+
+            target.unbind = function(eventName, callbackId) {
+                var eventCallbacks = getHandlersForName(target, eventName);
+                for (var ii = 0; eventCallbacks && (ii < eventCallbacks.length); ii++) {
+                    if (eventCallbacks[ii].id === callbackId) {
+                        eventCallbacks.splice(ii, 1);
+                        break;
+                    } // if
+                } // for
+
+                return target;
+            }; // unbind
+        } // if
+    };
+})();
+
