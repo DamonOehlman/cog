@@ -26,8 +26,6 @@
         if (! attached) {
             target.bind = function(eventName, callback) {
                 var callbackId = GT.objId("callback");
-
-                initHandlerArray(target, eventName);
                 getHandlersForName(target, eventName).push({
                     fn: callback,
                     id: callbackId
