@@ -67,19 +67,13 @@ GT.Loopage = (function() {
             } // for
         } // while
         
-        GT.Log.info("workers count = " + workers.length);
-
         // iterate through the workers and run
         for (ii = workers.length; ii--; ) {
             workers[ii].execute(tickCount, workers[ii]);
         } // for
         
-        if (workers.length > 0) {
-            setTimeout(runLoop, 0);
-        }
-        else {
-            GT.Log.info("workers completed, going to sleep");
-        } // if..else
+        // update the loop timeout
+        loopTimeout = workers.length ? setTimeout(runLoop, 0) : 0;
     } // runLoop
     
     var module = {
