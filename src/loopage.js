@@ -56,7 +56,7 @@ GT.Loopage = (function() {
             // look for the worker and remove it
             for (ii = workers.length; ii--; ) {
                 if (workers[ii].id === workerId) {
-                    workers.remove(ii);
+                    workers.splice(ii, 1);
                     break;
                 } // if
             } // for
