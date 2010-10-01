@@ -31,7 +31,9 @@ GT.Loopage = (function() {
         
         // make the worker observable
         GT.observable(worker);
-        worker.bind('complete', leaveLoop);
+        worker.bind('complete', function() {
+            leaveLoop(worker.id);
+        });
         
         // add the worker to the array
         workers.unshift(worker);
@@ -65,6 +67,8 @@ GT.Loopage = (function() {
             } // for
         } // while
         
+        GT.Log.info("workers count = " + workers.length);
+
         // iterate through the workers and run
         for (ii = workers.length; ii--; ) {
             workers[ii].execute(tickCount, workers[ii]);
