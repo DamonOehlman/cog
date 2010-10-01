@@ -66,6 +66,10 @@ GT.Loopage = (function() {
         for (ii = workers.length; ii--; ) {
             workers[ii].execute(tickCount, workers[ii]);
         } // for
+        
+        if (workers.length > 0) {
+            setTimeout(runLoop, 0);
+        } // if
     } // runLoop
     
     var module = {
