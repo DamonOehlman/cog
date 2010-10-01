@@ -34,6 +34,9 @@ GT.Loopage = (function() {
         
         // if the loop is not running, then set it running
         loopTimeout = loopTimeout ? loopTimeout : setTimeout(runLoop, 0);
+        
+        // return the newly created worker
+        return worker;
     } // joinLoop
     
     function leaveLoop(workerId) {
