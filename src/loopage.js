@@ -33,6 +33,9 @@ GT.Loopage = (function() {
         GT.observable(worker);
         worker.bind('complete', leaveLoop);
         
+        // add the worker to the array
+        workers.unshift(worker);
+        
         // if the loop is not running, then set it running
         loopTimeout = loopTimeout ? loopTimeout : setTimeout(runLoop, 0);
         
@@ -69,7 +72,10 @@ GT.Loopage = (function() {
         
         if (workers.length > 0) {
             setTimeout(runLoop, 0);
-        } // if
+        }
+        else {
+            GT.Log.info("workers completed, going to sleep");
+        } // if..else
     } // runLoop
     
     var module = {
