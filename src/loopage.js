@@ -76,4 +76,6 @@ GT.Loopage = (function() {
         join: joinLoop,
         leave: leaveLoop
     };
+    
+    return module;
 })();
