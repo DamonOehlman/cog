@@ -33,7 +33,7 @@ GT.Loopage = (function() {
         // create the worker
         var worker = new LoopWorker(params);
         if (worker.after > 0) {
-            worker.lastTick = new Date().getTime() + after;
+            worker.lastTick = new Date().getTime() + worker.after;
         } // if
         
         // make the worker observable
