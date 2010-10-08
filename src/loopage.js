@@ -16,6 +16,8 @@ GT.Loopage = (function() {
     function LoopWorker(params) {
         var self = GT.extend({
             id: workerCount++,
+            frequency: 0,
+            lastTick: 0,
             execute: function() {}
         }, params);
         
@@ -69,7 +71,12 @@ GT.Loopage = (function() {
         
         // iterate through the workers and run
         for (ii = workers.length; ii--; ) {
-            workers[ii].execute(tickCount, workers[ii]);
+            var workerDiff = tickCount - workers[ii].lastTick;
+            
+            if (workerDiff >= workers[ii].frequency) {
+                workers[ii].execute(tickCount, workers[ii]);
+                workers[ii].lastTick = tickCount;
+            } // if
         } // for
         
         // update the loop timeout
