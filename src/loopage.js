@@ -17,6 +17,8 @@ GT.Loopage = (function() {
         var self = GT.extend({
             id: workerCount++,
             frequency: 0,
+            after: 0,
+            single: false,
             lastTick: 0,
             execute: function() {}
         }, params);
@@ -30,6 +32,9 @@ GT.Loopage = (function() {
     function joinLoop(params) {
         // create the worker
         var worker = new LoopWorker(params);
+        if (worker.after > 0) {
+            worker.lastTick = new Date().getTime() + after;
+        } // if
         
         // make the worker observable
         GT.observable(worker);
@@ -76,6 +81,10 @@ GT.Loopage = (function() {
             if (workerDiff >= workers[ii].frequency) {
                 workers[ii].execute(tickCount, workers[ii]);
                 workers[ii].lastTick = tickCount;
+                
+                if (workers[ii].single) {
+                    worker.trigger('complete');
+                } // if
             } // if
         } // for
         
