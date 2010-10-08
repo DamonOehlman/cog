@@ -83,7 +83,7 @@ GT.Loopage = (function() {
                 workers[ii].lastTick = tickCount;
                 
                 if (workers[ii].single) {
-                    worker.trigger('complete');
+                    workers[ii].trigger('complete');
                 } // if
             } // if
         } // for
