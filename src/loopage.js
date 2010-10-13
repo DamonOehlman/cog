@@ -49,7 +49,18 @@ GT.Loopage = (function() {
         
         // add the worker to the array
         workers.unshift(worker);
+        reschedule();
         
+        // return the newly created worker
+        return worker;
+    } // joinLoop
+    
+    function leaveLoop(workerId) {
+        removalQueue.push(workerId);
+        reschedule();
+    } // leaveLoop
+    
+    function reschedule() {
         // if the loop is not running, then set it running
         if (loopTimeout) {
             clearTimeout(loopTimeout);
@@ -60,12 +71,7 @@ GT.Loopage = (function() {
         
         // return the newly created worker
         recalcSleepFrequency = true;
-        return worker;
-    } // joinLoop
-    
-    function leaveLoop(workerId) {
-        removalQueue.push(workerId);
-    } // leaveLoop
+    } // reschedule
     
     function runLoop() {
         // get the current tick count
