@@ -7,11 +7,16 @@ jobs draw loops, animation calculations, partial calculations for GT.Job
 instances, etc.
 */
 GT.Loopage = (function() {
+    // initialise some defaults (to once per minute)
+    var MIN_SLEEP = 60 * 1000;
+    
     // initialise variables
     var workerCount = 0,
         workers = [],
         removalQueue = [],
-        loopTimeout = 0;
+        loopTimeout = 0,
+        sleepFrequency = MIN_SLEEP,
+        recalcSleepFrequency = true;
     
     function LoopWorker(params) {
         var self = GT.extend({
@@ -46,9 +51,15 @@ GT.Loopage = (function() {
         workers.unshift(worker);
         
         // if the loop is not running, then set it running
-        loopTimeout = loopTimeout ? loopTimeout : setTimeout(runLoop, 0);
+        if (loopTimeout) {
+            clearTimeout(loopTimeout);
+        } // if
+        
+        // reschedule the loop
+        loopTimeout = setTimeout(runLoop, 0);
         
         // return the newly created worker
+        recalcSleepFrequency = true;
         return worker;
     } // joinLoop
     
@@ -59,37 +70,49 @@ GT.Loopage = (function() {
     function runLoop() {
         // get the current tick count
         var ii,
-            tickCount = new Date().getTime();
-        
+            tickCount = new Date().getTime(),
+            workerCount = workers.length;
+    
         // iterate through removal queue
         while (removalQueue.length > 0) {
             var workerId = removalQueue.shift();
-            
+        
             // look for the worker and remove it
-            for (ii = workers.length; ii--; ) {
+            for (ii = workerCount; ii--; ) {
                 if (workers[ii].id === workerId) {
                     workers.splice(ii, 1);
                     break;
                 } // if
             } // for
-        } // while
         
+            recalcSleepFrequency = true;
+            workerCount = workers.length;
+        } // while
+    
+        // if the sleep frequency needs to be calculated then do that now
+        if (recalcSleepFrequency) {
+            sleepFrequency = MIN_SLEEP;
+            for (ii = workerCount; ii--; ) {
+                sleepFrequency = workers[ii].frequency < sleepFrequency ? workers[ii].frequency : sleepFrequency;
+            } // for
+        } // if
+    
         // iterate through the workers and run
-        for (ii = workers.length; ii--; ) {
+        for (ii = workerCount; ii--; ) {
             var workerDiff = tickCount - workers[ii].lastTick;
-            
+        
             if (workerDiff >= workers[ii].frequency) {
                 workers[ii].execute(tickCount, workers[ii]);
                 workers[ii].lastTick = tickCount;
-                
+            
                 if (workers[ii].single) {
                     workers[ii].trigger('complete');
                 } // if
             } // if
         } // for
-        
+    
         // update the loop timeout
-        loopTimeout = workers.length ? setTimeout(runLoop, 0) : 0;
+        loopTimeout = workerCount ? setTimeout(runLoop, sleepFrequency) : 0;
     } // runLoop
     
     var module = {
