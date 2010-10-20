@@ -1,0 +1,16 @@
+---
+layout: default
+title:  COG - Javascript Unframework
+---
+
+# COG: Javascript Unframework
+
+COG is a collection of Javascript modules and functions that have been built to provide some extensions to javascript that are pretty useful when it comes to building javascript libraries (or frameworks).
+
+It came into being as a replacement for really useful core functionality that was in [jQuery](http://jquery.com) when [Tile5](http://tile5.org/) was being built.  Originally Tile5 was tightly coupled to jQuery, but after a little while it became pretty obvious this was bad idea.  So decoupling began and COG (then GRUNT) fell from the sky and landed with a thud.
+
+## Using COG(s)
+
+At present, COG is a standalone JS library that is designed to be incorporated into your JS own JS module.  Eventually implementation will be  [cherry-picking](http://en.wikipedia.org/wiki/Cherry_picking) exactly the COGs you need in your machine.
+
+The most effective way to include COG at this stage, is use some kind of build script and use [GIT](http://gitscm.org/) to pull in the repository and merge it in with your own module.
