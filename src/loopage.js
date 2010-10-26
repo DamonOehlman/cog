@@ -107,7 +107,7 @@ GT.Loopage = (function() {
         for (ii = workerCount; ii--; ) {
             var workerDiff = tickCount - workers[ii].lastTick;
         
-            if (workerDiff >= workers[ii].frequency) {
+            if (workers[ii].lastTick === 0 || workerDiff >= workers[ii].frequency) {
                 workers[ii].execute(tickCount, workers[ii]);
                 workers[ii].lastTick = tickCount;
             

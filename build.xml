@@ -1,55 +1,81 @@
 <!--
 File:  build.xml
-This file is used to build  the grunt library.  No minification is included as it's assumed you will 
-incorporate GRUNT into your own library
+This file is used to build  the cog library.  No minification is included as it's assumed you will 
+incorporate COG into your own library
 
 http://github.com/jquery/jquery/blob/master/build.xml
 -->
-<project name="grunt" default="build-grunt" basedir=".">
+<project name="cog" default="build-cog" basedir=".">
 	<loadfile property="version" srcfile="version.txt" />
-    <property description="Distribution target for grunt" name="dist" value="./dist" />
+    <property description="Distribution target for cog" name="dist" value="./dist" />
 
-    <property name="GRUNT" value="${dist}/grunt.js" />
-	<property name="GRUNT-TEST" value="${dist}/grunt.test.js" />
-	<property name="namespace" value="GRUNT" />
+    <property name="COG" value="${dist}/cog.js" />
+	<property name="COG-TEST" value="${dist}/cog.test.js" />
+	<property name="namespace" value="COG" />
 	<property name="JSDOC_HOME" value="/development/tools/jsdoc-toolkit" />
 	
-	<target name="build-grunt" description="Slick library core build, concatenates core files and updates @VERSION">
-		<echo message="BUILDING GRUNT CORE WITH NAMESPACE = ${namespace}" />
+	<target name="build-cog" 
+			depends="build.core, build.data, build.xhr" 
+			description="Slick library core build, concatenates core files and updates @VERSION">
+			
+			<!-- include the footer -->
+			<concat destfile="${COG}" append="yes">
+				<fileset file="src/_templates/footer.js" />
+			</concat>
+
+			<concat destfile="${COG-TEST}">
+				<fileset file="src/test/core.js" />
+			</concat>
+
+			<!-- customize the library namespace to suit -->
+			<replaceregexp match="COG" replace="${namespace}" flags="ig" file="${COG}" />
+
+			<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${COG}" />
+			<replaceregexp match="Date: " replace="Date: ${date}" file="${COG}" />
+
+	        <echo message="${COG} built." />
+	</target>
+			
+	<target name="build.core">
+		<echo message="BUILDING COG CORE WITH NAMESPACE = ${namespace}" />
 		<mkdir dir="${dist}" />
 		
 		<!-- TODO: move the provider files across too -->
 		
-		<concat destfile="${GRUNT}">
+		<!-- build the core functionality of the module (not optional) -->
+		<concat destfile="${COG}">
 			<fileset file="src/_templates/header.js" />
-			<fileset file="lib/json2.js" />
 			<fileset file="src/core.js" />
-			<fileset file="src/math.js" />
 			<fileset file="src/log.js" />
-			<fileset file="src/data.js" />
 			<fileset file="src/configurable.js" />
-			<fileset file="src/jsonp.js" />
-			<fileset file="src/xhr.js" />
-			<fileset file="src/xml.js" />
 			<fileset file="src/observable.js" />
 			<fileset file="src/watercooler.js" />
 			<fileset file="src/loopage.js" />
-			<fileset file="src/storage.js" />
-			<fileset file="src/afterparser.js" />
-			<fileset file="src/_templates/footer.js" />
 		</concat>
+	</target>
+	
+	<target name="build.data" unless="exclude.data">
+		<echo message="--> including data" />
 		
-		<concat destfile="${GRUNT-TEST}">
-			<fileset file="src/test/core.js" />
+		<!-- add the data functionality -->
+		<concat destfile="${COG}" append="yes">
+			<fileset file="lib/json2.js" />
+			<fileset file="src/data/data.js" />
+			<fileset file="src/data/xml.js" />
+			<fileset file="src/data/storage.js" />
+			<!-- deprecated (will remove) -->
+			<!-- <fileset file="src/data/afterparser.js" /> -->
 		</concat>
+	</target>
+	
+	<target name="build.xhr" unless="exclude.xhr">
+		<echo message="--> including xhr and jsonp" />
 		
-		<!-- customize the library namespace to suit -->
-		<replaceregexp match="GRUNT" replace="${namespace}" flags="ig" file="${GRUNT}" />
-
-		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${GRUNT}" />
-		<replaceregexp match="Date: " replace="Date: ${date}" file="${GRUNT}" />
-
-        <echo message="${GRUNT} built." />
+		<!-- add the xhr and jsonp functionality -->
+		<concat destfile="${COG}" append="yes">
+			<fileset file="src/xhr/xhr.js" />
+			<fileset file="src/xhr/jsonp.js" />
+		</concat>
 	</target>
 	
 	<target name="jsdoc">
