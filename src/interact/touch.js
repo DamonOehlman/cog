@@ -173,7 +173,7 @@ COG.Touch = (function() {
                 distanceVector;
                 
             // ensure that the extra distance does not exist the max distance
-            extraDistance = extraDistance > maxInertiaDist ? maxInertiaDist : extraDistance;
+            extraDistance = extraDistance > inertiaMaxDist ? inertiaMaxDist : extraDistance;
                 
             theta = currentXY.x > upXY.x ? theta : Math.PI - theta;
             distanceVector = createPoint(
