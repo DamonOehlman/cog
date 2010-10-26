@@ -169,18 +169,20 @@ COG.Touch = (function() {
         function calculateInertia(upXY, currentXY, distance, tickDiff) {
             var theta = Math.asin((upXY.y - currentXY.y) / distance),
                 // TODO: remove the magic numbers from here (pass through animation time from view, and determine max from dimensions)
-                extraDistance = distance * (inertiaDuration / tickDiff) >> 0,
-                distanceVector;
+                extraDistance = distance * (inertiaDuration / tickDiff) >> 0;
                 
             // ensure that the extra distance does not exist the max distance
             extraDistance = extraDistance > inertiaMaxDist ? inertiaMaxDist : extraDistance;
                 
+            // calculate theta
             theta = currentXY.x > upXY.x ? theta : Math.PI - theta;
-            distanceVector = createPoint(
-                Math.cos(theta) * -extraDistance, 
-                Math.sin(theta) * extraDistance);
-                
-            triggerEvent("pan", distanceVector.x, distanceVector.y, true);
+            
+            // trigger the pan event
+            triggerEvent(
+                "pan",
+                Math.cos(theta) * -extraDistance,
+                Math.sin(theta) * extraDistance,
+                true);
         } // calculateInertia
         
         function checkInertia(upXY, currentTick) {
