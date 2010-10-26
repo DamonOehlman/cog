@@ -1,4 +1,4 @@
-GT.ParseRules = function(params) {
+COG.ParseRules = function(params) {
     var rules = [];
     
     var self = {

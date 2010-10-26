@@ -1,5 +1,5 @@
 /** @namespace */
-GT = (function() {
+COG = (function() {
     // initialise constants
     var REGEX_TEMPLATE_VAR = /\$\{(.*?)\}/ig;
     
@@ -126,7 +126,7 @@ GT = (function() {
         This function is used to determine whether an object contains the specified names
         as specified by arguments beyond and including index 1.  For instance, if you wanted 
         to check whether object 'foo' contained the member 'name' then you would simply call
-        GT.contains(foo, 'name'). 
+        COG.contains(foo, 'name'). 
         
         @static
         */
@@ -220,7 +220,7 @@ GT = (function() {
             var matches = REGEX_TEMPLATE_VAR.exec(templateHtml);
             while (matches) {
                 // remove the variable from the text
-                templateHtml = templateHtml.replace(matches[0], GT.XPath.first(matches[1], data));
+                templateHtml = templateHtml.replace(matches[0], COG.XPath.first(matches[1], data));
 
                 // find the next match
                 REGEX_TEMPLATE_VAR.lastIndex = 0;

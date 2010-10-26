@@ -1,12 +1,12 @@
 /**
-GT.Loopage
+COG.Loopage
 ----------
 
 This module implements a control loop that can be used to centralize
-jobs draw loops, animation calculations, partial calculations for GT.Job 
+jobs draw loops, animation calculations, partial calculations for COG.Job 
 instances, etc.
 */
-GT.Loopage = (function() {
+COG.Loopage = (function() {
     // initialise some defaults (to once per minute)
     var MIN_SLEEP = 60 * 1000;
     
@@ -19,7 +19,7 @@ GT.Loopage = (function() {
         recalcSleepFrequency = true;
     
     function LoopWorker(params) {
-        var self = GT.extend({
+        var self = COG.extend({
             id: workerCount++,
             frequency: 0,
             after: 0,
@@ -42,7 +42,7 @@ GT.Loopage = (function() {
         } // if
         
         // make the worker observable
-        GT.observable(worker);
+        COG.observable(worker);
         worker.bind('complete', function() {
             leaveLoop(worker.id);
         });

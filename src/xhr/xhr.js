@@ -37,11 +37,11 @@ TODO: add information here...
         },
         
         JSON: function(xhr, requestParams) {
-            return GT.parseData(xhr.responseText);
+            return COG.parseData(xhr.responseText);
         },
         
         PDON: function(xhr, requestParams) {
-            return GT.parseData(xhr.responseText, "PDON");
+            return COG.parseData(xhr.responseText, "PDON");
         },
         
         DEFAULT: function(xhr, requestParam) {
@@ -94,12 +94,12 @@ TODO: add information here...
         var params = [];
         var addKeyVal = function (key, value) {
             // If value is a function, invoke it and return its value
-            value = GT.isFunction(value) ? value() : value;
+            value = COG.isFunction(value) ? value() : value;
             params[ params.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
         };
 
         // If an array was passed in, assume that it is an array of form elements.
-        if (GT.isArray(data)) {
+        if (COG.isArray(data)) {
             for (var ii = 0; ii < data.length; ii++) {
                 addKeyVal(data[ii].name, data[ii].value);
             } // for
@@ -120,7 +120,7 @@ TODO: add information here...
             processorId,
             matchedType = false;
         
-        // GT.Log.info("processing response data, content type = " + contentType);
+        // COG.Log.info("processing response data, content type = " + contentType);
         
         // determine the matching content type
         for (processorId in CONTENT_TYPES) {
@@ -142,16 +142,16 @@ TODO: add information here...
         } // if
         
         try {
-            // GT.Log.info("using processor: " + processorId + " to process response");
+            // COG.Log.info("using processor: " + processorId + " to process response");
             return RESPONSE_TYPE_PROCESSORS[processorId](xhr, requestParams);
         }
         catch (e) {
-            // GT.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
+            // COG.Log.warn("error applying processor '" + processorId + "' to response type, falling back to default");
             return RESPONSE_TYPE_PROCESSORS.DEFAULT(xhr, requestParams);
         } // try..catch
     } // processResponseData
     
-    GT.xhr = function(params) {
+    COG.xhr = function(params) {
         
         function handleReadyStateChange() {
             if (this.readyState === 4) {
@@ -174,11 +174,11 @@ TODO: add information here...
                     } // if..else
                 }
                 catch (e) {
-                    GT.Log.exception(e, "PROCESSING AJAX RESPONSE");
+                    COG.Log.exception(e, "PROCESSING AJAX RESPONSE");
                 } // try..catch
 
                 // if the success callback is defined, then call it
-                // GT.Log.info("received response, calling success handler: " + params.success);
+                // COG.Log.info("received response, calling success handler: " + params.success);
                 if (success && responseData && params.success) {
                     params.success.call(this, responseData);
                 } // if
@@ -188,7 +188,7 @@ TODO: add information here...
         // given that I am having to write my own AJAX handling, I think it's safe to assume that I should
         // do that in the context of a try catch statement to catch the things that are going to go wrong...
         try {
-            params = GT.extend({
+            params = COG.extend({
                 method: "GET",
                 data: null,
                 url: null,
@@ -210,7 +210,7 @@ TODO: add information here...
 
             // if the url is empty, then log an error
             if (! params.url) {
-                GT.Log.warn("ajax request issued with no url - that ain't going to work...");
+                COG.Log.warn("ajax request issued with no url - that ain't going to work...");
                 return;
             } // if
             
@@ -225,7 +225,7 @@ TODO: add information here...
                 xhr = new XMLHttpRequest();
             } // if
 
-            // GT.Log.info("opening request: " + JSON.stringify(params));
+            // COG.Log.info("opening request: " + JSON.stringify(params));
 
             // open the request
             // TODO: support basic authentication
@@ -244,12 +244,12 @@ TODO: add information here...
             xhr.onreadystatechange = handleReadyStateChange;
 
             // send the request
-            // GT.Log.info("sending request with data: " + param(params.data));
+            // COG.Log.info("sending request with data: " + param(params.data));
             xhr.send(params.method == "POST" ? param(params.data) : null);
         } 
         catch (e) {
-            GT.Log.exception(e);
+            COG.Log.exception(e);
         } // try..catch                    
-    }; // GT.xhr
+    }; // COG.xhr
 })();
 

@@ -1,4 +1,4 @@
-GT.XPath = (function() {
+COG.XPath = (function() {
     var xpathEnabled = typeof XPathResult !== 'undefined';
     var nsResolvers = [];
     
@@ -61,7 +61,7 @@ GT.XPath = (function() {
     
     // if xpath is not enabled, then throw a warning
     if (! xpathEnabled) {
-        GT.Log.warn("No XPATH support");
+        COG.Log.warn("No XPATH support");
     } // if
     
     function xpath(expression, context, resultType) {
@@ -72,8 +72,8 @@ GT.XPath = (function() {
         
         try {
             // if the context node is not xml, then return null and raise a warning
-            if (! GT.isXmlDocument(context)) {
-                GT.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
+            if (! COG.isXmlDocument(context)) {
+                COG.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
                 return null;
             } // if
             
@@ -81,7 +81,7 @@ GT.XPath = (function() {
             return context.evaluate(expression, context, namespaceResolver, resultType, null);
         } 
         catch (e) {
-            GT.Log.warn("invalid xpath expression: " + expression + " on node: " + context);
+            COG.Log.warn("invalid xpath expression: " + expression + " on node: " + context);
             return null;
         } // try..catch
     } // xpath
@@ -103,7 +103,7 @@ GT.XPath = (function() {
                         
                         // if we have a match handler, then call it
                         if (matchHandler) {
-                            // GT.Log.info("invoking match handler for result type: " + matches.resultType);
+                            // COG.Log.info("invoking match handler for result type: " + matches.resultType);
                             result = matchHandler(matches);
                         }
                     } // if

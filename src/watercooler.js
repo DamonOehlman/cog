@@ -5,7 +5,7 @@
         pipes = [];
     
     // define the module
-    GT.addPipe = function(callback) {
+    COG.addPipe = function(callback) {
         // test the pipe because if it is broke it will break everything
         callback("pipe.test", {});
         
@@ -13,7 +13,7 @@
         pipes.push(callback);
     }; // addPipe
     
-    GT.listen = function(message, callback) {
+    COG.listen = function(message, callback) {
         // if we don't have a message listener array configured, then create one now
         if (! messageListeners[message]) {
             messageListeners[message] = [];
@@ -25,7 +25,7 @@
         } // if
     }; // listen
         
-    GT.say = function(message, args) {
+    COG.say = function(message, args) {
         var ii;
         
         // if there are pipes, then send the message through each

@@ -72,7 +72,7 @@
     }; // supportedFormats
     
     // define the module
-    GT.parseData = function(data, format) {
+    COG.parseData = function(data, format) {
         format = format ? format.toUpperCase() : "JSON";
         
         // check that the format is supported, if not raise an exception
@@ -84,7 +84,7 @@
             return supportedFormats[format].parse(data);
         } 
         catch (e) {
-            GT.Log.exception(e);
+            COG.Log.exception(e);
         } // try..catch
         
         return {};

@@ -12,7 +12,7 @@
         return handlers[eventName];
     } // getHandlersForName
     
-    GT.observable = function(target) {
+    COG.observable = function(target) {
         if (! target) { return; }
 
         /* initialization code */
@@ -25,7 +25,7 @@
         var attached = target.bind || target.trigger || target.unbind;
         if (! attached) {
             target.bind = function(eventName, callback) {
-                var callbackId = GT.objId("callback");
+                var callbackId = COG.objId("callback");
                 getHandlersForName(target, eventName).push({
                     fn: callback,
                     id: callbackId

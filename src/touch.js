@@ -1,4 +1,4 @@
-GT.Touch = (function() {
+COG.Touch = (function() {
     // initialise constants
     var MAX_TOUCHES = 10,
         WHEEL_DELTA_STEP = 120,
@@ -118,7 +118,7 @@ GT.Touch = (function() {
     /* touch helper */
     
     var TouchHelper =  function(params) {
-        params = GT.extend({
+        params = COG.extend({
             element: null,
             observable: null,
             inertiaTrigger: 20,
@@ -185,7 +185,7 @@ GT.Touch = (function() {
                 lastXY.x = upXY.x;
                 lastXY.y = upXY.y;
                 
-                GT.Loopage.join({
+                COG.Loopage.join({
                     execute: function(tickCount, worker) {
                         tickDiff = tickCount - currentTick;
                         
@@ -236,7 +236,7 @@ GT.Touch = (function() {
         } // relativeTouches
         
         function triggerEvent() {
-            // GT.Log.info("triggering event: " + arguments[0]);
+            // COG.Log.info("triggering event: " + arguments[0]);
             if (observable) {
                 observable.trigger.apply(null, arguments);
             } // if
@@ -289,7 +289,7 @@ GT.Touch = (function() {
         
                 // if we don't have a touch vector, then log a warning, and exit
                 if (! touchVector) {
-                    GT.Log.warn("Touch start fired, but no touch vector found");
+                    COG.Log.warn("Touch start fired, but no touch vector found");
                     return;
                 } // if
         
@@ -564,7 +564,7 @@ GT.Touch = (function() {
 
             // if the touch helper has not been created, then create it and attach to events
             if (! touchHelper) {
-                touchHelper = new TouchHelper(GT.extend({ element: element}, params));
+                touchHelper = new TouchHelper(COG.extend({ element: element}, params));
                 touchHelpers[element.id] = touchHelper;
             } // if
 

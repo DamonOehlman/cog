@@ -22,7 +22,7 @@
     } // getConfigGetters
     
     function initSettings(target) {
-        target.gtConfId = GT.objId("configurable");
+        target.gtConfId = COG.objId("configurable");
         target.gtConfig = {};
         target.gtConfigFns = [];
         
@@ -31,7 +31,7 @@
 
     /* define the param tweaker */
     
-    GT.paramTweaker = function(params, getCallbacks, setCallbacks) {
+    COG.paramTweaker = function(params, getCallbacks, setCallbacks) {
         return function(name, value) {
             if (typeof value !== "undefined") {
                 if (name in params) {
@@ -54,7 +54,7 @@
     
     /* define configurable */
 
-    GT.configurable = function(target, configParams, callback, bindHelpers) {
+    COG.configurable = function(target, configParams, callback, bindHelpers) {
         if (! target) { return; }
 
         // if the target doesn't yet have a configurable settings member, then add it

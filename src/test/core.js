@@ -1,8 +1,8 @@
-GT.Testing = (function() {
+COG.Testing = (function() {
     // initialise variables
     var testSuites = {};
     
-    var module = GT.newModule({
+    var module = COG.newModule({
         id: "grunt.test",
         requires: ["grunt.core"],
         
@@ -17,17 +17,17 @@ GT.Testing = (function() {
         /* reporting functions */
         
         reportProgress: function(message) {
-            GT.Log.info("TEST FRAMEWORK: " + message);
+            COG.Log.info("TEST FRAMEWORK: " + message);
         },
         
         reportException: function(error) {
-            GT.Log.exception(error);
+            COG.Log.exception(error);
         },
         
         /* Test Definition */
         
         Test: function(params) {
-            params = GT.extend({
+            params = COG.extend({
                 title: "Untitled Test",
                 autoReady: true,
                 runner: null
@@ -90,7 +90,7 @@ GT.Testing = (function() {
         },
         
         Suite: function(params) {
-            params = GT.extend({
+            params = COG.extend({
                 id: "untitled.suite",
                 description: "",
                 tests: [],
