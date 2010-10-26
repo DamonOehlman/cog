@@ -15,7 +15,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
 	<property name="JSDOC_HOME" value="/development/tools/jsdoc-toolkit" />
 	
 	<target name="build-cog" 
-			depends="build.core, build.data, build.xhr" 
+			depends="build.core, build.data, build.xhr, build.interact" 
 			description="Slick library core build, concatenates core files and updates @VERSION">
 			
 			<!-- include the footer -->
@@ -75,6 +75,15 @@ http://github.com/jquery/jquery/blob/master/build.xml
 		<concat destfile="${COG}" append="yes">
 			<fileset file="src/xhr/xhr.js" />
 			<fileset file="src/xhr/jsonp.js" />
+		</concat>
+	</target>
+	
+	<target name="build.interact" unless="exclude.interact">
+		<echo message="--> including interaction helpers" />
+		
+		<!-- add the xhr and jsonp functionality -->
+		<concat destfile="${COG}" append="yes">
+			<fileset file="src/interact/touch.js" />
 		</concat>
 	</target>
 	

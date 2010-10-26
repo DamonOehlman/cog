@@ -156,7 +156,9 @@ COG.Touch = (function() {
             touchStartTick = 0,
             listeners = [],
             lastXY = createPoint(),
-            inertiaSettings = null,
+            inertia = false,
+            inertiaDuration,
+            inertiaMaxDist,
             ticksCurrent = 0,
             ticksLast = 0,
             targetElement = params.element,
@@ -167,8 +169,11 @@ COG.Touch = (function() {
         function calculateInertia(upXY, currentXY, distance, tickDiff) {
             var theta = Math.asin((upXY.y - currentXY.y) / distance),
                 // TODO: remove the magic numbers from here (pass through animation time from view, and determine max from dimensions)
-                extraDistance = Math.min(Math.floor(distance * (inertiaSettings.duration / tickDiff)), inertiaSettings.max),
+                extraDistance = distance * (inertiaSettings.duration / tickDiff) >> 0,
                 distanceVector;
+                
+            // ensure that the extra distance does not exist the max distance
+            extraDistance = extraDistance > maxInertiaDist ? maxInertiaDist : extraDistance;
                 
             theta = currentXY.x > upXY.x ? theta : Math.PI - theta;
             distanceVector = createPoint(
@@ -514,14 +519,13 @@ COG.Touch = (function() {
             },
 
             inertiaEnable: function(animationTime, dimensions) {
-                inertiaSettings = {
-                    duration: animationTime,
-                    max: dimensions ? Math.min(dimensions.width, dimensions.height) : DEFAULT_INERTIA_MAX
-                };
+                inertia = true;
+                inertiaDuration = animationTime;
+                inertiaMaxDist = dimensions ? Math.min(dimensions.width, dimensions.height) : DEFAULT_INERTIA_MAX;
             },
             
             inertiaDisable: function() {
-                inertiaSettings = null;
+                inertia = false;
             }
         };
         
