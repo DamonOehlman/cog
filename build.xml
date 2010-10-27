@@ -63,8 +63,7 @@ http://github.com/jquery/jquery/blob/master/build.xml
 			<fileset file="src/data/data.js" />
 			<fileset file="src/data/xml.js" />
 			<fileset file="src/data/storage.js" />
-			<!-- deprecated (will remove) -->
-			<!-- <fileset file="src/data/afterparser.js" /> -->
+			<fileset file="src/data/afterparser.js" />
 		</concat>
 	</target>
 	
