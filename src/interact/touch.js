@@ -265,19 +265,15 @@ COG.Touch = (function() {
         } // triggerEvent
         
         function triggerPositionEvent(eventName, absVector) {
-            var offsetVector = null;
-            
-            // if an element is defined, then determine the element offset
-            if (targetElement) {
-                offsetVector = createPoint(
-                    absVector.x - targetElement.offsetLeft, 
-                    absVector.y - targetElement.offsetTop);
-            } // if
+            var offsetVector = getOffset(targetElement),
+                relativeVector = createPoint(
+                    absVector.x - offsetVector.x,
+                    absVector.y - offsetVector.y);
             
             // fire the event
-            triggerEvent(eventName, absVector, offsetVector);
+            triggerEvent(eventName, absVector, relativeVector);
         } // triggerPositionEvent
-
+        
         function touchStart(evt) {
             var targ = evt.target ? evt.target : evt.srcElement;
             
