@@ -225,18 +225,33 @@ COG.Touch = (function() {
                 } // if
             } // if..else                
         } // checkInertia
+        
+        function getOffset(obj) {
+            var calcLeft = 0, 
+                calcTop = 0;
+                
+            if (obj.offsetParent) {
+                do {
+                    calcLeft += obj.offsetLeft;
+                    calcTop += obj.offsetTop;
+
+                    obj = obj.offsetParent;
+                } while (obj);
+            } // if
+            
+            return createPoint(calcLeft, calcTop);
+        } // getOffset
             
         function relativeTouches(touchData) {
             var touchCount = touchData.count,
                 fnresult = new Array(touchCount),
-                offsetX = targetElement ? -targetElement.offsetLeft : 0,
-                offsetY = targetElement ? -targetElement.offsetTop : 0;
+                elementOffset = getOffset(targetElement);
             
             // apply the offset
             for (var ii = touchCount; ii--; ) {
                 fnresult[ii] = createPoint(
-                    touchData.touches[ii].x + offsetX, 
-                    touchData.touches[ii].y + offsetY);
+                    touchData.touches[ii].x - elementOffset.x, 
+                    touchData.touches[ii].y - elementOffset.y);
             } // for
             
             return fnresult;
