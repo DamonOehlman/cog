@@ -26,7 +26,7 @@
         if (! attached) {
             target.bind = function(eventName, callback) {
                 var callbackId = COG.objId("callback");
-                getHandlersForName(target, eventName).push({
+                getHandlersForName(target, eventName).unshift({
                     fn: callback,
                     id: callbackId
                 });
@@ -35,15 +35,29 @@
             }; // bind
 
             target.trigger = function(eventName) {
-                var eventCallbacks = getHandlersForName(target, eventName);
+                var eventCallbacks = getHandlersForName(target, eventName),
+                    evt = null,
+                    eventArgs;
 
                 // check that we have callbacks
                 if (! eventCallbacks) {
                     return target;
                 } // if
+                
+                // create a new event object
+                evt = {
+                    cancel: false
+                };
+                
+                eventArgs = Array.prototype.slice.call(arguments, 1);
+                eventArgs.unshift(evt);
 
                 for (var ii = eventCallbacks.length; ii--; ) {
-                    eventCallbacks[ii].fn.apply(self, Array.prototype.slice.call(arguments, 1));
+                    eventCallbacks[ii].fn.apply(self, eventArgs);
+                    
+                    if (evt.cancel) {
+                        break;
+                    } // if
                 } // for
 
                 return target;
