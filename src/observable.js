@@ -36,31 +36,25 @@
 
             target.trigger = function(eventName) {
                 var eventCallbacks = getHandlersForName(target, eventName),
-                    evt = null,
+                    evt = {
+                        cancel: false,
+                        tickCount: Date.now()
+                    },
                     eventArgs;
 
                 // check that we have callbacks
                 if (! eventCallbacks) {
-                    return target;
+                    return null;
                 } // if
-                
-                // create a new event object
-                evt = {
-                    cancel: false
-                };
                 
                 eventArgs = Array.prototype.slice.call(arguments, 1);
                 eventArgs.unshift(evt);
 
-                for (var ii = eventCallbacks.length; ii--; ) {
+                for (var ii = eventCallbacks.length; ii-- && (! evt.cancel); ) {
                     eventCallbacks[ii].fn.apply(self, eventArgs);
-                    
-                    if (evt.cancel) {
-                        break;
-                    } // if
                 } // for
 
-                return target;
+                return evt;
             }; // trigger
 
             target.unbind = function(eventName, callbackId) {
