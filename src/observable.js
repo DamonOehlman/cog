@@ -38,7 +38,7 @@
                 var eventCallbacks = getHandlersForName(target, eventName),
                     evt = {
                         cancel: false,
-                        tickCount: Date.now()
+                        tickCount: new Date().getTime()
                     },
                     eventArgs;
 
