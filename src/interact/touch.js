@@ -433,14 +433,19 @@ COG.Touch = (function() {
 
                 // if tapping, then first the tap event
                 if (touchMode === TOUCH_MODE_TAP) {
+                    // trigger the tap
+                    triggerPositionEvent('tap', touchesStart.touches[0]);
+                    
                     // start the timer to fire the tap handler, if 
                     if (! tapTimer) {
                         tapTimer = setTimeout(function() {
                             // reset the timer 
                             tapTimer = 0;
 
-                            // fire the appropriate tap event
-                            triggerPositionEvent(doubleTap ? 'doubleTap' : 'tap', touchesStart.touches[0]);
+                            // we've had a second tap, so trigger the double tap
+                            if (doubleTap) {
+                                triggerPositionEvent('doubleTap', touchesStart.touches[0]);
+                            } // if
                         }, THRESHOLD_DOUBLETAP + 50);
                     }
                 }
