@@ -488,15 +488,15 @@ COG.Touch = (function() {
             
             if (aggressiveCapture || targ && (targ === targetElement)) {
                 var delta = getWheelDelta(evt), 
-                    zoomAmount = delta.y !== 0 ? Math.abs(delta.y / WHEEL_DELTA_STEP) : 0;
-
+                    zoomAmount = delta.y / WHEEL_DELTA_STEP;
+                    
                 if (lastXY && (zoomAmount !== 0)) {
                     // apply the offset to the xy
                     var xy = createPoint(
                         lastXY.x - targetElement.offsetLeft, 
                         lastXY.y - targetElement.offsetTop);
                     
-                    triggerEvent("wheelZoom", xy, Math.pow(2, delta.y > 0 ? zoomAmount : -zoomAmount));
+                    triggerEvent("wheelZoom", xy, Math.pow(2, zoomAmount));
                 } // if
                 
                 preventDefault(evt);
