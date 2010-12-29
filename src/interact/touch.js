@@ -1,7 +1,8 @@
 COG.Touch = (function() {
     // initialise constants
     var MAX_TOUCHES = 10,
-        WHEEL_DELTA_STEP = 1080,
+        WHEEL_DELTA_STEP = 120,
+        WHEEL_DELTA_LEVEL = WHEEL_DELTA_STEP * 8,
         DEFAULT_INERTIA_MAX = 500,
         INERTIA_TIMEOUT_MOUSE = 100,
         INERTIA_TIMEOUT_TOUCH = 250,
@@ -488,7 +489,7 @@ COG.Touch = (function() {
             
             if (aggressiveCapture || targ && (targ === targetElement)) {
                 var delta = getWheelDelta(evt), 
-                    zoomAmount = delta.y / WHEEL_DELTA_STEP;
+                    zoomAmount = delta.y / WHEEL_DELTA_LEVEL;
                     
                 if (lastXY && (zoomAmount !== 0)) {
                     // apply the offset to the xy
