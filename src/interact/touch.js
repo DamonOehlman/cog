@@ -1,7 +1,7 @@
 COG.Touch = (function() {
     // initialise constants
     var MAX_TOUCHES = 10,
-        WHEEL_DELTA_STEP = 120,
+        WHEEL_DELTA_STEP = 480,
         DEFAULT_INERTIA_MAX = 500,
         INERTIA_TIMEOUT_MOUSE = 100,
         INERTIA_TIMEOUT_TOUCH = 250,
@@ -496,7 +496,7 @@ COG.Touch = (function() {
                         lastXY.x - targetElement.offsetLeft, 
                         lastXY.y - targetElement.offsetTop);
                     
-                    triggerEvent("wheelZoom", xy, Math.pow(2, zoomAmount));
+                    triggerEvent('wheelZoom', xy, zoomAmount);
                 } // if
                 
                 preventDefault(evt);
