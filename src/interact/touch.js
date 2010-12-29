@@ -1,7 +1,7 @@
 COG.Touch = (function() {
     // initialise constants
     var MAX_TOUCHES = 10,
-        WHEEL_DELTA_STEP = 480,
+        WHEEL_DELTA_STEP = 1080,
         DEFAULT_INERTIA_MAX = 500,
         INERTIA_TIMEOUT_MOUSE = 100,
         INERTIA_TIMEOUT_TOUCH = 250,
