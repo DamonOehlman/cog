@@ -1,4 +1,4 @@
-COG.XPath = (function() {
+exports.XPath = (function() {
     var xpathEnabled = typeof XPathResult !== 'undefined';
     var nsResolvers = [];
     
@@ -61,7 +61,7 @@ COG.XPath = (function() {
     
     // if xpath is not enabled, then throw a warning
     if (! xpathEnabled) {
-        COG.Log.warn("No XPATH support");
+        Log.warn("No XPATH support");
     } // if
     
     function xpath(expression, context, resultType) {
@@ -72,8 +72,8 @@ COG.XPath = (function() {
         
         try {
             // if the context node is not xml, then return null and raise a warning
-            if (! COG.isXmlDocument(context)) {
-                COG.Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
+            if (! isXmlDocument(context)) {
+                Log.warn("attempted xpath expression: " + expression + " on a non-xml document");
                 return null;
             } // if
             
@@ -81,7 +81,7 @@ COG.XPath = (function() {
             return context.evaluate(expression, context, namespaceResolver, resultType, null);
         } 
         catch (e) {
-            COG.Log.warn("invalid xpath expression: " + expression + " on node: " + context);
+            Log.warn("invalid xpath expression: " + expression + " on node: " + context);
             return null;
         } // try..catch
     } // xpath
@@ -103,7 +103,7 @@ COG.XPath = (function() {
                         
                         // if we have a match handler, then call it
                         if (matchHandler) {
-                            // COG.Log.info("invoking match handler for result type: " + matches.resultType);
+                            // Log.info("invoking match handler for result type: " + matches.resultType);
                             result = matchHandler(matches);
                         }
                     } // if
@@ -126,4 +126,3 @@ COG.XPath = (function() {
     
     return module;
 })();
-

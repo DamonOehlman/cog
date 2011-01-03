@@ -1,4 +1,4 @@
-COG.Log = (function() {
+var Log = exports.Log = (function() {
     var listeners = [];
     var jsonAvailable = (typeof JSON !== 'undefined'),
         traceAvailable = window.console && window.console.markTimeline;
@@ -10,7 +10,7 @@ COG.Log = (function() {
         
         // iterate through the remaining arguments and append them as required
         for (ii = 1; entryDetails && (ii < entryDetails.length); ii++) {
-            message += " " + (jsonAvailable && COG.isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
+            message += " " + (jsonAvailable && isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
         } // for
         
         if (typeof console !== 'undefined') {
@@ -25,8 +25,6 @@ COG.Log = (function() {
     
     // define the module
     var module = {
-        id: "grunt.log",
-        
         /* logging functions */
         
         getTraceTicks: function() {

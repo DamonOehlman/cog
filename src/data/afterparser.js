@@ -1,4 +1,4 @@
-COG.ParseRules = function(params) {
+exports.ParseRules = function(params) {
     var rules = [];
     
     var self = {

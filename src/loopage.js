@@ -1,12 +1,10 @@
 /**
-COG.Loopage
-----------
-
+# COG.Loopage
 This module implements a control loop that can be used to centralize
 jobs draw loops, animation calculations, partial calculations for COG.Job 
 instances, etc.
 */
-COG.Loopage = (function() {
+var Loopage = exports.Loopage = (function() {
     // initialise some defaults (to once per minute)
     var MIN_SLEEP = 60 * 1000;
     
@@ -19,7 +17,7 @@ COG.Loopage = (function() {
         recalcSleepFrequency = true;
     
     function LoopWorker(params) {
-        var self = COG.extend({
+        var self = extend({
             id: workerCount++,
             frequency: 0,
             after: 0,
@@ -42,7 +40,7 @@ COG.Loopage = (function() {
         } // if
         
         // make the worker observable
-        COG.observable(worker);
+        observable(worker);
         worker.bind('complete', function() {
             leaveLoop(worker.id);
         });

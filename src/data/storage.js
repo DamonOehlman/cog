@@ -1,4 +1,4 @@
-COG.Storage = (function() {
+exports.Storage = (function() {
     function getStorageScope(scope) {
         if (scope && (scope == "session")) {
             return sessionStorage;
@@ -18,7 +18,7 @@ COG.Storage = (function() {
         
         set: function(key, value, scope) {
             // if the value is an object, the stringify using JSON
-            var serializable = jQuery.isArray(value) || jQuery.isPlainObject(value);
+            var serializable = isArray(value) || isPlainObject(value);
             var storeValue = serializable ? JSON.stringify(value) : value;
             
             // save the value
