@@ -118,11 +118,9 @@ var Loopage = exports.Loopage = (function() {
         // update the loop timeout
         loopTimeout = workerCount ? setTimeout(runLoop, sleepFrequency) : 0;
     } // runLoop
-    
-    var module = {
+
+    return {
         join: joinLoop,
         leave: leaveLoop
     };
-    
-    return module;
 })();

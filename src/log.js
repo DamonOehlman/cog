@@ -1,7 +1,10 @@
 var Log = exports.Log = (function() {
-    var listeners = [];
     var jsonAvailable = (typeof JSON !== 'undefined'),
-        traceAvailable = window.console && window.console.markTimeline;
+        traceAvailable = window.console && window.console.markTimeline,
+        logError = writer('error'),
+        logInfo = writer('info');
+        
+    /* internal functions */
     
     function writeEntry(level, entryDetails) {
         // initialise variables
@@ -13,80 +16,55 @@ var Log = exports.Log = (function() {
             message += " " + (jsonAvailable && isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
         } // for
         
-        if (typeof console !== 'undefined') {
-            console[level](message);
-        } // if
-        
-        // if we have listeners, then tell them about the event
-        for (ii = 0; ii < listeners.length; ii++) {
-            listeners[ii].call(module, message, level);
-        } // for
+        console[level](message);
     } // writeEntry
     
+    function writer(level) {
+        if (typeof console !== 'undefined') {
+            return function() {
+                writeEntry(level, arguments);
+                return true;
+            };
+        }
+        else {
+            return function() {
+                return false;
+            };
+        } // if..else
+    } // writer
+    
+    /* exports */
+    
+    var trace = (function() {
+        if (traceAvailable) {
+            return function(message, startTicks) {
+                console.markTimeline(message + (startTicks ? ": " + 
+                    (new Date().getTime() - startTicks) + "ms" : ""));
+            };
+        }
+        else {
+            return function() {};
+        } // if..else
+    })();
+    
     // define the module
-    var module = {
-        /* logging functions */
-        
-        getTraceTicks: function() {
-            return traceAvailable ? new Date().getTime() : null;
-        },
-        
-        trace: function(message, startTicks) {
-            if (traceAvailable) {
-                console.markTimeline(message + (startTicks ? ": " + (module.getTraceTicks() - startTicks) + "ms" : ""));
-            } // if
-        },
-        
-        debug: function(message) {
-            writeEntry("debug", arguments);
-        },
-        
-        info: function(message) {
-            writeEntry("info", arguments);
-        },
-
-        warn: function(message) {
-            writeEntry("warn", arguments);
-        },
-
-        error: function(message) {
-            writeEntry("error", arguments);
-        },
+    return {
+        trace: trace,
+        debug: writer('debug'),
+        info: logInfo,
+        warn: writer('warn'),
+        error: logError,
         
         exception: function(error) {
-            module.error(arguments);
-            
-            // iterate through the keys of the error and add them as info sections
-            // TODO: make this targeted at the stack, etc
-            for (var keyname in error) {
-                module.info("ERROR DETAIL: " + keyname + ": " + error[keyname]);
-            } // for
-        },
-        
-        /* error monitoring, exception raising functions */
-        
-        watch: function(sectionDesc, callback) {
-            try {
-                callback();
+            if (logError) {
+                // iterate through the keys of the error and add them as info sections
+                // TODO: make this targeted at the stack, etc
+                for (var keyname in error) {
+                    logInfo("ERROR DETAIL: " + keyname + ": " + error[keyname]);
+                } // for
             }
-            catch (e) {
-                module.exception(e, sectionDesc);
-            } // try..catch
-        },
-        
-        throwError: function(errorMsg) {
-            // log the error
-            module.error(errorMsg);
-            throw new Error(errorMsg);
-        },
-        
-        /* event handler functions */
-        
-        requestUpdates: function(callback) {
-            listeners.push(callback);
         }
+        
     };
-    
-    return module;
 })();
 

@@ -1,5 +1,3 @@
-//= require "../lib/json2.js"
-
 /**
 # COG
 
@@ -15,16 +13,15 @@ COG = (function() {
 
     /* exports */
     
-    var exports = {
-        toID: function(text) {
+    var exports = {},
+    
+        toID = exports.toID = function(text) {
             return text.replace(/\s/g, "-");
         },
         
-        /** @static */
-        objId: function(prefix) {
+        objId = exports.objId = function(prefix) {
             return (prefix ? prefix : "obj") + objectCounter++;
-        }
-    };
+        };
     
     //= require "log"
     
