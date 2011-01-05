@@ -225,8 +225,6 @@ TODO: add information here...
                 xhr = new XMLHttpRequest();
             } // if
 
-            // Log.info("opening request: " + JSON.stringify(params));
-
             // open the request
             // TODO: support basic authentication
             xhr.open(params.method, params.url, params.async);

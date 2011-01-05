@@ -1,9 +1,49 @@
-//= require "core"
+/*!
+ * Sidelab COG Javascript Library v0.2.0
+ * http://www.sidelab.com/
+ *
+ * Copyright 2011, Damon Oehlman <damon.oehlman@sidelab.com>
+ * Licensed under the MIT licence
+ * https://github.com/sidelab/cog
+ *
+ */
+
+if (typeof COG === undefined) {
+    COG = {};
+
+    /**
+    # COG.extend
+    */
+    COG.extend = function() {
+        var target = arguments[0] || {},
+            sources = Array.prototype.slice.call(arguments, 1),
+            length = sources.length,
+            source,
+            ii;
+
+        for (ii = length; ii--; ) {
+            if ((source = sources[ii]) !== null) {
+                for (var name in source) {
+                    var copy = source[name];
+
+                    if (target === copy) {
+                        continue;
+                    } // if
+
+                    if (copy !== undefined) {
+                        target[name] = copy;
+                    } // if
+                } // for
+            } // if
+        } // for
+
+        return target;
+    }; // extend
+} // if
 
 (function() {
-    // initialise variables
     var callbackCounter = 0;
-    
+
     function getHandlers(target) {
         return target.obsHandlers;
     } // getHandlers
@@ -25,7 +65,6 @@
 
         /* initialization code */
 
-        // check that the target has handlers 
         if (! getHandlers(target)) {
             target.obsHandlers = {};
         } // if
@@ -50,11 +89,10 @@
                     },
                     eventArgs;
 
-                // check that we have callbacks
                 if (! eventCallbacks) {
                     return null;
                 } // if
-            
+
                 eventArgs = Array.prototype.slice.call(arguments, 1);
                 eventArgs.unshift(evt);
 
@@ -82,7 +120,7 @@
                 return target;
             }; // unbind
         } // if
-    
+
         return target;
     };
 })();

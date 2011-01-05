@@ -1,13 +1,52 @@
-//= require "core"
+/*!
+ * Sidelab COG Javascript Library v0.2.0
+ * http://www.sidelab.com/
+ *
+ * Copyright 2011, Damon Oehlman <damon.oehlman@sidelab.com>
+ * Licensed under the MIT licence
+ * https://github.com/sidelab/cog
+ *
+ */
+
+if (typeof COG === undefined) {
+    COG = {};
+
+    /**
+    # COG.extend
+    */
+    COG.extend = function() {
+        var target = arguments[0] || {},
+            sources = Array.prototype.slice.call(arguments, 1),
+            length = sources.length,
+            source,
+            ii;
+
+        for (ii = length; ii--; ) {
+            if ((source = sources[ii]) !== null) {
+                for (var name in source) {
+                    var copy = source[name];
+
+                    if (target === copy) {
+                        continue;
+                    } // if
+
+                    if (copy !== undefined) {
+                        target[name] = copy;
+                    } // if
+                } // for
+            } // if
+        } // for
+
+        return target;
+    }; // extend
+} // if
 
 (function() {
-    // initilialise local variables
     var configurables = {};
 
     /* internal functions */
 
     function attachHelper(target, helperName) {
-        // if the helper is not defined, then attach
         if (! target[helperName]) {
             target[helperName] = function(value) {
                 return target.configure(helperName, value);
@@ -45,8 +84,8 @@
                 } // if
             }
             else {
-                return (getCallbacks && (name in getCallbacks)) ? 
-                    getCallbacks[name](name) : 
+                return (getCallbacks && (name in getCallbacks)) ?
+                    getCallbacks[name](name) :
                     params[name];
             } // if..else
 
@@ -59,7 +98,6 @@
     COG.configurable = function(target, configParams, callback, bindHelpers) {
         if (! target) { return; }
 
-        // if the target doesn't yet have a configurable settings member, then add it
         if (! target.gtConfId) {
             initSettings(target);
         } // if
@@ -69,13 +107,8 @@
             targetSettings = getSettings(target),
             targetCallbacks = getConfigCallbacks(target);
 
-        // update the configurables
-        // this is a which gets the last object in an extension chain in
-        // the configurables list, so make sure you extend before you make
-        // an object configurable, otherwise things will get a bit wierd.
         configurables[targetId] = target;
 
-        // add the callback to the list
         targetCallbacks.push(callback);
 
         for (ii = configParams.length; ii--; ) {

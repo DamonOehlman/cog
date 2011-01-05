@@ -1,9 +1,6 @@
-/**
-# COG
+//= require "core"
 
-## Module Functions
-*/
-COG = (function() {
+(function() {
     // initialise constants
     var REGEX_TEMPLATE_VAR = /\$\{(.*?)\}/ig;
     
@@ -25,16 +22,14 @@ COG = (function() {
     
     //= require "log"
     
+    //= require "helpers/types"
     //= require "helpers/object"
     //= require "helpers/string"
-    //= require "helpers/types"
     
-    //= require "loopage"
-    //= require "observable"
-    //= require "configurable"
-    
-    //= require "xhr/jsonp"
-    
-    return exports;
+    COG.extend(COG, exports);
 })();
 
+//= require "loopage"
+//= require "observable"
+//= require "configurable"
+//= require "jsonp"
