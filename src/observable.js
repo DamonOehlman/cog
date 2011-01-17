@@ -46,6 +46,7 @@
                 var eventCallbacks = getHandlersForName(target, eventName),
                     evt = {
                         cancel: false,
+                        name: eventName,
                         tickCount: new Date().getTime()
                     },
                     eventArgs;
@@ -55,12 +56,22 @@
                     return null;
                 } // if
             
+                // get the event arguments without the event name
                 eventArgs = Array.prototype.slice.call(arguments, 1);
+                
+                // if the target has defined an event interceptor (just one allowed)
+                // then send it a capture of the event details
+                if (target.eventInterceptor) {
+                    target.eventInterceptor(eventName, evt, eventArgs);
+                } // if
+
+                // put the event literal to the start of the event arguments
                 eventArgs.unshift(evt);
 
                 for (var ii = eventCallbacks.length; ii-- && (! evt.cancel); ) {
                     eventCallbacks[ii].fn.apply(self, eventArgs);
                 } // for
+                
 
                 return evt;
             }; // trigger

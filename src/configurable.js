@@ -2,7 +2,8 @@
 
 (function() {
     // initilialise local variables
-    var configurables = {};
+    var configurables = {},
+        counter = 0;
 
     /* internal functions */
 
@@ -24,7 +25,7 @@
     } // getConfigGetters
 
     function initSettings(target) {
-        target.gtConfId = objId("configurable");
+        target.gtConfId = 'configurable' + (counter++);
         target.gtConfig = {};
         target.gtConfigFns = [];
 

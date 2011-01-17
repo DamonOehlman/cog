@@ -6,7 +6,8 @@
     
     // initialise variables
     var hasOwn = Object.prototype.hasOwnProperty,
-        objectCounter = 0;
+        objectCounter = 0,
+        extend = COG.extend;
 
     /* exports */
     
@@ -20,8 +21,6 @@
             return (prefix ? prefix : "obj") + objectCounter++;
         };
     
-    //= require "log"
-    
     //= require "helpers/types"
     //= require "helpers/object"
     //= require "helpers/string"
@@ -29,7 +28,9 @@
     COG.extend(COG, exports);
 })();
 
+//= require "log"
 //= require "loopage"
 //= require "observable"
 //= require "configurable"
 //= require "jsonp"
+//= require "tween"

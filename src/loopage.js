@@ -1,4 +1,5 @@
 //= require "core"
+//= require "loopage"
 
 /**
 # COG.Loopage
@@ -19,7 +20,7 @@ COG.Loopage = (function() {
         recalcSleepFrequency = true;
     
     function LoopWorker(params) {
-        var self = extend({
+        var self = COG.extend({
             id: workerCount++,
             frequency: 0,
             after: 0,
@@ -42,7 +43,7 @@ COG.Loopage = (function() {
         } // if
         
         // make the worker observable
-        observable(worker);
+        COG.observable(worker);
         worker.bind('complete', function() {
             leaveLoop(worker.id);
         });

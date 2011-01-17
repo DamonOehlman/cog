@@ -1,28 +1,17 @@
-var Log = exports.Log = (function() {
-    var jsonAvailable = (typeof JSON !== 'undefined'),
-        traceAvailable = window.console && window.console.markTimeline,
+//= require "core"
+
+(function() {
+    var traceAvailable = window.console && window.console.markTimeline,
         logError = writer('error'),
         logInfo = writer('info');
         
     /* internal functions */
     
-    function writeEntry(level, entryDetails) {
-        // initialise variables
-        var ii;
-        var message = entryDetails && (entryDetails.length > 0) ? entryDetails[0] : "";
-        
-        // iterate through the remaining arguments and append them as required
-        for (ii = 1; entryDetails && (ii < entryDetails.length); ii++) {
-            message += " " + (jsonAvailable && isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
-        } // for
-        
-        console[level](message);
-    } // writeEntry
-    
     function writer(level) {
         if (typeof console !== 'undefined') {
             return function() {
-                writeEntry(level, arguments);
+                console[level](Array.prototype.slice.call(arguments, 0).join(' '));
+
                 return true;
             };
         }
@@ -48,7 +37,7 @@ var Log = exports.Log = (function() {
     })();
     
     // define the module
-    return {
+    COG.extend(COG, {
         trace: trace,
         debug: writer('debug'),
         info: logInfo,
@@ -65,6 +54,6 @@ var Log = exports.Log = (function() {
             }
         }
         
-    };
+    });
 })();
 

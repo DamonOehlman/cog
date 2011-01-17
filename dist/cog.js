@@ -8,44 +8,43 @@
  *
  */
 
-if (typeof COG === undefined) {
-    COG = {};
+COG = typeof COG !== 'undefined' ? COG : {};
 
-    /**
-    # COG.extend
-    */
-    COG.extend = function() {
-        var target = arguments[0] || {},
-            sources = Array.prototype.slice.call(arguments, 1),
-            length = sources.length,
-            source,
-            ii;
+/**
+# COG.extend
+*/
+COG.extend = function() {
+    var target = arguments[0] || {},
+        sources = Array.prototype.slice.call(arguments, 1),
+        length = sources.length,
+        source,
+        ii;
 
-        for (ii = length; ii--; ) {
-            if ((source = sources[ii]) !== null) {
-                for (var name in source) {
-                    var copy = source[name];
+    for (ii = length; ii--; ) {
+        if ((source = sources[ii]) !== null) {
+            for (var name in source) {
+                var copy = source[name];
 
-                    if (target === copy) {
-                        continue;
-                    } // if
+                if (target === copy) {
+                    continue;
+                } // if
 
-                    if (copy !== undefined) {
-                        target[name] = copy;
-                    } // if
-                } // for
-            } // if
-        } // for
+                if (copy !== undefined) {
+                    target[name] = copy;
+                } // if
+            } // for
+        } // if
+    } // for
 
-        return target;
-    }; // extend
-} // if
+    return target;
+}; // extend
 
 (function() {
     var REGEX_TEMPLATE_VAR = /\$\{(.*?)\}/ig;
 
     var hasOwn = Object.prototype.hasOwnProperty,
-        objectCounter = 0;
+        objectCounter = 0,
+        extend = COG.extend;
 
     /* exports */
 
@@ -58,72 +57,6 @@ if (typeof COG === undefined) {
         objId = exports.objId = function(prefix) {
             return (prefix ? prefix : "obj") + objectCounter++;
         };
-
-var Log = exports.Log = (function() {
-    var jsonAvailable = (typeof JSON !== 'undefined'),
-        traceAvailable = window.console && window.console.markTimeline,
-        logError = writer('error'),
-        logInfo = writer('info');
-
-    /* internal functions */
-
-    function writeEntry(level, entryDetails) {
-        var ii;
-        var message = entryDetails && (entryDetails.length > 0) ? entryDetails[0] : "";
-
-        for (ii = 1; entryDetails && (ii < entryDetails.length); ii++) {
-            message += " " + (jsonAvailable && isPlainObject(entryDetails[ii]) ? JSON.stringify(entryDetails[ii]) : entryDetails[ii]);
-        } // for
-
-        console[level](message);
-    } // writeEntry
-
-    function writer(level) {
-        if (typeof console !== 'undefined') {
-            return function() {
-                writeEntry(level, arguments);
-                return true;
-            };
-        }
-        else {
-            return function() {
-                return false;
-            };
-        } // if..else
-    } // writer
-
-    /* exports */
-
-    var trace = (function() {
-        if (traceAvailable) {
-            return function(message, startTicks) {
-                console.markTimeline(message + (startTicks ? ": " +
-                    (new Date().getTime() - startTicks) + "ms" : ""));
-            };
-        }
-        else {
-            return function() {};
-        } // if..else
-    })();
-
-    return {
-        trace: trace,
-        debug: writer('debug'),
-        info: logInfo,
-        warn: writer('warn'),
-        error: logError,
-
-        exception: function(error) {
-            if (logError) {
-                for (var keyname in error) {
-                    logInfo("ERROR DETAIL: " + keyname + ": " + error[keyname]);
-                } // for
-            }
-        }
-
-    };
-})();
-
 
 var isFunction = exports.isFunction = function( obj ) {
     return toString.call(obj) === "[object Function]";
@@ -221,6 +154,61 @@ var wordExists = exports.wordExists = function(stringToCheck, word) {
 })();
 
 
+(function() {
+    var traceAvailable = window.console && window.console.markTimeline,
+        logError = writer('error'),
+        logInfo = writer('info');
+
+    /* internal functions */
+
+    function writer(level) {
+        if (typeof console !== 'undefined') {
+            return function() {
+                console[level](Array.prototype.slice.call(arguments, 0).join(' '));
+
+                return true;
+            };
+        }
+        else {
+            return function() {
+                return false;
+            };
+        } // if..else
+    } // writer
+
+    /* exports */
+
+    var trace = (function() {
+        if (traceAvailable) {
+            return function(message, startTicks) {
+                console.markTimeline(message + (startTicks ? ": " +
+                    (new Date().getTime() - startTicks) + "ms" : ""));
+            };
+        }
+        else {
+            return function() {};
+        } // if..else
+    })();
+
+    COG.extend(COG, {
+        trace: trace,
+        debug: writer('debug'),
+        info: logInfo,
+        warn: writer('warn'),
+        error: logError,
+
+        exception: function(error) {
+            if (logError) {
+                for (var keyname in error) {
+                    logInfo("ERROR DETAIL: " + keyname + ": " + error[keyname]);
+                } // for
+            }
+        }
+
+    });
+})();
+
+
 /**
 # COG.Loopage
 This module implements a control loop that can be used to centralize
@@ -238,7 +226,7 @@ COG.Loopage = (function() {
         recalcSleepFrequency = true;
 
     function LoopWorker(params) {
-        var self = extend({
+        var self = COG.extend({
             id: workerCount++,
             frequency: 0,
             after: 0,
@@ -259,7 +247,7 @@ COG.Loopage = (function() {
             worker.lastTick = new Date().getTime() + worker.after;
         } // if
 
-        observable(worker);
+        COG.observable(worker);
         worker.bind('complete', function() {
             leaveLoop(worker.id);
         });
@@ -418,7 +406,8 @@ COG.Loopage = (function() {
 })();
 
 (function() {
-    var configurables = {};
+    var configurables = {},
+        counter = 0;
 
     /* internal functions */
 
@@ -439,7 +428,7 @@ COG.Loopage = (function() {
     } // getConfigGetters
 
     function initSettings(target) {
-        target.gtConfId = objId("configurable");
+        target.gtConfId = 'configurable' + (counter++);
         target.gtConfig = {};
         target.gtConfigFns = [];
 

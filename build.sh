@@ -3,7 +3,7 @@ CLOSURE_COMPILER="/development/tools/javascript/closure/compiler.jar"
 
 : ${MINIFY:=false}
 
-for variant in cog loopage observable configurable jsonp
+for variant in cog loopage observable configurable jsonp tween
 do
     echo "Building COG: $variant"
     

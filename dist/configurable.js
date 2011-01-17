@@ -8,41 +8,40 @@
  *
  */
 
-if (typeof COG === undefined) {
-    COG = {};
+COG = typeof COG !== 'undefined' ? COG : {};
 
-    /**
-    # COG.extend
-    */
-    COG.extend = function() {
-        var target = arguments[0] || {},
-            sources = Array.prototype.slice.call(arguments, 1),
-            length = sources.length,
-            source,
-            ii;
+/**
+# COG.extend
+*/
+COG.extend = function() {
+    var target = arguments[0] || {},
+        sources = Array.prototype.slice.call(arguments, 1),
+        length = sources.length,
+        source,
+        ii;
 
-        for (ii = length; ii--; ) {
-            if ((source = sources[ii]) !== null) {
-                for (var name in source) {
-                    var copy = source[name];
+    for (ii = length; ii--; ) {
+        if ((source = sources[ii]) !== null) {
+            for (var name in source) {
+                var copy = source[name];
 
-                    if (target === copy) {
-                        continue;
-                    } // if
+                if (target === copy) {
+                    continue;
+                } // if
 
-                    if (copy !== undefined) {
-                        target[name] = copy;
-                    } // if
-                } // for
-            } // if
-        } // for
+                if (copy !== undefined) {
+                    target[name] = copy;
+                } // if
+            } // for
+        } // if
+    } // for
 
-        return target;
-    }; // extend
-} // if
+    return target;
+}; // extend
 
 (function() {
-    var configurables = {};
+    var configurables = {},
+        counter = 0;
 
     /* internal functions */
 
@@ -63,7 +62,7 @@ if (typeof COG === undefined) {
     } // getConfigGetters
 
     function initSettings(target) {
-        target.gtConfId = objId("configurable");
+        target.gtConfId = 'configurable' + (counter++);
         target.gtConfig = {};
         target.gtConfigFns = [];
 
