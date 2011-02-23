@@ -188,36 +188,31 @@
             },
 
             update: function(tickCount) {
-                try {
-                    // calculate the updated value
-                    var elapsed = tickCount - startTicks,
-                        updatedValue = params.tweenFn(
-                                            elapsed, 
-                                            beginningValue, 
-                                            change, 
-                                            params.duration);
+                // calculate the updated value
+                var elapsed = tickCount - startTicks,
+                    updatedValue = params.tweenFn(
+                                        elapsed, 
+                                        beginningValue, 
+                                        change, 
+                                        params.duration);
 
-                    // update the property value
+                // update the property value
+                if (params.target) {
+                    params.target[params.property] = updatedValue;
+                } // if
+
+                // iterate through the update listeners 
+                // and let them know the updated value
+                notifyListeners(updatedValue);
+
+                complete = startTicks + params.duration <= tickCount;
+                if (complete) {
                     if (params.target) {
-                        params.target[params.property] = updatedValue;
+                        params.target[params.property] = params.tweenFn(params.duration, beginningValue, change, params.duration);
                     } // if
 
-                    // iterate through the update listeners 
-                    // and let them know the updated value
-                    notifyListeners(updatedValue);
-
-                    complete = startTicks + params.duration <= tickCount;
-                    if (complete) {
-                        if (params.target) {
-                            params.target[params.property] = params.tweenFn(params.duration, beginningValue, change, params.duration);
-                        } // if
-
-                        notifyListeners(updatedValue, true);
-                    } // if
-                }
-                catch (e) {
-                    COG.exception(e);
-                } // try..catch
+                    notifyListeners(updatedValue, true);
+                } // if
             },
 
             requestUpdates: function(callback) {
