@@ -41,14 +41,19 @@
 
                 return callbackId;
             }; // bind
-
-            target.trigger = function(eventName) {
+            
+            target.triggerCustom = function(eventName, args) {
                 var eventCallbacks = getHandlersForName(target, eventName),
                     evt = {
                         cancel: false,
                         name: eventName
                     },
                     eventArgs;
+                    
+                // if we have arguments, then extend the evt object
+                if (args) {
+                    COG.extend(evt, args);
+                } // if
 
                 // check that we have callbacks
                 if (! eventCallbacks) {
@@ -56,7 +61,7 @@
                 } // if
             
                 // get the event arguments without the event name
-                eventArgs = Array.prototype.slice.call(arguments, 1);
+                eventArgs = Array.prototype.slice.call(arguments, 2);
                 
                 // if the target has defined an event interceptor (just one allowed)
                 // then send it a capture of the event details
@@ -68,11 +73,17 @@
                 eventArgs.unshift(evt);
 
                 for (var ii = eventCallbacks.length; ii-- && (! evt.cancel); ) {
-                    eventCallbacks[ii].fn.apply(self, eventArgs);
+                    eventCallbacks[ii].fn.apply(this, eventArgs);
                 } // for
                 
+                return evt;                
+            };
 
-                return evt;
+            target.trigger = function(eventName) {
+                var eventArgs = Array.prototype.slice.call(arguments, 1);
+                eventArgs.splice(0, 0, eventName, null);
+                
+                return target.triggerCustom.apply(this, eventArgs);
             }; // trigger
 
             target.unbind = function(eventName, callbackId) {
