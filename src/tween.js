@@ -290,28 +290,43 @@
             tweenWorker = null;
         });
     } // wakeTweens
-
+    
     /* tween exports */
 
     /**
     # COG.tweenValue
     */
-    COG.tweenValue = function(startValue, endValue, fn, callback, duration) {
-        // create a tween that doesn't operate on a property
-        var fnresult = new Tween({
-            startValue: startValue,
-            endValue: endValue,
-            tweenFn: fn,
-            complete: callback,
-            duration: duration
-        });
+    COG.tweenValue = function(startValue, endValue, fn, duration, callback) {
+        
+        var startTicks = animTime(),
+            change = endValue - startValue,
+            tween = {};
+            
+        function runTween(tickCount) {
+            // calculate the updated value
+            var elapsed = tickCount - startTicks,
+                updatedValue = fn(elapsed, startValue, change, duration),
+                complete = startTicks + duration <= tickCount,
+                cont = !complete,
+                retVal;
 
-        // add the the list return the new tween
-        tweens.push(fnresult);
-        return fnresult;
+            if (callback) {
+                // call the callback
+                retVal = callback(updatedValue, complete, elapsed);
+                
+                // check the return value
+                cont = typeof retVal != 'undefined' ? retVal && cont : cont;
+            } // if
+            
+            if (cont) {
+                animFrame(runTween);
+            } // if
+        } // runTween            
+            
+        animFrame(runTween);
+        
+        return tween;
     }; // T5.tweenValue
-    
-    
 
     /*
     # T5.tween

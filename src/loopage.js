@@ -1,5 +1,5 @@
 //= require "core"
-//= require "loopage"
+//= require "animframe"
 
 /**
 # COG.Loopage
@@ -8,16 +8,11 @@ jobs draw loops, animation calculations, partial calculations for COG.Job
 instances, etc.
 */
 COG.Loopage = (function() {
-    // initialise some defaults (to once per minute)
-    var MIN_SLEEP = 60 * 1000;
-    
     // initialise variables
-    var workerCount = 0,
+    var frameId = 0,
+        workerCount = 0,
         workers = [],
-        removalQueue = [],
-        loopTimeout = 0,
-        sleepFrequency = MIN_SLEEP,
-        recalcSleepFrequency = true;
+        removalQueue = [];
     
     function LoopWorker(params) {
         var self = COG.extend({
@@ -63,12 +58,9 @@ COG.Loopage = (function() {
     
     function reschedule() {
         // if the loop is not running, then set it running
-        if (loopTimeout) {
-            clearTimeout(loopTimeout);
+        if (! frameId) {
+            frameId = animFrame(runLoop);
         } // if
-        
-        // reschedule the loop
-        loopTimeout = setTimeout(runLoop, 0);
         
         // return the newly created worker
         recalcSleepFrequency = true;
@@ -77,7 +69,7 @@ COG.Loopage = (function() {
     function runLoop() {
         // get the current tick count
         var ii,
-            tickCount = new Date().getTime(),
+            tickCount = animTime(),
             workerCount = workers.length;
     
         // iterate through removal queue
@@ -92,17 +84,8 @@ COG.Loopage = (function() {
                 } // if
             } // for
         
-            recalcSleepFrequency = true;
             workerCount = workers.length;
         } // while
-    
-        // if the sleep frequency needs to be calculated then do that now
-        if (recalcSleepFrequency) {
-            sleepFrequency = MIN_SLEEP;
-            for (ii = workerCount; ii--; ) {
-                sleepFrequency = workers[ii].frequency < sleepFrequency ? workers[ii].frequency : sleepFrequency;
-            } // for
-        } // if
     
         // iterate through the workers and run
         for (ii = workerCount; ii--; ) {
@@ -119,7 +102,7 @@ COG.Loopage = (function() {
         } // for
     
         // update the loop timeout
-        loopTimeout = workerCount ? setTimeout(runLoop, sleepFrequency) : 0;
+        frameId = workerCount ? animFrame(runLoop) : 0;
     } // runLoop
 
     return {
