@@ -1,10 +1,10 @@
 //= require "core"
-//= require "loopage"
 
 (function() {
     // initialise constants
     var BACK_S = 1.70158,
         HALF_PI = Math.PI / 2,
+        ANI_WAIT = 1000 / 60 | 0,
         
         // initialise math function shortcuts
         abs = Math.abs,
@@ -14,7 +14,6 @@
         cos = Math.cos,
     
         // initialise variables
-        tweens = [],
         tweenWorker = null,
         updatingTweens = false;
 
@@ -147,149 +146,11 @@
         }
     };
     
-    /* define the Tween class */
-    
-    /**
-    # COG.Tween
-    */
-    var Tween = COG.Tween = function(params) {
-        params = COG.extend({
-            target: null,
-            property: null,
-            startValue: 0,
-            endValue: null,
-            duration: 2000,
-            tweenFn: easing('sine.out'),
-            complete: null
-        }, params);
-
-        // get the start ticks
-        var startTicks = new Date().getTime(),
-            updateListeners = [],
-            complete = false,
-            beginningValue = 0.0,
-            change = 0;
-
-        function notifyListeners(updatedValue, complete) {
-            for (var ii = updateListeners.length; ii--; ) {
-                updateListeners[ii](updatedValue, complete);
-            } // for
-        } // notifyListeners
-
-        var self = {
-            isComplete: function() {
-                return complete;
-            },
-
-            triggerComplete: function(cancelled) {
-                if (params.complete) {
-                    params.complete(cancelled);
-                } // if
-            },
-
-            update: function(tickCount) {
-                // calculate the updated value
-                var elapsed = tickCount - startTicks,
-                    updatedValue = params.tweenFn(
-                                        elapsed, 
-                                        beginningValue, 
-                                        change, 
-                                        params.duration);
-
-                // update the property value
-                if (params.target) {
-                    params.target[params.property] = updatedValue;
-                } // if
-
-                // iterate through the update listeners 
-                // and let them know the updated value
-                notifyListeners(updatedValue);
-
-                complete = startTicks + params.duration <= tickCount;
-                if (complete) {
-                    if (params.target) {
-                        params.target[params.property] = params.tweenFn(params.duration, beginningValue, change, params.duration);
-                    } // if
-
-                    notifyListeners(updatedValue, true);
-                } // if
-            },
-
-            requestUpdates: function(callback) {
-                updateListeners.push(callback);
-            }
-        };
-
-        // calculate the beginning value
-        beginningValue = 
-            (params.target && params.property && params.target[params.property]) ? params.target[params.property] : params.startValue;
-
-        // calculate the change and beginning position
-        if (typeof params.endValue !== 'undefined') {
-            change = (params.endValue - beginningValue);
-        } // if
-
-        // if no change is required, then mark as complete 
-        // so the update method will never be called
-        if (change == 0) {
-            complete = true;
-        } // if..else
-
-        // wake the tween timer
-        wakeTweens();
-
-        return self;
-    };
-
     /* animation internals */
     
     function simpleTypeName(typeName) {
         return typeName.replace(/[\-\_\s\.]/g, '').toLowerCase();
     } // simpleTypeName
-
-    function updateTweens(tickCount, worker) {
-        if (updatingTweens) { return tweens.length; }
-
-        updatingTweens = true;
-        try {
-            // iterate through the active tweens and update each
-            var ii = 0;
-            while (ii < tweens.length) {
-                if (tweens[ii].isComplete()) {
-                    tweens[ii].triggerComplete(false);
-                    tweens.splice(ii, 1);
-                }
-                else {
-                    tweens[ii].update(tickCount);
-                    ii++;
-                } // if..else
-            } // while
-        }
-        finally {
-            updatingTweens = false;
-        } // try..finally
-
-        // if we have no more tweens then complete it
-        if (tweens.length === 0) {
-            tweenWorker.trigger('complete');
-        } // if
-
-        return tweens.length;
-    } // update
-
-    function wakeTweens() {
-        if (tweenWorker) { return; }
-
-        // create a tween worker
-        tweenWorker = COG.Loopage.join({
-            execute: updateTweens,
-            frequency: 20
-        });
-
-        tweenWorker.bind('complete', function(evt) {
-            tweenWorker = null;
-        });
-    } // wakeTweens
     
     /* tween exports */
 
@@ -298,28 +159,35 @@
     */
     COG.tweenValue = function(startValue, endValue, fn, duration, callback) {
         
-        var startTicks = animTime(),
+        var startTicks = new Date().getTime(),
+            lastTicks = 0,
             change = endValue - startValue,
             tween = {};
             
         function runTween(tickCount) {
-            // calculate the updated value
-            var elapsed = tickCount - startTicks,
-                updatedValue = fn(elapsed, startValue, change, duration),
-                complete = startTicks + duration <= tickCount,
-                cont = !complete,
-                retVal;
-
-            if (callback) {
-                // call the callback
-                retVal = callback(updatedValue, complete, elapsed);
-                
-                // check the return value
-                cont = typeof retVal != 'undefined' ? retVal && cont : cont;
-            } // if
+            // initialise the tick count if it isn't already defined
+            // not all browsers pass through the ticks with the requestAnimationFrame :/
+            tickCount = tickCount ? tickCount : new Date().getTime();
             
-            if (cont) {
-                animFrame(runTween);
+            if (lastTicks + ANI_WAIT < tickCount) {
+                // calculate the updated value
+                var elapsed = tickCount - startTicks,
+                    updatedValue = fn(elapsed, startValue, change, duration),
+                    complete = startTicks + duration <= tickCount,
+                    cont = !complete,
+                    retVal;
+
+                if (callback) {
+                    // call the callback
+                    retVal = callback(updatedValue, complete, elapsed);
+
+                    // check the return value
+                    cont = typeof retVal != 'undefined' ? retVal && cont : cont;
+                } // if
+
+                if (cont) {
+                    animFrame(runTween);
+                } // if
             } // if
         } // runTween            
             
@@ -327,57 +195,6 @@
         
         return tween;
     }; // T5.tweenValue
-
-    /*
-    # T5.tween
-    */
-    COG.tween = function(target, property, targetValue, fn, callback, duration) {
-        var fnresult = new Tween({
-            target: target,
-            property: property,
-            endValue: targetValue,
-            tweenFn: fn,
-            duration: duration,
-            complete: callback
-        });
-
-        // return the new tween
-        tweens.push(fnresult);
-        return fnresult;
-    }; // T5.tween
-    
-    /**
-    # COG.endTweens
-    */
-    COG.endTweens = function(checkCallback) {
-        if (updatingTweens) { return ; }
-
-        updatingTweens = true;
-        try {
-            var ii = 0;
-
-            // trigger the complete for the tween marking it as cancelled
-            while (ii < tweens.length) {
-                if ((! checkCallback) || checkCallback(tweens[ii])) {
-                    tweens[ii].triggerComplete(true);
-                    tweens.splice(ii, 1);
-                }
-                else {
-                    ii++;
-                } // if..else
-            } // for
-        }
-        finally {
-            updatingTweens = false;
-        } // try..finally
-    };
-    
-    /**
-    # COG.getTweens
-    */
-    COG.getTweens = function() {
-        return [].concat(tweens);
-    };
 
     /** 
     # COG.easing

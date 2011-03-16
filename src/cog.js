@@ -29,7 +29,6 @@
 })();
 
 //= require "log"
-//= require "loopage"
 //= require "observable"
 //= require "configurable"
 //= require "jsonp"
