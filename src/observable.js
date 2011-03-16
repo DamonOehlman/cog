@@ -5,7 +5,9 @@
     var callbackCounter = 0;
     
     function getHandlers(target) {
-        return target.obsHandlers;
+        return target.hasOwnProperty('obsHandlers') ? 
+                target.obsHandlers : 
+                null;
     } // getHandlers
 
     function getHandlersForName(target, eventName) {
@@ -30,7 +32,7 @@
             target.obsHandlers = {};
         } // if
 
-        var attached = target.bind || target.trigger || target.unbind;
+        var attached = target.hasOwnProperty('bind');
         if (! attached) {
             target.bind = function(eventName, callback) {
                 var callbackId = "callback" + (callbackCounter++);
@@ -46,7 +48,8 @@
                 var eventCallbacks = getHandlersForName(target, eventName),
                     evt = {
                         cancel: false,
-                        name: eventName
+                        name: eventName,
+                        source: this
                     },
                     eventArgs;
                     
