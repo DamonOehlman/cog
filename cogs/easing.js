@@ -1,6 +1,4 @@
-//= require "core"
-
-(function() {
+var _easing = (function() {
     // initialise constants
     var BACK_S = 1.70158,
         HALF_PI = Math.PI / 2,
@@ -14,7 +12,6 @@
         cos = Math.cos,
     
         // initialise variables
-        tweenWorker = null,
         updatingTweens = false;
 
     /*
@@ -146,67 +143,8 @@
         }
     };
     
-    /* animation internals */
-    
-    function simpleTypeName(typeName) {
-        return typeName.replace(/[\-\_\s\.]/g, '').toLowerCase();
-    } // simpleTypeName
-    
-    /* tween exports */
-
-    /**
-    # COG.tweenValue
-    */
-    COG.tweenValue = function(startValue, endValue, fn, duration, callback) {
-        
-        var startTicks = new Date().getTime(),
-            lastTicks = 0,
-            change = endValue - startValue,
-            tween = {};
-            
-        function runTween(tickCount) {
-            // initialise the tick count if it isn't already defined
-            // not all browsers pass through the ticks with the requestAnimationFrame :/
-            tickCount = tickCount ? tickCount : new Date().getTime();
-            
-            if (lastTicks + ANI_WAIT < tickCount) {
-                // calculate the updated value
-                var elapsed = tickCount - startTicks,
-                    updatedValue = fn(elapsed, startValue, change, duration),
-                    complete = startTicks + duration <= tickCount,
-                    cont = !complete,
-                    retVal;
-
-                if (callback) {
-                    // call the callback
-                    retVal = callback(updatedValue, complete, elapsed);
-
-                    // check the return value
-                    cont = typeof retVal != 'undefined' ? retVal && cont : cont;
-                } // if
-
-                if (cont) {
-                    animFrame(runTween);
-                } // if
-            } // if
-        } // runTween            
-            
-        animFrame(runTween);
-        
-        return tween;
-    }; // T5.tweenValue
-
-    /** 
-    # COG.easing
-    */
-    var easing = COG.easing = function(typeName) {
-        return easingFns[simpleTypeName(typeName)];
-    }; // easing
-
-    /**
-    # COG.registerEasingType
-    */
-    COG.registerEasingType = function(typeName, callback) {
-        easingFns[simpleTypeName(typeName)] = callback;
-    }; // registerEasingType
+    return function(typeName) {
+        typeName = typeName.replace(/[\-\_\s\.]/g, '').toLowerCase();
+        return easingFns[typeName] || easingFns.linear;
+    };
 })();

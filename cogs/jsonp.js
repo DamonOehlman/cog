@@ -1,5 +1,3 @@
-//= require "core"
-
 /** 
 Lightweight JSONP fetcher - www.nonobstrusive.com
 The JSONP namespace provides a lightweight JSONP implementation.  This code
@@ -11,7 +9,7 @@ variable (didn't work with multiple calls).
 
 http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
 */
-(function(){
+var _jsonp = (function(){
     var counter = 0, head, query, key, window = this;
     
     function load(url) {
@@ -35,7 +33,7 @@ http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-l
         head.appendChild( script );
     } // load
     
-    COG.jsonp = function(url, callback, callbackParam) {
+    return function(url, callback, callbackParam) {
         // apply either a ? or & to the url depending on whether we already have query params
         url += url.indexOf("?") >= 0 ? "&" : "?";
 

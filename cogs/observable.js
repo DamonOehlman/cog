@@ -1,49 +1,11 @@
-/*!
- * Sidelab COG Javascript Library v0.2.0
- * http://www.sidelab.com/
- *
- * Copyright 2011, Damon Oehlman <damon.oehlman@sidelab.com>
- * Licensed under the MIT licence
- * https://github.com/sidelab/cog
- *
- */
-
-COG = typeof COG !== 'undefined' ? COG : {};
-
-/**
-# COG.extend
-*/
-COG.extend = function() {
-    var target = arguments[0] || {},
-        sources = Array.prototype.slice.call(arguments, 1),
-        length = sources.length,
-        source,
-        ii;
-
-    for (ii = length; ii--; ) {
-        if ((source = sources[ii]) !== null) {
-            for (var name in source) {
-                var copy = source[name];
-
-                if (target === copy) {
-                    continue;
-                } // if
-
-                if (copy !== undefined) {
-                    target[name] = copy;
-                } // if
-            } // for
-        } // if
-    } // for
-
-    return target;
-}; // extend
-
-(function() {
+var _observable = (function() {
+    // initialise variables
     var callbackCounter = 0;
-
+    
     function getHandlers(target) {
-        return target.obsHandlers;
+        return target.hasOwnProperty('obsHandlers') ? 
+                target.obsHandlers : 
+                null;
     } // getHandlers
 
     function getHandlersForName(target, eventName) {
@@ -55,19 +17,17 @@ COG.extend = function() {
         return handlers[eventName];
     } // getHandlersForName
 
-    /**
-    # COG.observable
-    */
-    COG.observable = function(target) {
+    return function(target) {
         if (! target) { return null; }
 
         /* initialization code */
 
+        // check that the target has handlers 
         if (! getHandlers(target)) {
             target.obsHandlers = {};
         } // if
 
-        var attached = target.bind || target.trigger || target.unbind;
+        var attached = target.hasOwnProperty('bind');
         if (! attached) {
             target.bind = function(eventName, callback) {
                 var callbackId = "callback" + (callbackCounter++);
@@ -78,27 +38,50 @@ COG.extend = function() {
 
                 return callbackId;
             }; // bind
-
-            target.trigger = function(eventName) {
+            
+            target.triggerCustom = function(eventName, args) {
                 var eventCallbacks = getHandlersForName(target, eventName),
                     evt = {
                         cancel: false,
-                        tickCount: new Date().getTime()
+                        name: eventName,
+                        source: this
                     },
                     eventArgs;
+                    
+                // if we have arguments, then extend the evt object
+                for (var key in args) {
+                    evt[key] = args[key];
+                } // for
 
+                // check that we have callbacks
                 if (! eventCallbacks) {
                     return null;
                 } // if
+            
+                // get the event arguments without the event name
+                eventArgs = Array.prototype.slice.call(arguments, 2);
+                
+                // if the target has defined an event interceptor (just one allowed)
+                // then send it a capture of the event details
+                if (target.eventInterceptor) {
+                    target.eventInterceptor(eventName, evt, eventArgs);
+                } // if
 
-                eventArgs = Array.prototype.slice.call(arguments, 1);
+                // put the event literal to the start of the event arguments
                 eventArgs.unshift(evt);
 
                 for (var ii = eventCallbacks.length; ii-- && (! evt.cancel); ) {
-                    eventCallbacks[ii].fn.apply(self, eventArgs);
+                    eventCallbacks[ii].fn.apply(this, eventArgs);
                 } // for
+                
+                return evt;                
+            };
 
-                return evt;
+            target.trigger = function(eventName) {
+                var eventArgs = Array.prototype.slice.call(arguments, 1);
+                eventArgs.splice(0, 0, eventName, null);
+                
+                return target.triggerCustom.apply(this, eventArgs);
             }; // trigger
 
             target.unbind = function(eventName, callbackId) {
@@ -118,7 +101,7 @@ COG.extend = function() {
                 return target;
             }; // unbind
         } // if
-
+    
         return target;
     };
 })();
