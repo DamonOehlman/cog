@@ -2,6 +2,7 @@ var _is = (function() {
     
     var has = 'hasOwnProperty',
         isnan = {'NaN': 1, 'Infinity': 1, '-Infinity': 1},
+        proto = 'prototype',
         lowerCase = String[proto].toLowerCase,
         objectToString = Object[proto].toString;
     
