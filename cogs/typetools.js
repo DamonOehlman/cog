@@ -1,4 +1,10 @@
 var _is = (function() {
+    
+    var has = 'hasOwnProperty',
+        isnan = {'NaN': 1, 'Infinity': 1, '-Infinity': 1},
+        lowerCase = String[proto].toLowerCase,
+        objectToString = Object[proto].toString;
+    
     /*
     Dmitry Baranovskiy's wonderful is function, sourced from RaphaelJS:
     https://github.com/DmitryBaranovskiy/raphael
