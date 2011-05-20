@@ -10,7 +10,7 @@ variable (didn't work with multiple calls).
 http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
 */
 var _jsonp = (function(){
-    var counter = 0, head, query, key, window = this;
+    var counter = 0, head, query, key;
     
     function load(url) {
         var script = document.createElement('script'),
@@ -33,7 +33,7 @@ var _jsonp = (function(){
         head.appendChild( script );
     } // load
     
-    return function(url, callback, callbackParam) {
+    function clientReq(url, callback, callbackParam) {
         // apply either a ? or & to the url depending on whether we already have query params
         url += url.indexOf("?") >= 0 ? "&" : "?";
 
@@ -48,5 +48,24 @@ var _jsonp = (function(){
  
         load(url + (callbackParam ? callbackParam : "callback") + "=" + jsonp);
         return jsonp;
-    }; // jsonp
+    } // clientRect
+
+    // TODO: remove the callback, it's not needed usually, just some of the 
+    // webservices that I deal with don't respond without the callback parameter
+    // set (which is extremely silly, I know)
+    function serverReq(url, callback, callbackParam) {
+        var request = require('request'),
+            requestURI = url + (url.indexOf("?") >= 0 ? "&" : "?") + 
+                (callbackParam ? callbackParam : 'callback') + '=cb';
+
+        request({ uri: requestURI }, function(error, response, body) {
+            // remove the silly callback parameter
+            var cleaned = body.replace(/^.*\(/, '').replace(/\).*$/, '');
+
+            // fire the callback, first parsing the JSON
+            callback(JSON.parse(cleaned));
+        });
+    } // serverReq
+    
+    return typeof window != 'undefined' ? clientReq : serverReq;
 }());
