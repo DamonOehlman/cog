@@ -57,6 +57,9 @@ var _observable = (function() {
                 if (! eventCallbacks) {
                     return null;
                 } // if
+                
+                // add the global handlers
+                eventCallbacks = eventCallbacks.concat(getHandlersForName(target, '*'));
             
                 // get the event arguments without the event name
                 eventArgs = Array.prototype.slice.call(arguments, 2);
