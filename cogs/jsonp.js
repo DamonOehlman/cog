@@ -59,11 +59,18 @@ var _jsonp = (function(){
                 (callbackParam ? callbackParam : 'callback') + '=cb';
 
         request({ uri: requestURI }, function(error, response, body) {
-            // remove the silly callback parameter
-            var cleaned = body.replace(/^.*\(/, '').replace(/\).*$/, '');
+            if (! error) {
+                // remove the silly callback parameter
+                var cleaned = body.replace(/^.*\(/, '').replace(/\).*$/, '');
 
-            // fire the callback, first parsing the JSON
-            callback(JSON.parse(cleaned));
+                // fire the callback, first parsing the JSON
+                callback(JSON.parse(cleaned));
+            }
+            else {
+                callback({
+                    error: error
+                });
+            } // if..else
         });
     } // serverReq
     
