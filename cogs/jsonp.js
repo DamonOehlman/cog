@@ -55,15 +55,17 @@ var _jsonp = (function(){
     // set (which is extremely silly, I know)
     function serverReq(url, callback, callbackParam) {
         var request = require('request'),
-            requestURI = url + (url.indexOf("?") >= 0 ? "&" : "?") + 
-                (callbackParam ? callbackParam : 'callback') + '=cb';
+            requestURI = url + (url.indexOf("?") >= 0 ? "&" : "?") +
+                (callbackParam ? callbackParam : 'callback') + '=cb',
+            requestOpts = typeof REQUEST_OPTS != 'undefined' ? REQUEST_OPTS : {};
+               
+        // set the uri
+        requestOpts.uri = requestURI;
 
-        request({ uri: requestURI }, function(error, response, body) {
+        request(requestOpts, function(error, response, body) {
             if (! error) {
-                // remove the silly callback parameter
                 var cleaned = body.replace(/^.*\(/, '').replace(/\).*$/, '');
 
-                // fire the callback, first parsing the JSON
                 callback(JSON.parse(cleaned));
             }
             else {
