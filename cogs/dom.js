@@ -6,24 +6,24 @@ var _dom = (function() {
                 this.style['margin-left'] = '0px';
             },
             
-            center: function(bounds, parentBounds) {
-                this.style['margin-left'] = ((parentBounds.width - bounds.width) >> 1) + 'px';
+            center: function(b, pb) {
+                this.style['margin-left'] = ((pb.width - b.width) >> 1) + 'px';
             },
             
-            right: function() {
-                this.style['margin-left'] = (parentBounds.width - bounds.width) + 'px';
+            right: function(b, pb) {
+                this.style['margin-left'] = (pb.width - b.width) + 'px';
             },
             
             top: function() {
                 this.style['margin-top'] = '0px';
             },
             
-            middle: function(bounds, parentBounds) {
-                this.style['margin-top'] = ((parentBounds.height - bounds.height) >> 1) + 'px';
+            middle: function(b, pb) {
+                this.style['margin-top'] = ((pb.height - b.height) >> 1) + 'px';
             },
             
-            bottom: function(bounds, parentBounds) {
-                this.style['margin-top'] = (parentBounds.height - bounds.height) + 'px';
+            bottom: function(b, pb) {
+                this.style['margin-top'] = (pb.height - b.height) + 'px';
             }
         };
     
@@ -49,7 +49,7 @@ var _dom = (function() {
     function position(element, alignment) {
         // if we have an element and a containing node, then process
         if (element && element.parentNode) {
-            var aligns = (alignment || '').split(reWhitespace),
+            var aligns = (alignment || '').split(_reWhitespace),
                 xAligner = _aligners[aligns[0]] || _aligners.left,
                 yAligner = _aligners[aligns[1]] || _aligners.top,
                 bounds = element.getBoundingClientRect(),
