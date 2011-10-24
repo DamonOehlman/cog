@@ -1,29 +1,30 @@
 var _dom = (function() {
     
     var _reWhitespace = /[\s\,]\s*/,
+        _reAlignOffset = /^(.*?)([\-\+]?\d*)$/,
         _aligners = {
-            left: function() {
-                this.style['margin-left'] = '0px';
+            left: function(b, pb, offset) {
+                this.style['margin-left'] = (offset || 0) + 'px';
             },
             
-            center: function(b, pb) {
-                this.style['margin-left'] = ((pb.width - b.width) >> 1) + 'px';
+            center: function(b, pb, offset) {
+                this.style['margin-left'] = (((pb.width - b.width) >> 1) + (offset || 0)) + 'px';
             },
             
-            right: function(b, pb) {
-                this.style['margin-left'] = (pb.width - b.width) + 'px';
+            right: function(b, pb, offset) {
+                this.style['margin-left'] = (pb.width - b.width + (offset || 0)) + 'px';
             },
             
-            top: function() {
-                this.style['margin-top'] = '0px';
+            top: function(b, pb, offset) {
+                this.style['margin-top'] = (offset || 0) + 'px';
             },
             
-            middle: function(b, pb) {
-                this.style['margin-top'] = ((pb.height - b.height) >> 1) + 'px';
+            middle: function(b, pb, offset) {
+                this.style['margin-top'] = (((pb.height - b.height) >> 1) + (offset || 0)) + 'px';
             },
             
-            bottom: function(b, pb) {
-                this.style['margin-top'] = (pb.height - b.height) + 'px';
+            bottom: function(b, pb, offset) {
+                this.style['margin-top'] = (pb.height - b.height + (offset || 0)) + 'px';
             }
         };
     
@@ -50,8 +51,10 @@ var _dom = (function() {
         // if we have an element and a containing node, then process
         if (element && element.parentNode) {
             var aligns = (alignment || '').split(_reWhitespace),
-                xAligner = _aligners[aligns[0]] || _aligners.left,
-                yAligner = _aligners[aligns[1]] || _aligners.top,
+                alignA = _reAlignOffset.exec(aligns[0]) || [, 'left', 0],
+                alignB = _reAlignOffset.exec(aligns[1]) || [, 'top', 0],
+                alignerA = _aligners[alignA[1]] || _aligners.left,
+                alignerB = _aligners[alignB[1]] || _aligners.top,
                 bounds = element.getBoundingClientRect(),
                 parentBounds = element.parentNode.getBoundingClientRect();
             
@@ -59,8 +62,8 @@ var _dom = (function() {
             element.style.position = 'absolute';
 
             // position the element
-            xAligner.call(element, bounds, parentBounds);
-            yAligner.call(element, bounds, parentBounds);
+            alignerA.call(element, bounds, parentBounds, parseInt(alignA[2], 10));
+            alignerB.call(element, bounds, parentBounds, parseInt(alignB[2], 10));
         }
     } // position
     
