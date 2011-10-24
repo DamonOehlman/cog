@@ -1,12 +1,12 @@
-var _html = (function() {
+var _dom = (function() {
     
-    function createEl(tag, attributes, css) {
+    function create(tag, attributes, css) {
         var element = document.createElement(tag), key;
         
         // iterate through the attributes
         for (key in attributes) {
             if (attributes.hasOwnProperty(key)) {
-                element.setAttribute(key, attributes[key]);
+                element[key] = attributes[key];
             } 
         } 
         
@@ -20,6 +20,6 @@ var _html = (function() {
     } // createEl
     
     return {
-        createEl: createEl
+        create: create
     };
 })();
