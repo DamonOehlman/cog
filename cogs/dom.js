@@ -4,27 +4,27 @@ var _dom = (function() {
         _reAlignOffset = /^(.*?)([\-\+]?\d*)$/,
         _aligners = {
             left: function(b, pb, offset) {
-                this.style['margin-left'] = (offset || 0) + 'px';
+                this.style.left = (offset || 0) + 'px';
             },
             
             center: function(b, pb, offset) {
-                this.style['margin-left'] = (((pb.width - b.width) >> 1) + (offset || 0)) + 'px';
+                this.style.left = (((pb.width - b.width) >> 1) + (offset || 0)) + 'px';
             },
             
             right: function(b, pb, offset) {
-                this.style['margin-left'] = (pb.width - b.width + (offset || 0)) + 'px';
+                this.style.left = (pb.width - b.width + (offset || 0)) + 'px';
             },
             
             top: function(b, pb, offset) {
-                this.style['margin-top'] = (offset || 0) + 'px';
+                this.style.top = (offset || 0) + 'px';
             },
             
             middle: function(b, pb, offset) {
-                this.style['margin-top'] = (((pb.height - b.height) >> 1) + (offset || 0)) + 'px';
+                this.style.top = (((pb.height - b.height) >> 1) + (offset || 0)) + 'px';
             },
             
             bottom: function(b, pb, offset) {
-                this.style['margin-top'] = (pb.height - b.height + (offset || 0)) + 'px';
+                this.style.top = (pb.height - b.height + (offset || 0)) + 'px';
             }
         };
     
@@ -60,7 +60,7 @@ var _dom = (function() {
             
             // set the position to absolute
             element.style.position = 'absolute';
-
+            
             // position the element
             alignerA.call(element, bounds, parentBounds, parseInt(alignA[2], 10));
             alignerB.call(element, bounds, parentBounds, parseInt(alignB[2], 10));
