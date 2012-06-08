@@ -1,4 +1,4 @@
-var _configurable = (function() {
+cog.configurable = (function() {
 
     function attach(target, settings, watchlist, key) {
         if (typeof target[key] == 'undefined') {

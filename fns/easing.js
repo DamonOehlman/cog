@@ -1,4 +1,4 @@
-var _easing = (function() {
+cog.easing = (function() {
     // initialise constants
     var BACK_S = 1.70158,
         HALF_PI = Math.PI / 2,

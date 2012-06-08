@@ -1,4 +1,4 @@
-function _extend() {
+cog.extend = function() {
     var target = arguments[0] || {},
         sources = Array.prototype.slice.call(arguments, 1),
         length = sources.length,
@@ -22,4 +22,4 @@ function _extend() {
     } // for
 
     return target;
-} // _extend
+};

@@ -1,4 +1,4 @@
-var _observable = (function() {
+cog.observable = (function() {
     // initialise variables
     var callbackCounter = 0;
     
