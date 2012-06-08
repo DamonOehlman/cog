@@ -9,7 +9,7 @@ variable (didn't work with multiple calls).
 
 http://www.nonobtrusive.com/2010/05/20/lightweight-jsonp-without-any-3rd-party-libraries/
 */
-var _jsonp = (function(){
+cog.jsonp = (function(){
     var counter = 0, head, query, key;
     
     function load(url) {
