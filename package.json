@@ -1,0 +1,27 @@
+{
+  "name": "cog",
+  "description": "Cherry pickable JS functions",
+  "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
+  "tags": [
+  ],
+  "version": "0.0.0",
+  "main": "cog.js",
+  "engines": {
+    "node": ">= 0.4.x < 0.7.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DamonOehlman/cog.git"
+  },
+  "bugs": {
+    "url": "http://github.com/DamonOehlman/cog/issues"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "contributors": [],
+  "optionalDependencies": {}
+}
