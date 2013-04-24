@@ -1,2 +1,2 @@
-test/qunit
-apidoc/
+.DS_Store
+node_modules
