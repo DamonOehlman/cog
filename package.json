@@ -3,7 +3,7 @@
   "description": "Cherry pickable JS functions",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
   "tags": [],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {},
   "devDependencies": {},
   "repository": {
@@ -13,8 +13,7 @@
   "bugs": {
     "url": "http://github.com/DamonOehlman/cog/issues"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "contributors": [],
   "optionalDependencies": {}
 }
