@@ -5,7 +5,9 @@
   "tags": [],
   "version": "0.1.1",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "tape": "1.0.x"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/DamonOehlman/cog.git"
@@ -13,7 +15,9 @@
   "bugs": {
     "url": "http://github.com/DamonOehlman/cog/issues"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "./node_modules/.bin/tape test/*.js"
+  },
   "contributors": [],
   "optionalDependencies": {}
 }
