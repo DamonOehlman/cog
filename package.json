@@ -18,6 +18,17 @@
   "scripts": {
     "test": "./node_modules/.bin/tape test/*.js"
   },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/9",
+      "ie/10",
+      "chrome/latest",
+      "firefox/latest",
+      "safari/latest",
+      "opera/latest"
+    ]
+  }, 
   "contributors": [],
   "optionalDependencies": {}
 }
