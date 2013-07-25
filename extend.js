@@ -2,7 +2,7 @@
 'use strict';
 
 /** 
-# extend(target, objA, objB, ..., objN)\
+## extend(target, objA, objB, ..., objN)
 
 **/
 module.exports = function(target) {

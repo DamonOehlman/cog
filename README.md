@@ -1,12 +1,12 @@
 # cog
 
+cog is a collection of utility modules constructed in a
+[browserify](https://github.com/substack/node-browserify) friendly way.
+
 [
 ![browser support]
 (https://ci.testling.com/DamonOehlman/cog.png)
 ](https://ci.testling.com/DamonOehlman/cog)
-
-Cog is a collection of utility modules constructed in a
-[browserify](https://github.com/substack/node-browserify) friendly way.
 
 ## Why would I want to use browserify?
 
@@ -52,7 +52,7 @@ using requirebin.
 ## defaults(target, objA, objB, ..., objN)
 
  
-# extend(target, objA, objB, ..., objN)\
+## extend(target, objA, objB, ..., objN)
 
 ## qsa(selector, element)
 
