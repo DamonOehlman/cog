@@ -49,10 +49,33 @@ So let's get started. Let's do this by checking out some examples
 using requirebin.
 
  
-## defaults(target, objA, objB, ..., objN)
+## defaults(target, *)
+
+Shallow copy object properties from the supplied source objects (*) into 
+the target object, returning the target object once completed.  Do not,
+however, overwrite existing keys with new values:
+
+```js
+var defaults = require('cog/extend');
+
+defaults({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
+```
+
+See an example on [requirebin](http://requirebin.com/?gist=6079475).
 
  
-## extend(target, objA, objB, ..., objN)
+## extend(target, *)
+
+Shallow copy object properties from the supplied source objects (*) into 
+the target object, returning the target object once completed:
+
+```js
+var extend = require('cog/extend');
+
+extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
+```
+
+See an example on [requirebin](http://requirebin.com/?gist=6079475).
 
 ## qsa(selector, element)
 
