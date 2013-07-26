@@ -7,7 +7,7 @@
   "dependencies": {},
   "devDependencies": {
     "tape": "~1.0.4",
-    "emu": "0.0.2"
+    "codeme": "~0.1.1"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "url": "http://github.com/DamonOehlman/cog/issues"
   },
   "scripts": {
-    "gendoc": "cat index.js $(find *.js -not -path \"index.js\") | $(npm bin)/emu > README.md",
+    "gendocs": "$(npm bin)/codeme > README.md",
     "test": "$(npm bin)/tape test/all.js"
   },
   "testling": {
