@@ -77,6 +77,17 @@ extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 
 See an example on [requirebin](http://requirebin.com/?gist=6079475).
 
+## listen(target, events, capture?)
+
+The `listen` function of cog provides a mechanism for capturing specific
+events (named in the events array) and routing them through an
+`EventEmitter` that is returned from the function.
+
+While at a base level this has little apparent advantage over the using
+the native `addEventListener` and `removeEventListener` methods available
+in the browser, the listen function also provides a patched in `stop`
+method which will decouple all event listeners from their target.
+
 ## qsa(selector, element)
 
 This function is used to get the results of the querySelectorAll output 
