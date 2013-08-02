@@ -52,7 +52,18 @@ using requirebin.
 ## defaults(target, objA, objB, ..., objN)
 
  
-## extend(target, objA, objB, ..., objN)
+## extend(target, *)
+
+## listen(target, events, capture?)
+
+The `listen` function of cog provides a mechanism for capturing specific
+events (named in the events array) and routing them through an
+`EventEmitter` that is returned from the function.
+
+While at a base level this has little apparent advantage over the using
+the native `addEventListener` and `removeEventListener` methods available
+in the browser, the listen function also provides a patched in `stop`
+method which will decouple all event listeners from their target.
 
 ## qsa(selector, element)
 
