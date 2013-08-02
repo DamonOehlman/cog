@@ -2,12 +2,14 @@
 'use strict';
 
 /** 
-## extend(target, objA, objB, ..., objN)
+## extend(target, *)
 
 **/
 module.exports = function(target) {
   [].slice.call(arguments, 1).forEach(function(source) {
-    if (! source) return;
+    if (! source) {
+      return;
+    }
 
     for (var prop in source) {
       target[prop] = source[prop];
