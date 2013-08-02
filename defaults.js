@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 /** 
 ## defaults(target, *)
 
@@ -19,11 +22,15 @@ module.exports = function(target) {
 
   // iterate through the sources and copy to the target
   [].slice.call(arguments, 1).forEach(function(source) {
-      if (! source) return;
+    if (! source) {
+      return;
+    }
 
-      for (var prop in source) {
-          if (target[prop] === void 0) target[prop] = source[prop];
+    for (var prop in source) {
+      if (target[prop] === void 0) {
+        target[prop] = source[prop];
       }
+    }
   });
 
   return target;
