@@ -5,6 +5,11 @@ cog is a collection of utility modules constructed in a
 [browserify](https://github.com/substack/node-browserify) friendly way.
 
 [
+![Build Status]
+(https://travis-ci.org/DamonOehlman/cog.png)
+](https://travis-ci.org/DamonOehlman/cog)
+
+[
 ![browser support]
 (https://ci.testling.com/DamonOehlman/cog.png)
 ](https://ci.testling.com/DamonOehlman/cog)
