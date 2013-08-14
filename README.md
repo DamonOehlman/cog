@@ -88,6 +88,66 @@ the native `addEventListener` and `removeEventListener` methods available
 in the browser, the listen function also provides a patched in `stop`
 method which will decouple all event listeners from their target.
 
+## cog/logger
+
+Simple browser logging offering similar functionality to the
+[debug](https://github.com/visionmedia/debug) module.  
+
+### Usage
+
+Create your self a new logging instance and give it a name:
+
+```js
+var logger = require('cog/logger');
+var debug = logger('phil');
+```
+
+Now do some debugging:
+
+```js
+debug('hello');
+```
+
+At this stage, no log output will be generated because your logger is
+currently disabled.  Enable it:
+
+```js
+logger.enable('phil');
+```
+
+Now do some more logger:
+
+```js
+debug('Oh this is so much nicer :)');
+// --> phil: Oh this is some much nicer :)
+```
+
+### logger reference
+
+#### logger(name)
+
+Create a new logging instance.
+
+#### logger.reset()
+
+Reset logging (remove the default console logger, flag all loggers as 
+inactive, etc, etc.
+
+#### logger.to(target)
+
+Add a logging target.  The logger must have a `log` method attached.
+
+#### logger.enable(names*)
+
+Enable logging via the named logging instances.  To enable logging via all
+instances, you can pass a wildcard:
+
+```js
+logger.enable('*');
+```
+
+__TODO:__ wildcard enablers
+
 ## qsa(selector, element)
 
 This function is used to get the results of the querySelectorAll output 
