@@ -6,6 +6,10 @@ var EventEmitter = require('events').EventEmitter;
 /**
   ## cog/listen
 
+  ```js
+  var listen = require('cog/listen');
+  ```
+
   ### listen(target, events, capture?)
 
   The `listen` function of cog provides a mechanism for capturing specific

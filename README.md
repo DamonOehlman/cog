@@ -90,6 +90,10 @@ See an example on [requirebin](http://requirebin.com/?gist=6079475).
 
 ## cog/listen
 
+```js
+var listen = require('cog/listen');
+```
+
 ### listen(target, events, capture?)
 
 The `listen` function of cog provides a mechanism for capturing specific
