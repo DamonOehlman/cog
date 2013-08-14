@@ -2,7 +2,9 @@
 'use strict';
 
 /** 
-## extend(target, *)
+## cog/extend
+
+### extend(target, *)
 
 Shallow copy object properties from the supplied source objects (*) into 
 the target object, returning the target object once completed:

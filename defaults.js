@@ -2,14 +2,16 @@
 'use strict';
 
 /** 
-## defaults(target, *)
+## cog/defaults
+
+### defaults(target, *)
 
 Shallow copy object properties from the supplied source objects (*) into 
 the target object, returning the target object once completed.  Do not,
 however, overwrite existing keys with new values:
 
 ```js
-var defaults = require('cog/extend');
+var defaults = require('cog/defaults');
 
 defaults({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 ```
