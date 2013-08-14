@@ -4,14 +4,16 @@
 /** 
 ## cog/extend
 
+```js
+var extend = require('cog/extend');
+```
+
 ### extend(target, *)
 
 Shallow copy object properties from the supplied source objects (*) into 
 the target object, returning the target object once completed:
 
 ```js
-var extend = require('cog/extend');
-
 extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 ```
 

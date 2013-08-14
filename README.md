@@ -56,6 +56,10 @@ using requirebin.
  
 ## cog/defaults
 
+```js
+var defaults = require('cog/defaults');
+```
+
 ### defaults(target, *)
 
 Shallow copy object properties from the supplied source objects (*) into 
@@ -63,8 +67,6 @@ the target object, returning the target object once completed.  Do not,
 however, overwrite existing keys with new values:
 
 ```js
-var defaults = require('cog/defaults');
-
 defaults({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 ```
 
@@ -73,14 +75,16 @@ See an example on [requirebin](http://requirebin.com/?gist=6079475).
  
 ## cog/extend
 
+```js
+var extend = require('cog/extend');
+```
+
 ### extend(target, *)
 
 Shallow copy object properties from the supplied source objects (*) into 
 the target object, returning the target object once completed:
 
 ```js
-var extend = require('cog/extend');
-
 extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 ```
 
@@ -101,6 +105,10 @@ method which will decouple all event listeners from their target.
 
 ## cog/logger
 
+```js
+var logger = require('cog/logger');
+```
+
 Simple browser logging offering similar functionality to the
 [debug](https://github.com/visionmedia/debug) module.  
 
@@ -109,7 +117,6 @@ Simple browser logging offering similar functionality to the
 Create your self a new logging instance and give it a name:
 
 ```js
-var logger = require('cog/logger');
 var debug = logger('phil');
 ```
 
@@ -133,7 +140,7 @@ debug('Oh this is so much nicer :)');
 // --> phil: Oh this is some much nicer :)
 ```
 
-### logger reference
+### Reference
 
 #### logger(name)
 

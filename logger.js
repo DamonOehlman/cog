@@ -4,6 +4,10 @@
 /**
   ## cog/logger
 
+  ```js
+  var logger = require('cog/logger');
+  ```
+
   Simple browser logging offering similar functionality to the
   [debug](https://github.com/visionmedia/debug) module.  
 
@@ -12,7 +16,6 @@
   Create your self a new logging instance and give it a name:
 
   ```js
-  var logger = require('cog/logger');
   var debug = logger('phil');
   ```
 
@@ -36,7 +39,7 @@
   // --> phil: Oh this is some much nicer :)
   ```
 
-  ### logger reference
+  ### Reference
 **/
 
 var active = [];
