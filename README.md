@@ -3,15 +3,13 @@
 cog is a collection of utility modules constructed in a
 [browserify](https://github.com/substack/node-browserify) friendly way.
 
-[
-![Build Status]
-(https://travis-ci.org/DamonOehlman/cog.png)
-](https://travis-ci.org/DamonOehlman/cog)
 
-[
-![browser support]
-(https://ci.testling.com/DamonOehlman/cog.png)
-](https://ci.testling.com/DamonOehlman/cog)
+[![NPM](https://nodei.co/npm/cog.png)](https://nodei.co/npm/cog/)
+
+[![Build Status](https://travis-ci.org/DamonOehlman/cog.png?branch=master)](https://travis-ci.org/DamonOehlman/cog)
+
+[![browser support](https://ci.testling.com/DamonOehlman/cog.png)](https://ci.testling.com/DamonOehlman/cog)
+
 
 ## Why would I want to use browserify?
 

@@ -16,7 +16,7 @@
     "url": "http://github.com/DamonOehlman/cog/issues"
   },
   "scripts": {
-    "gendocs": "sourcecat | emu > README.md",
+    "gendocs": "gendocs > README.md",
     "test": "$(npm bin)/tape test/all.js"
   },
   "testling": {
