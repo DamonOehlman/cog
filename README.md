@@ -175,3 +175,18 @@ in the fastest possible way.  This code is very much based on the
 implementation in
 [zepto](https://github.com/madrobby/zepto/blob/master/src/zepto.js#L104),
 but perhaps not quite as terse.
+
+## cog/raf
+
+Request animation frame helper:
+
+```js
+var raf = require('cog/raf');
+
+function animate() {
+  console.log('animating');
+  raf(animate); // go again
+}
+
+raf(animate);
+```
