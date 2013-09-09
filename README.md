@@ -105,11 +105,13 @@ the native `addEventListener` and `removeEventListener` methods available
 in the browser, the listen function also provides a patched in `stop`
 method which will decouple all event listeners from their target.
 
-## loader(urls, opts, callback)
+## cog/loader
 
 ```js
 var loader = require('cog/loader');
 ```
+
+### loader(urls, opts?, callback)
 
 This is a simple script loader that will load the urls specified
 and trigger the callback once all those scripts have been loaded (or
