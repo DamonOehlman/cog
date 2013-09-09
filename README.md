@@ -180,7 +180,13 @@ logger.enable('*');
 
 __TODO:__ wildcard enablers
 
-## qsa(selector, element)
+## cog/qsa
+
+```js
+var qsa = require('cog/qsa');
+```
+
+### qsa(selector, scope?)
 
 This function is used to get the results of the querySelectorAll output 
 in the fastest possible way.  This code is very much based on the
@@ -189,6 +195,12 @@ implementation in
 but perhaps not quite as terse.
 
 ## cog/raf
+
+```js
+var raf = require('cog/raf');
+```
+
+### raf(callback)
 
 Request animation frame helper:
 

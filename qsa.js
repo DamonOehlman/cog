@@ -7,13 +7,19 @@ var idSelectorRE = /^#([\w\-]+)$/;
 var tagSelectorRE = /^[\w\-]+$/;
 
 /**
-## qsa(selector, element)
+  ## cog/qsa
 
-This function is used to get the results of the querySelectorAll output 
-in the fastest possible way.  This code is very much based on the
-implementation in
-[zepto](https://github.com/madrobby/zepto/blob/master/src/zepto.js#L104),
-but perhaps not quite as terse.
+  ```js
+  var qsa = require('cog/qsa');
+  ```
+
+  ### qsa(selector, scope?)
+
+  This function is used to get the results of the querySelectorAll output 
+  in the fastest possible way.  This code is very much based on the
+  implementation in
+  [zepto](https://github.com/madrobby/zepto/blob/master/src/zepto.js#L104),
+  but perhaps not quite as terse.
 **/
 module.exports = function(selector, scope) {
   var idSearch;

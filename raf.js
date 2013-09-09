@@ -7,6 +7,12 @@ var TEST_PROPS = ['r', 'webkitR', 'mozR', 'oR', 'msR'];
 /**
   ## cog/raf
 
+  ```js
+  var raf = require('cog/raf');
+  ```
+
+  ### raf(callback)
+
   Request animation frame helper:
 
   ```js
