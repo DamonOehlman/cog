@@ -50,7 +50,7 @@ module.exports = function(urls, opts, callback) {
   // create the script elements
   urls.map(function(url) {
     var script = document.createElement('script');
-    script.url = url;
+    script.src = url;
     script.async = true;
     script.addEventListener('load', handleLoaded);
 
