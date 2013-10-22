@@ -25,6 +25,8 @@ var TEST_PROPS = ['r', 'webkitR', 'mozR', 'oR', 'msR'];
 
   raf(animate);
   ```
+
+  __NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
 **/
 
 module.exports = typeof window != 'undefined' && (function() {
@@ -32,6 +34,6 @@ module.exports = typeof window != 'undefined' && (function() {
     window.animFrame = window.animFrame ||
       window[TEST_PROPS[ii] + 'equestAnimationFrame'];
   } // for
-  
+
   return animFrame;
 })();

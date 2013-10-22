@@ -9,7 +9,7 @@
   ```
 
   Simple browser logging offering similar functionality to the
-  [debug](https://github.com/visionmedia/debug) module.  
+  [debug](https://github.com/visionmedia/debug) module.
 
   ### Usage
 
@@ -86,7 +86,7 @@ var logger = module.exports = function(name) {
 /**
   #### logger.reset()
 
-  Reset logging (remove the default console logger, flag all loggers as 
+  Reset logging (remove the default console logger, flag all loggers as
   inactive, etc, etc.
 **/
 logger.reset = function() {

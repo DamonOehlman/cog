@@ -1,7 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-/** 
+/**
 ## cog/defaults
 
 ```js
@@ -10,7 +10,7 @@ var defaults = require('cog/defaults');
 
 ### defaults(target, *)
 
-Shallow copy object properties from the supplied source objects (*) into 
+Shallow copy object properties from the supplied source objects (*) into
 the target object, returning the target object once completed.  Do not,
 however, overwrite existing keys with new values:
 

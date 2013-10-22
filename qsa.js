@@ -15,11 +15,13 @@ var tagSelectorRE = /^[\w\-]+$/;
 
   ### qsa(selector, scope?)
 
-  This function is used to get the results of the querySelectorAll output 
+  This function is used to get the results of the querySelectorAll output
   in the fastest possible way.  This code is very much based on the
   implementation in
   [zepto](https://github.com/madrobby/zepto/blob/master/src/zepto.js#L104),
   but perhaps not quite as terse.
+
+  __NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
 **/
 module.exports = function(selector, scope) {
   var idSearch;

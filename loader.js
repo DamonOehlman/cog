@@ -15,6 +15,8 @@
   and trigger the callback once all those scripts have been loaded (or
   loading has failed in one instance).
 
+  __NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
+
 **/
 
 module.exports = function(urls, opts, callback) {
@@ -29,7 +31,7 @@ module.exports = function(urls, opts, callback) {
     if (pending <= 0 && typeof callback == 'function') {
       // TODO: detect and send through errors
       callback();
-    } 
+    }
   }
 
   // ensure we have an array for scripts
