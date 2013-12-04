@@ -2,11 +2,10 @@
   "name": "cog",
   "description": "Cherry pickable JS functions",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "tags": [],
   "version": "0.3.1",
   "dependencies": {},
   "devDependencies": {
-    "tape": "~1.0.4"
+    "tape": "~2.3.0"
   },
   "repository": {
     "type": "git",
@@ -21,15 +20,36 @@
   },
   "testling": {
     "files": "test/all.js",
-    "browsers": [
-      "ie/9",
-      "ie/10",
-      "chrome/latest",
-      "firefox/latest",
-      "safari/latest",
-      "opera/latest"
-    ]
+    "browsers": {
+      "ie": [
+        "latest"
+      ],
+      "ff": [
+        "latest",
+        "nightly"
+      ],
+      "chrome": [
+        "latest",
+        "canary"
+      ],
+      "opera": [
+        "latest",
+        "next"
+      ],
+      "safari": [
+        "latest"
+      ]
+    }
   },
-  "contributors": [],
-  "optionalDependencies": {}
+  "homepage": "https://github.com/DamonOehlman/cog",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "browserify",
+    "utility",
+    "cherrypick"
+  ],
+  "license": "MIT"
 }
