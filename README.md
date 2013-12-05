@@ -86,6 +86,19 @@ extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 
 See an example on [requirebin](http://requirebin.com/?gist=6079475).
 
+## cog/jsonparse
+
+```js
+var jsonparse = require('cog/jsonparse');
+```
+
+### jsonparse(input)
+
+This function will attempt to automatically detect stringified JSON, and
+when detected will parse into JSON objects.  The function looks for strings
+that look and smell like stringified JSON, and if found attempts to
+`JSON.parse` the input into a valid object.
+
 ## cog/listen
 
 ```js
