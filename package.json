@@ -21,7 +21,7 @@
   "testling": {
     "files": "test/all.js",
     "browsers": {
-      "ie": [ 8, 9, 10 ],
+      "ie": [ 9, 10 ],
       "ff": [ 23, 24, 25, "nightly" ],
       "chrome": [ 29, 30, 31, "canary" ],
       "safari": [ 5.1, 6 ],

@@ -53,14 +53,33 @@ test('can stop event capture', function(t) {
 /* internal helpers */
 
 function createSampleElement() {
-  return document.createElement('div');
+  var div = document.createElement('div');
+  document.body.appendChild(div);
+
+  return div;
 }
 
 function generateClick(el) {
   var evt = document.createEvent('MouseEvents');
+  var bounds = el.getBoundingClientRect();
 
-  evt.initMouseEvent('click', true, true, window,
-    0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  evt.initMouseEvent(
+    'click', // type
+    true, // can bubble
+    true, // cancelable
+    window, // window context
+    0, // detail arg
+    (bounds.top + 10) | 0, // screenX
+    (bounds.left + 10) | 0, // screenY
+    10, // clientX
+    10, // clientY
+    false, // ctrl?
+    false, // alt?
+    false, // shift?
+    false, // meta?
+    0, // button index, 0 = left
+    null // related target
+  );
 
   return el.dispatchEvent(evt);
 }
