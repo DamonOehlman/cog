@@ -21,24 +21,11 @@
   "testling": {
     "files": "test/all.js",
     "browsers": {
-      "ie": [
-        "latest"
-      ],
-      "ff": [
-        "latest",
-        "nightly"
-      ],
-      "chrome": [
-        "latest",
-        "canary"
-      ],
-      "opera": [
-        "latest",
-        "next"
-      ],
-      "safari": [
-        "latest"
-      ]
+      "ie": [ 8, 9, 10 ],
+      "ff": [ 23, 24, 25, "nightly" ],
+      "chrome": [ 29, 30, 31, "canary" ],
+      "safari": [ 5.1, 6 ],
+      "opera": [ 15, 16, 17, "next" ]
     }
   },
   "homepage": "https://github.com/DamonOehlman/cog",
