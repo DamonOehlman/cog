@@ -2,7 +2,7 @@
   "name": "cog",
   "description": "Cherry pickable JS functions",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "dependencies": {},
   "devDependencies": {
     "tape": "~2.3.0"
@@ -21,11 +21,32 @@
   "testling": {
     "files": "test/all.js",
     "browsers": {
-      "ie": [ 9, 10 ],
-      "ff": [ 23, 24, 25, "nightly" ],
-      "chrome": [ 29, 30, 31, "canary" ],
-      "safari": [ 5.1, 6 ],
-      "opera": [ 15, 16, 17, "next" ]
+      "ie": [
+        9,
+        10
+      ],
+      "ff": [
+        23,
+        24,
+        25,
+        "nightly"
+      ],
+      "chrome": [
+        29,
+        30,
+        31,
+        "canary"
+      ],
+      "safari": [
+        5.1,
+        6
+      ],
+      "opera": [
+        15,
+        16,
+        17,
+        "next"
+      ]
     }
   },
   "homepage": "https://github.com/DamonOehlman/cog",
