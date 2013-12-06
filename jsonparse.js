@@ -18,12 +18,17 @@
 **/
 module.exports = function(input) {
   var isString = typeof input == 'string' || (input instanceof String);
+  var reNumeric = /^\-?\d+\.?\d*$/;
   var shouldParse ;
   var firstChar;
   var lastChar;
 
   if ((! isString) || input.length < 2) {
-    return isString ? (parseFloat(input) || input) : input;
+    if (isString && reNumeric.test(input)) {
+      return parseFloat(input);
+    }
+
+    return input;
   }
 
   // check for true or false
@@ -55,5 +60,5 @@ module.exports = function(input) {
   }
 
 
-  return parseFloat(input) || input;
+  return reNumeric.test(input) ? parseFloat(input) : input;
 };

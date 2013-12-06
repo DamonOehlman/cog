@@ -31,6 +31,15 @@ test('undefined is unaltered', function(t) {
   t.equal(parse(undefined), undefined, 'undefined preserved');
 });
 
+test('a uuid value is unaltered', function(t) {
+  t.plan(1);
+  t.equal(
+    parse('2007bf44-56a5-4a77-9b1e-b43cfac9c70f'),
+    '2007bf44-56a5-4a77-9b1e-b43cfac9c70f',
+    'uuid preserved'
+  );
+});
+
 test('an array is unaltered', function(t) {
   t.plan(1);
   t.deepEqual(parse([1, 2, 3]), [1, 2, 3], 'array preserved');
@@ -64,6 +73,15 @@ test('correctly parse JSONified null', function(t) {
 test('correctly parse JSONified undefined', function(t) {
   t.plan(1);
   t.equal(parse(JSON.stringify(undefined)), undefined, 'correctly parse undefined');
+});
+
+test('correctly parse JSONified uuid', function(t) {
+  t.plan(1);
+  t.equal(
+    parse(JSON.stringify('2007bf44-56a5-4a77-9b1e-b43cfac9c70f')),
+    '\"2007bf44-56a5-4a77-9b1e-b43cfac9c70f\"',
+    'correctly parse uuid'
+  );
 });
 
 test('correctly parse JSONified object', function(t) {
