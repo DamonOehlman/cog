@@ -232,11 +232,18 @@ raf(animate);
 
 __NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
 
+### throttle(fn, delay)
+
+A cherry-pickable throttle function.  Used to throttle `fn` to ensure
+that it can be called at most once every `delay` milliseconds.  Will
+fire first event immediately, ensuring the next event fired will occur
+at least `delay` milliseconds after the first, and so on.
+
 ## License(s)
 
 ### MIT
 
-Copyright (c) 2013 Damon Oehlman <damon.oehlman@gmail.com>
+Copyright (c) 2014 Damon Oehlman <damon.oehlman@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
