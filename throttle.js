@@ -8,7 +8,7 @@
   var throttle = require('cog/throttle');
   ```
 
-  ### throttle(fn, delay)
+  ### throttle(fn, delay, opts)
 
   A cherry-pickable throttle function.  Used to throttle `fn` to ensure
   that it can be called at most once every `delay` milliseconds.  Will
@@ -16,11 +16,15 @@
   at least `delay` milliseconds after the first, and so on.
 
 **/
-module.exports = function(fn, delay) {
-  var lastExec = 0;
+module.exports = function(fn, delay, opts) {
+  var lastExec = (opts || {}).leading !== false ? 0 : Date.now();
+  var trailing = (opts || {}).trailing;
   var timer;
   var queuedArgs;
   var queuedScope;
+
+  // trailing defaults to true
+  trailing = trailing || trailing === undefined;
   
   function invokeDefered() {
     fn.apply(queuedScope, queuedArgs || []);
@@ -38,7 +42,7 @@ module.exports = function(fn, delay) {
       queuedArgs = [].slice.call(arguments, 0);
       queuedScope = this;
 
-      return timer = setTimeout(invokeDefered, delay - elapsed);
+      return trailing && (timer = setTimeout(invokeDefered, delay - elapsed));
     }
 
     // call the function
