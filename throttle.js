@@ -2,6 +2,12 @@
 'use strict';
 
 /**
+  ## cog/throttle
+
+  ```js
+  var throttle = require('cog/throttle');
+  ```
+
   ### throttle(fn, delay)
 
   A cherry-pickable throttle function.  Used to throttle `fn` to ensure
