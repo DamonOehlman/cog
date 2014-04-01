@@ -79,7 +79,7 @@ test('correctly parse JSONified uuid', function(t) {
   t.plan(1);
   t.equal(
     parse(JSON.stringify('2007bf44-56a5-4a77-9b1e-b43cfac9c70f')),
-    '\"2007bf44-56a5-4a77-9b1e-b43cfac9c70f\"',
+    '2007bf44-56a5-4a77-9b1e-b43cfac9c70f',
     'correctly parse uuid'
   );
 });
@@ -100,4 +100,9 @@ test('correctly parse JSONified array', function(t) {
     [1, 2, 3],
     'correctly parse simple array'
   );
+});
+
+test('correctly parse JSONified string', function(t) {
+  t.plan(1);
+  t.equal(parse(JSON.stringify('hello')), 'hello', 'parsed ok');
 });
