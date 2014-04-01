@@ -48,7 +48,8 @@ module.exports = function(input) {
   // determine whether we should JSON.parse the input
   shouldParse =
     (firstChar == '{' && lastChar == '}') ||
-    (firstChar == '[' && lastChar == ']');
+    (firstChar == '[' && lastChar == ']') ||
+    (firstChar == '"' && lastChar == '"');
 
   if (shouldParse) {
     try {
