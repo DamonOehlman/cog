@@ -106,3 +106,10 @@ test('correctly parse JSONified string', function(t) {
   t.plan(1);
   t.equal(parse(JSON.stringify('hello')), 'hello', 'parsed ok');
 });
+
+test('correctly parse string *THAT CONTAINS* a stringified object', function(t) {
+  var input = '/to|fea5d226-ec3d-4f24-96b2-6f982d749fd1|/hello|{"id":"92986630-3cf3-4c3b-989d-eb816c6686c8"}|{"a":1}';
+
+  t.plan(1);
+  t.equal(parse(JSON.stringify(input)), input, 'input preserved');
+});
