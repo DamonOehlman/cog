@@ -6,9 +6,9 @@ cog is a collection of utility modules constructed in a
 
 [![NPM](https://nodei.co/npm/cog.png)](https://nodei.co/npm/cog/)
 
-[![Build Status](https://travis-ci.org/DamonOehlman/cog.png?branch=master)](https://travis-ci.org/DamonOehlman/cog)
-
+[![Build Status](https://img.shields.io/travis/DamonOehlman/cog.svg?branch=master)](https://travis-ci.org/DamonOehlman/cog) 
 [![browser support](https://ci.testling.com/DamonOehlman/cog.png)](https://ci.testling.com/DamonOehlman/cog)
+
 
 
 ## Why would I want to use browserify?
@@ -85,6 +85,11 @@ extend({ a: 1, b: 2 }, { c: 3 }, { d: 4 }, { b: 5 }));
 ```
 
 See an example on [requirebin](http://requirebin.com/?gist=6079475).
+
+## cog/getable
+
+Take an object and provide a wrapper that allows you to `get` and
+`set` values on that object.
 
 ## cog/jsonparse
 
@@ -238,7 +243,7 @@ __NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
 var throttle = require('cog/throttle');
 ```
 
-### throttle(fn, delay)
+### throttle(fn, delay, opts)
 
 A cherry-pickable throttle function.  Used to throttle `fn` to ensure
 that it can be called at most once every `delay` milliseconds.  Will

@@ -1,3 +1,10 @@
+/**
+  ## cog/getable
+
+  Take an object and provide a wrapper that allows you to `get` and
+  `set` values on that object.
+
+**/
 module.exports = function(target) {
   function get(key) {
     return target[key];
