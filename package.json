@@ -2,7 +2,7 @@
   "name": "cog",
   "description": "Cherry pickable JS functions",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
     "tape": "~2.4.2"
