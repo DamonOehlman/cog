@@ -4,3 +4,4 @@ require('./listen');
 require('./logger');
 require('./jsonparse');
 require('./throttle');
+require('./getable');
