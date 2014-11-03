@@ -19,35 +19,7 @@
     "test": "$(npm bin)/tape test/all.js"
   },
   "testling": {
-    "files": "test/all.js",
-    "browsers": {
-      "ie": [
-        9,
-        10
-      ],
-      "ff": [
-        23,
-        24,
-        25,
-        "nightly"
-      ],
-      "chrome": [
-        29,
-        30,
-        31,
-        "canary"
-      ],
-      "safari": [
-        5.1,
-        6
-      ],
-      "opera": [
-        15,
-        16,
-        17,
-        "next"
-      ]
-    }
+    "files": "test/all.js"
   },
   "homepage": "https://github.com/DamonOehlman/cog",
   "main": "index.js",
