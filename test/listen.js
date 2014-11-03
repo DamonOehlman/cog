@@ -12,43 +12,36 @@ test('listen returns an eventemitter with a stop function', function(t) {
   t.ok(typeof emitter.stop == 'function', 'has a stop function');
 });
 
-test('captures dom events', function(t) {
-  if (typeof document == 'undefined') {
-    return t.end('not in a browser environment');
-  }
+if (typeof document != 'undefined') {
+  test('captures dom events', function(t) {
+    t.plan(1);
 
-  t.plan(1);
+    // create the test element
+    el = createSampleElement();
 
-  // create the test element
-  el = createSampleElement();
+    // listen to the emitter
+    emitter = listen(el, ['click']).once('click', function(evt) {
+      t.pass('received click event');
+    });
 
-  // listen to the emitter
-  emitter = listen(el, ['click']).once('click', function(evt) {
-    t.pass('received click event');
+    // generate the a click event
+    generateClick(el);
   });
 
-  // generate the a click event
-  generateClick(el);
-});
+  test('can stop event capture', function(t) {
+    t.plan(1);
+    emitter.stop();
+    emitter.once('click', function() {
+      t.fail('captured event and should not have');
+    });
 
-test('can stop event capture', function(t) {
-  if (typeof document == 'undefined') {
-    return t.end();
-  }
+    el.addEventListener('click', function() {
+      t.pass('normal event capture worked as expected');
+    });
 
-  t.plan(1);
-  emitter.stop();
-  emitter.once('click', function() {
-    t.fail('captured event and should not have');
+    generateClick(el);
   });
-
-  el.addEventListener('click', function() {
-    t.pass('normal event capture worked as expected');
-  });
-
-  generateClick(el);
-});
-
+}
 
 /* internal helpers */
 
