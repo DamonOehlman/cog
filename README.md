@@ -209,7 +209,7 @@ implementation in
 [zepto](https://github.com/madrobby/zepto/blob/master/src/zepto.js#L104),
 but perhaps not quite as terse.
 
-__NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/dd)
+__NOTE:__ Deprecated, moved into [dd](https://github.com/DamonOehlman/fdom)
 
 ## cog/raf
 
