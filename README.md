@@ -6,7 +6,7 @@ cog is a collection of utility modules constructed in a
 
 [![NPM](https://nodei.co/npm/cog.png)](https://nodei.co/npm/cog/)
 
-[![Build Status](https://img.shields.io/travis/DamonOehlman/cog.svg?branch=master)](https://travis-ci.org/DamonOehlman/cog) [![bitHound Score](https://www.bithound.io/github.com/DamonOehlman/cog/badges/score.svg)](https://www.bithound.io/github.com/DamonOehlman/cog) 
+[![Build Status](https://img.shields.io/travis/DamonOehlman/cog.svg?branch=master)](https://travis-ci.org/DamonOehlman/cog) [![bitHound Score](https://www.bithound.io/github/DamonOehlman/cog/badges/score.svg)](https://www.bithound.io/github/DamonOehlman/cog) 
 
 ## Why would I want to use browserify?
 
