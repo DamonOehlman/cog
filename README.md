@@ -6,7 +6,7 @@ cog is a collection of utility modules constructed in a
 
 [![NPM](https://nodei.co/npm/cog.png)](https://nodei.co/npm/cog/)
 
-[![Build Status](https://img.shields.io/travis/DamonOehlman/cog.svg?branch=master)](https://travis-ci.org/DamonOehlman/cog) 
+[![Build Status](https://img.shields.io/travis/DamonOehlman/cog.svg?branch=master)](https://travis-ci.org/DamonOehlman/cog) [![bitHound Score](https://www.bithound.io/github.com/DamonOehlman/cog/badges/score.svg)](https://www.bithound.io/github.com/DamonOehlman/cog) 
 
 ## Why would I want to use browserify?
 
@@ -251,7 +251,7 @@ at least `delay` milliseconds after the first, and so on.
 
 ### MIT
 
-Copyright (c) 2014 Damon Oehlman <damon.oehlman@gmail.com>
+Copyright (c) 2015 Damon Oehlman <damon.oehlman@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
